@@ -1,4 +1,7 @@
 import Surface from "./Surface";
+import Box from "./Box";
+import QuickAction from "./QuickAction";
+
 export {
-    Surface
+    Box, Surface, QuickAction
 }

@@ -1,15 +1,12 @@
 "use client"
 import "boxicons"
 
-import {BtnPrimary} from "../components/Button";
-import {Surface} from "../components/sections";
+import {Surface, QuickAction} from "../components/sections";
 import React from "react";
-import Footer from "./Footer";
-import Habits from "./Habits";
+import Habit from "./Habit";
 import Introduction from "./Introduction";
-import Education from "./Education";
 import Experience from "./Experience";
-import QuickAction from "../components/sections/QuickAction";
+import EducationContainer from "../containers/EducationContainer";
 
 export default function Home() {
     const intro = {
@@ -26,15 +23,6 @@ export default function Home() {
             {"icon": "devices", "label": "X-Platform"}
         ]
     }
-    const education: IEducation = {
-        content: "Ini content",
-        createdAt: "A minute ago",
-        desc: "Ini description",
-        fileUrl: "",
-        id: "",
-        imageUrl: "https://via.placeholder.com/150",
-        title: "Ini Judul"
-    }
     const experience: IExperience = {
         createdAt: "asf",
         demoUrl: "ngdn",
@@ -47,38 +35,25 @@ export default function Home() {
         stack: ["asdjk", "dfsdjgkz", "oash"],
         title: "sjsfj",
         type: "hjljl"
-
     }
     return (
-        <main
-            className="ease-linear transition-all duration-500 text-gray-700 dark:text-gray-300 bg-gradient-to-br from-gray-200 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-            <div className="flex flex-col h-screen text-center items-center uppercase">
-                <div className="flex flex-col h-full px-0 sm:px-6 place-content-center place-items-center space-y-4">
-                    <p className="text-3xl">Portfolio</p>
-                    <div className="h-0.5 w-24 bg-gray-700 dark:bg-gray-300"/>
-                    <p>A Little single page by Utif Milkedori</p>
-                </div>
-                <Surface><BtnPrimary label="Begin"/></Surface>
-            </div>
-            <div className="flex justify-center">
-                <Surface>
-                    <Introduction
-                        title={intro.title}
-                        description={intro.description}/>
+        <div className="flex justify-center">
+            <Surface>
+                <Introduction
+                    title={intro.title}
+                    description={intro.description}/>
 
-                    <Habits
-                        title={habits.title}
-                        description={habits.description}
-                        items={habits.data}/>
+                <Habit
+                    title={habits.title}
+                    description={habits.description}
+                    items={habits.data}/>
 
-                    <Education data={education}/>
+                <EducationContainer />
 
-                    <Experience data={experience}/>
+                <Experience data={experience}/>
 
-                    <QuickAction/>
-                </Surface>
-            </div>
-            <Footer/>
-        </main>
+                <QuickAction/>
+            </Surface>
+        </div>
     )
 }

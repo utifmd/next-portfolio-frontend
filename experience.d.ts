@@ -1,4 +1,4 @@
-interface IExperience {
+interface IExperience extends ISchema {
     id: string,
     type: string,
     title: string,

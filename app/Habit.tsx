@@ -5,7 +5,7 @@ type Props = {
     description: string,
     items: { type: string, icon: string, label: string }[]
 }
-const Habits = ({title, description, items}: Props) =>
+const Habit = ({title, description, items}: Props) =>
     <div className="w-full space-y-6 py-24 px-0 sm:px-6 justify-center text-center">
         <p className="font-bold xl:text-3xl md:text-3xl text-2xl uppercase">{title}</p>
         <div className="flex justify-center">
@@ -22,4 +22,4 @@ const Habits = ({title, description, items}: Props) =>
         </div>
         <BtnNext/>
     </div>
-export default Habits
+export default Habit
