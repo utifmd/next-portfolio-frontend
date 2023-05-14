@@ -53,7 +53,7 @@ export default function Home() {
         <main
             className="ease-linear transition-all duration-500 text-gray-700 dark:text-gray-300 bg-gradient-to-br from-gray-200 to-gray-100 dark:from-gray-900 dark:to-gray-800">
             <div className="flex flex-col h-screen text-center items-center uppercase">
-                <div className="flex flex-col h-full place-content-center place-items-center space-y-4">
+                <div className="flex flex-col h-full px-0 sm:px-6 place-content-center place-items-center space-y-4">
                     <p className="text-3xl">Portfolio</p>
                     <div className="h-0.5 w-24 bg-gray-700 dark:bg-gray-300"/>
                     <p>A Little single page by Utif Milkedori</p>
@@ -63,9 +63,13 @@ export default function Home() {
             <div className="flex justify-center">
                 <Surface>
                     <Introduction
-                        title={intro.title} description={intro.description}/>
+                        title={intro.title}
+                        description={intro.description}/>
+
                     <Habits
-                        title={habits.title} subtitle={habits.description} items={habits.data}/>
+                        title={habits.title}
+                        description={habits.description}
+                        items={habits.data}/>
 
                     <Education data={education}/>
 

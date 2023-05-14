@@ -1,4 +1,5 @@
 import {BtnNext} from '../components/Button'
+import Image from "next/image";
 
 type Props = {
     data: IExperience
@@ -10,17 +11,20 @@ const Experience = ({data}: Props) => {
             ? ['Released apps', 'Download'] : ['Link address', 'Visit']
 
     return (
-        <div className="w-full px-0 sm:px-6 py-6">
-            <div className="text-center space-y-7 py-28">
+        <div className="flex flex-col w-full">{[1, 2, 5].map(() =>
+            <div className="space-y-6 py-24 justify-center text-center">
                 <p className="font-bold xl:text-3xl md:text-3xl text-2xl uppercase">{data.title}</p>
                 <div className="flex justify-center">
-                    <div className=" h-0.5 w-24 bg-gray-900 dark:bg-gray-100"/>
+                    <div className="h-0.5 w-24 bg-gray-700 dark:bg-gray-300"/>
                 </div>
                 <div className="flex flex-wrap justify-center">
-                    <img src={data.iconUrl} alt="cretive"
-                         className="object-cover shadow-lg rounded-full w-48 h-48 align-middle border-none"/>
+                    <div className="relative w-48 h-48">
+                        <Image
+                            className="object-cover shadow-lg rounded-full align-middle border-none cursor-pointer" layout="fill" objectFit="cover"
+                            src={data.iconUrl} alt={data.title} loader={() => data.iconUrl}/>
+                    </div>
                 </div>
-                <div className="appearance-none bg-gray-200 dark:bg-gray-700 overflow-hidden sm:rounded-lg text-left">{/* <img className="object-cover h-48 w-full" src="https://www.creative-tim.com/learning-lab/tailwind-starter-kit/img/team-3-800x800.jpg" alt="cover" /> */}
+                <div className="appearance-none mx-0 sm:mx-6 bg-gray-200 dark:bg-gray-700 overflow-hidden sm:rounded-lg text-left">
                     <div className="px-4 py-5 sm:px-6">
                         <h3 className="text-lg leading-6 font-medium">Application Information</h3>
                         <p className="mt-1 max-w-2xl text-sm">{data.description}</p>
@@ -82,17 +86,14 @@ const Experience = ({data}: Props) => {
                         </dl>
                     </div>
                 </div>
-                {/*{user ?
-                    <div className="flex justify-center space-x-4">
-                        <i onClick={() => dispatch(deleteProject(data._id))} className="p-3 cursor-pointer">
-                            <box-icon color="#059669" name='trash'></box-icon>
-                        </i>
-                        <i onClick={onEditClick} className="p-3 cursor-pointer">
-                            <box-icon color="#059669" name='edit'></box-icon>
-                        </i>
-                    </div> : null}*/}
-            </div>
-            <BtnNext onClick={() => {}}/>
-        </div>)
+                <div className="flex justify-center space-x-4">
+                    <a rel="noreferrer" target="_blank" className="p-3 cursor-pointer">
+                        <box-icon color="#059669" name="credit-card-front"/>
+                    </a>
+                </div>
+                <BtnNext/>
+            </div>)}
+        </div>
+        )
 }
 export default Experience
