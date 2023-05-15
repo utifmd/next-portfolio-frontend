@@ -7,7 +7,7 @@ type Props = {
     state: IEducationState, getAllEducations: () => AppDispatch
 }
 const Education = ({state, getAllEducations}: Props) => {
-    useEffect(() =>{
+    useEffect(() => {
         getAllEducations()
 
     }, [getAllEducations])

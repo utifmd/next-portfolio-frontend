@@ -11,3 +11,8 @@ interface IExperience extends ISchema {
     demoUrl: string,
     createdAt: string
 }
+interface IExperienceState {
+    status: "idle" | "failed" | "success",
+    value: IExperience[]
+}
+type TDispatchExperience = (state: IExperienceState) => IExperienceState

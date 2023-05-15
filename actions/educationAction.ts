@@ -5,11 +5,11 @@ export const getAllEducations = () =>
     (dispatch, getState): AppDispatch => {
     const response: IEducation[] = [
         {
+            id: "",
+            fileUrl: "",
             content: "Ini content",
             createdAt: "A minute ago",
             desc: "Ini description",
-            fileUrl: "",
-            id: "",
             imageUrl: "https://via.placeholder.com/150",
             title: "Ini Judul"
         }
