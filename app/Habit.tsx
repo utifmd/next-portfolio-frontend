@@ -3,7 +3,8 @@ import {BtnNext} from "../components/Button";
 type Props = {
     title: string,
     description: string,
-    items: { type: string, icon: string, label: string }[]
+    items: { type: string, icon: string, label: string }[],
+    // onBtnNextClicked: () => void
 }
 const Habit = ({title, description, items}: Props) =>
     <div className="w-full space-y-6 py-24 px-0 sm:px-6 justify-center text-center">
@@ -20,6 +21,6 @@ const Habit = ({title, description, items}: Props) =>
                 </div>
             )}
         </div>
-        <BtnNext/>
+        <BtnNext />
     </div>
 export default Habit

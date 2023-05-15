@@ -1,4 +1,4 @@
-const QuickAction = ({}) => {
+const QuickAction = ({onHomeClicked}: {onHomeClicked?: (e: MouseEvent) => void}) => {
     return( 
     <section className="flex flex-col w-full">
         <div className="flex space-x-2 justify-center mb-12">
@@ -6,7 +6,7 @@ const QuickAction = ({}) => {
                 <box-icon name="briefcase" color="#059669"/>
                 <p className="text-green-600">Experiences</p>
             </button>
-            <button onClick={() => {}} className="px-4 cursor-pointer text-center group hover:opacity-70 focus:outline-none ease-linear transition-all duration-350">
+            <button onClick={onHomeClicked} className="px-4 cursor-pointer text-center group hover:opacity-70 focus:outline-none ease-linear transition-all duration-350">
                 <box-icon name="home" color="#059669"/>
                 <p className="text-green-600">Home</p>
             </button>

@@ -2,6 +2,7 @@ import {combineReducers, Reducer} from "redux";
 import {AppAction} from "../actions";
 import educationReducer from "./educationReducer"
 import experienceReducer from "./experienceReducer";
+import {groupingListByPropKey} from "../utils";
 
 const initialState: IAppState = {
     intro: {
@@ -26,6 +27,15 @@ const homeReducer: Reducer<IAppState> =
     switch (action.type) {
         case AppAction.READ_FEED_SUCCESS:
             return {...state, status: "success", feed: action.payload}
+
+        case AppAction.PAGED_FEED_SUCCESS:
+            return {...state, status: "success", feed: state.feed.concat(action.payload)}
+
+        case AppAction.CREATE_FEED_SUCCESS:
+            const feed: ISchema[] = state.feed.concat(action.payload)
+            groupingListByPropKey(feed, "content")
+            return {...state, status: "success", feed}
+
         default:
             return state
     }

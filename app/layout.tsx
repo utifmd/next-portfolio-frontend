@@ -1,10 +1,6 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
-import {Surface} from "../components/sections";
-import {BtnPrimary} from "../components/Button";
-import Footer from "./Footer";
 import React from "react";
-import StateProvider from "../store/StateProvider";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -21,18 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-          <main className="ease-linear transition-all duration-500 text-gray-700 dark:text-gray-300 bg-gradient-to-br from-gray-200 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-              <div className="flex flex-col h-screen text-center items-center uppercase">
-                  <div className="flex flex-col h-full px-0 sm:px-6 place-content-center place-items-center space-y-4">
-                      <p className="text-3xl">Portfolio</p>
-                      <div className="h-0.5 w-24 bg-gray-700 dark:bg-gray-300"/>
-                      <p>A Little single page by Utif Milkedori</p>
-                  </div>
-                  <Surface><BtnPrimary label="Begin"/></Surface>
-              </div>
-              <StateProvider>{children}</StateProvider>
-              <Footer/>
-          </main>
+      {children}
       </body>
     </html>
   )
