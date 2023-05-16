@@ -1,27 +1,33 @@
 "use client"
 
 import "boxicons"
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import Habit from "./Habit";
 import Introduction from "./Introduction";
 import {QuickAction, Surface} from "../components/sections";
 import {EducationItem} from "./Education";
 import {ExperienceItem} from "./Experience";
-import {getFeed, pagedFeed, addFeed} from "../actions";
+import {PAGINATION_SIZE, pagedFeed} from "../actions";
 import {useAppDispatch, useAppSelector} from "./hooks";
 
 const Home = () => {
     const {intro, habit, feed} = useAppSelector(({home}) => home as IAppState)
     const dispatch = useAppDispatch()
+    const [feedPage, setFeedPage] = useState<number>(1)
+
+    const onPaginationFeed = () => {
+        dispatch(pagedFeed(feedPage))
+        setFeedPage(feedPage +1)
+    }
 
     useEffect(() => {
-        dispatch(pagedFeed())
+        onPaginationFeed()
 
     }, [pagedFeed])
 
     const onHomeClicked = (e: MouseEvent) => {
         e.preventDefault()
-        dispatch(pagedFeed())
+        onPaginationFeed()
     }
     return (
         <div className="flex justify-center">

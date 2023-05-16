@@ -3,6 +3,7 @@ import {AppAction} from "../actions";
 import educationReducer from "./educationReducer"
 import experienceReducer from "./experienceReducer";
 import {groupingListByPropKey} from "../utils";
+import {TAnyAction} from "../store";
 
 const initialState: IAppState = {
     intro: {
@@ -23,13 +24,16 @@ const initialState: IAppState = {
     status: "idle",
 }
 const homeReducer: Reducer<IAppState> =
-    (state: IAppState = initialState, action): IAppState => {
+    (state: IAppState = initialState, action: TAnyAction): IAppState => {
     switch (action.type) {
-        case AppAction.READ_FEED_SUCCESS:
-            return {...state, status: "success", feed: action.payload}
+        case AppAction.PAGED_FEED_SUCCESS: {
+            const feed: ISchema[] = state.feed.concat(action.payload)
+            return {...state, status: "success", feed}
+        }
 
-        case AppAction.PAGED_FEED_SUCCESS:
-            return {...state, status: "success", feed: state.feed.concat(action.payload)}
+        case AppAction.READ_FEED_SUCCESS: {
+            return {...state, status: "success", feed: action.payload}
+        }
 
         case AppAction.CREATE_FEED_SUCCESS:
             const feed: ISchema[] = state.feed.concat(action.payload)

@@ -1,9 +1,9 @@
 interface ISchema {}
 
 interface IHttpRequestAction {
+    method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
     status: [string, string, string],
-    endpoint: string,
-    schema?: ISchema
+    header: string | {page: number, size: number, endpoints?: string[]}, //schema?: ISchema
 }
 interface IAppAction {
     [key: string]: ISchema | ISchema[] | IHttpRequestAction

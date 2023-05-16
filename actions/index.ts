@@ -1,171 +1,21 @@
 import {AppDispatch} from "../store";
 import {AnyAction} from "redux";
+import {CALL_API} from "../middlewares/restApi";
 
-let page: number = 0, size: number = 2
-
-export const pagedFeed = () => (dispatch, getState): AppDispatch => {
-    const educations: IEducation[] = [
-        {
-            id: "PID-1001",
-            fileUrl: "",
-            content: "Ini content 1001",
-            createdAt: "A minute ago",
-            desc: "Ini description",
-            imageUrl: "https://via.placeholder.com/150",
-            title: "Ini Judul"
-        },
-        {
-            id: "PID-1002",
-            fileUrl: "",
-            content: "Ini content 1002",
-            createdAt: "A minute ago",
-            desc: "Ini description",
-            imageUrl: "https://via.placeholder.com/150",
-            title: "Ini Judul"
-        },
-        {
-            id: "PID-1003",
-            fileUrl: "",
-            content: "Ini content 1003",
-            createdAt: "A minute ago",
-            desc: "Ini description",
-            imageUrl: "https://via.placeholder.com/150",
-            title: "Ini Judul"
-        },
-        {
-            id: "PID-1004",
-            fileUrl: "",
-            content: "Ini content 1004",
-            createdAt: "A minute ago",
-            desc: "Ini description",
-            imageUrl: "https://via.placeholder.com/150",
-            title: "Ini Judul"
-        },
-        {
-            id: "PID-1005",
-            fileUrl: "",
-            content: "Ini content 1005",
-            createdAt: "A minute ago",
-            desc: "Ini description",
-            imageUrl: "https://via.placeholder.com/150",
-            title: "Ini Judul"
-        },
-        {
-            id: "PID-1006",
-            fileUrl: "",
-            content: "Ini content 1006",
-            createdAt: "A minute ago",
-            desc: "Ini description",
-            imageUrl: "https://via.placeholder.com/150",
-            title: "Ini Judul"
-        },
-        {
-            id: "PID-1007",
-            fileUrl: "",
-            content: "Ini content 1007",
-            createdAt: "A minute ago",
-            desc: "Ini description",
-            imageUrl: "https://via.placeholder.com/150",
-            title: "Ini Judul"
-        }
-    ]
-    const experiences: IExperience[] = [
-        {
-            createdAt: "Hati mana jatuh",
-            demoUrl: "Hati mana jatuh",
-            description: "Hati mana jatuh",
-            iconUrl: "Hati mana jatuh",
-            id: "Hati mana jatuh",
-            imageUrls: ["manusia"],
-            platform: "Hati mana jatuh",
-            releasedUrl: "Hati mana jatuh",
-            stack: ["manusia"],
-            title: "Hati mana jatuh 1001",
-            type: "IOS"
-        },{
-            createdAt: "Hati mana jatuh",
-            demoUrl: "Hati mana jatuh",
-            description: "Hati mana jatuh",
-            iconUrl: "Hati mana jatuh",
-            id: "Hati mana jatuh",
-            imageUrls: ["manusia"],
-            platform: "Hati mana jatuh",
-            releasedUrl: "Hati mana jatuh",
-            stack: ["manusia"],
-            title: "Hati mana jatuh 1002",
-            type: "IOS"
-        },{
-            createdAt: "Hati mana jatuh",
-            demoUrl: "Hati mana jatuh",
-            description: "Hati mana jatuh",
-            iconUrl: "Hati mana jatuh",
-            id: "Hati mana jatuh",
-            imageUrls: ["manusia"],
-            platform: "Hati mana jatuh",
-            releasedUrl: "Hati mana jatuh",
-            stack: ["manusia"],
-            title: "Hati mana jatuh 1003",
-            type: "IOS"
-        },{
-            createdAt: "Hati mana jatuh",
-            demoUrl: "Hati mana jatuh",
-            description: "Hati mana jatuh",
-            iconUrl: "Hati mana jatuh",
-            id: "Hati mana jatuh",
-            imageUrls: ["manusia"],
-            platform: "Hati mana jatuh",
-            releasedUrl: "Hati mana jatuh",
-            stack: ["manusia"],
-            title: "Hati mana jatuh 1004",
-            type: "IOS"
-        },{
-            createdAt: "Hati mana jatuh",
-            demoUrl: "Hati mana jatuh",
-            description: "Hati mana jatuh",
-            iconUrl: "Hati mana jatuh",
-            id: "Hati mana jatuh",
-            imageUrls: ["manusia"],
-            platform: "Hati mana jatuh",
-            releasedUrl: "Hati mana jatuh",
-            stack: ["manusia"],
-            title: "Hati mana jatuh 1005",
-            type: "IOS"
-        },{
-            createdAt: "Hati mana jatuh",
-            demoUrl: "Hati mana jatuh",
-            description: "Hati mana jatuh",
-            iconUrl: "Hati mana jatuh",
-            id: "Hati mana jatuh",
-            imageUrls: ["manusia"],
-            platform: "Hati mana jatuh",
-            releasedUrl: "Hati mana jatuh",
-            stack: ["manusia"],
-            title: "Hati mana jatuh 1006",
-            type: "IOS"
-        },{
-            createdAt: "Hati mana jatuh",
-            demoUrl: "Hati mana jatuh",
-            description: "Hati mana jatuh",
-            iconUrl: "Hati mana jatuh",
-            id: "Hati mana jatuh",
-            imageUrls: ["manusia"],
-            platform: "Hati mana jatuh",
-            releasedUrl: "Hati mana jatuh",
-            stack: ["manusia"],
-            title: "Hati mana jatuh 1007",
-            type: "IOS"
-        },
-    ]
-
-    let response: ISchema[] = educations.slice(page, page + size)
-    if (!response.length) {
-        page = 0
-        response = experiences.slice(page, page + size)
-    }
-    page += size
+export const PAGINATION_SIZE = 2
+export const pagedFeed = (
+    page: number, size: number = PAGINATION_SIZE) => (dispatch, getState): AppDispatch => {
     console.log(`page ${page} size ${size}`)
-    const action: AnyAction = {
-        type: AppAction.PAGED_FEED_SUCCESS, payload: response
+    const action: IAppAction = {
+        [CALL_API]: {
+            method: "GET",
+            header: { page, size, endpoints: ["/educations", "/experiences"] },
+            status: [
+                AppAction.PAGED_FEED_REQUEST,
+                AppAction.PAGED_FEED_FAILED,
+                AppAction.PAGED_FEED_SUCCESS
+            ]
+        }
     }
     return dispatch(action)
 }
@@ -180,7 +30,7 @@ export const getFeed = () => (dispatch, getState): AppDispatch => {
             desc: "Ini description",
             imageUrl: "https://via.placeholder.com/150",
             title: "Ini Judul"
-        },{
+        }, {
             id: "PID-1002",
             fileUrl: "",
             content: "Ini content 1002",
@@ -188,7 +38,7 @@ export const getFeed = () => (dispatch, getState): AppDispatch => {
             desc: "Ini description",
             imageUrl: "https://via.placeholder.com/150",
             title: "Ini Judul"
-        },{
+        }, {
             createdAt: "Hati mana jatuh",
             demoUrl: "Hati mana jatuh",
             description: "Hati mana jatuh",
@@ -210,7 +60,13 @@ export const getFeed = () => (dispatch, getState): AppDispatch => {
 
 export const addFeed = () => (dispatch, getState): AppDispatch => {
     const response: IEducation = {
-        content: "Long time no see", createdAt: "Long time no see", desc: "Long time no see", fileUrl: "Long time no see", id: "Long time no see", imageUrl: "Long time no see", title: "Long time no see"
+        content: "Long time no see",
+        createdAt: "Long time no see",
+        desc: "Long time no see",
+        fileUrl: "Long time no see",
+        id: "Long time no see",
+        imageUrl: "Long time no see",
+        title: "Long time no see"
     }
     const action: AnyAction = {
         type: AppAction.CREATE_FEED_SUCCESS, payload: response
