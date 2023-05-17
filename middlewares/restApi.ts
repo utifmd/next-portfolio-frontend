@@ -2,6 +2,7 @@ import {setTimeout} from "timers";
 import {paginateListOf} from "../utils";
 import {Middleware} from "redux";
 import {TAnyAction} from "../store";
+import {PAGINATION_SIZE} from "../actions";
 
 export const CALL_API = "CALL_API"
 
@@ -160,18 +161,21 @@ const experiences: IExperience[] = [
 
 const httpRequest = ({header}: IHttpRequestAction) =>
     new Promise<ISchema[]>((resolve, reject) => {
-    let data: ISchema[] = []
     setTimeout(() => {
-        if ("page" in header) {
-            const {page, size} = header
-            data = paginateListOf(educations, page, size)
-            if (!data.length) data = paginateListOf(experiences, page, size)
-            console.log("page trigger")
-            resolve(data)
+        if (!("page" in header)) {
+            //data = educations; resolve(data)
+            reject("request with no pagination.")
             return
         }
-        data = educations
-        resolve(data)
+        const {page, size} = header
+        const educationData = paginateListOf(educations, page, size)
+
+        if (!educationData.length) {
+            const experienceData = paginateListOf(experiences, 1, size)
+            resolve(experienceData)
+            return;
+        }
+        resolve(educationData)
     }, 1500)
 })
 const restApiMiddleware: Middleware<TDispatchApp> = () => (next: any) => (action: IAppAction) => {

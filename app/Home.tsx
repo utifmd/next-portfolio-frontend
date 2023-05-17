@@ -7,26 +7,25 @@ import Introduction from "./Introduction";
 import {QuickAction, Surface} from "../components/sections";
 import {EducationItem} from "./Education";
 import {ExperienceItem} from "./Experience";
-import {PAGINATION_SIZE, pagedFeed} from "../actions";
+import {pagedFeed} from "../actions";
 import {useAppDispatch, useAppSelector} from "./hooks";
 
-const Home = () => {
-    const {intro, habit, feed} = useAppSelector(({home}) => home as IAppState)
+export default function Home() {
     const dispatch = useAppDispatch()
+    const {intro, habit, feed} = useAppSelector(({home}) => home as IAppState)
     const [feedPage, setFeedPage] = useState<number>(1)
 
-    const onPaginationFeed = () => {
+    useEffect(onPaginationFeed, [pagedFeed])
+
+    function onPaginationFeed() {
         dispatch(pagedFeed(feedPage))
         setFeedPage(feedPage +1)
     }
-
-    useEffect(() => {
-        onPaginationFeed()
-
-    }, [pagedFeed])
-
-    const onHomeClicked = (e: MouseEvent) => {
+    const onEducationNextClicked = (e: MouseEvent) =>
+        (educationLength: number, i: number) => {
         e.preventDefault()
+
+        if((i +1) < educationLength) return // the rest of data
         onPaginationFeed()
     }
     return (
@@ -41,13 +40,14 @@ const Home = () => {
                     description={habit.description}
                     items={habit.data}/>
 
-                {feed.map((item) => "content" in item
-                    ? <EducationItem education={item as IEducation}/>
+                {feed.map((item, i) => "content" in item
+                    ? <EducationItem
+                        education={item as IEducation}
+                        onClicked={e => onEducationNextClicked(e)(feed.length, i)}/>
                     : <ExperienceItem experience={item as IExperience}/>
                 )}
-                <QuickAction onHomeClicked={onHomeClicked}/>
+                <QuickAction/>
             </Surface>
         </div>
     )
 }
-export default Home

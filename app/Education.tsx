@@ -1,27 +1,30 @@
 import {Box} from "../components/sections";
 import Image from "next/image";
-import React, {useEffect} from "react";
+import React from "react";
 import {AppDispatch} from "../store";
 
 type Props = {
-    state: IEducationState, getAllEducations: () => AppDispatch
+    state: IEducationState, getMorelEducations: () => AppDispatch
 }
-const Education = ({state, getAllEducations}: Props) => {
-    /*useEffect(() => {
-        getAllEducations()
+const Education = ({state, getMorelEducations}: Props) => {
+    /*useEffect(() => getAllEducations(), [getAllEducations])*/
 
-    }, [getAllEducations])*/
-
+    const onEducationNextClicked = (e: MouseEvent) => (educationLength: number, i: number) => {
+        e.preventDefault()
+        if((i +1) >= educationLength) getMorelEducations()
+    }
     return (
-        <div className="flex flex-col w-full">{state.value.map(education =>
-            <EducationItem education={education} />)}
+        <div className="flex flex-col w-full">{state.value.map((education, i) =>
+            <EducationItem
+                education={education}
+                onClicked={e => onEducationNextClicked(e)(state.value.length, i)} />)}
         </div>
     )
 }
-export function EducationItem (
-    {education}: {education: IEducation}) {
+export function EducationItem ({education, onClicked}: {
+    education: IEducation, onClicked?: (e: MouseEvent) => void}) {
     return(
-        <Box title={education.title}>
+        <Box title={education.title} onNextClicked={onClicked}>
             <div className="relative h-48 sm:h-[256px] mx-0 sm:mx-6">
                 <Image
                     className="object-cover rounded-md shadow-md cursor-pointer" layout="fill" objectFit="cover"
@@ -29,7 +32,7 @@ export function EducationItem (
             </div>
             <p className="text">{education.content}</p>
             <div className="flex justify-center space-x-4">
-                <a rel="noreferrer" target="_blank" className="p-3 cursor-pointer">
+                <a className="p-3 cursor-pointer">
                     <box-icon color="#059669" name="credit-card-front"/>
                 </a>
             </div>
