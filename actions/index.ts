@@ -1,11 +1,12 @@
 import {AppDispatch} from "../store";
 import {AnyAction} from "redux";
 import {CALL_API} from "../middlewares/restApi";
+import {paginateListOf} from "../utils";
 
 export const PAGINATION_SIZE = 2
 export const pagedFeed = (
-    page: number, size: number = PAGINATION_SIZE) => (dispatch, getState): AppDispatch => {
-    console.log(`page ${page} size ${size}`)
+    schemas: ISchema[], page: number, size: number = PAGINATION_SIZE) => (dispatch): AppDispatch => {
+    let body: ISchema[] = paginateListOf(schemas, page, size)
     const action: IAppAction = {
         [CALL_API]: {
             method: "GET",
@@ -14,13 +15,14 @@ export const pagedFeed = (
                 AppAction.PAGED_FEED_REQUEST,
                 AppAction.PAGED_FEED_FAILED,
                 AppAction.PAGED_FEED_SUCCESS
-            ]
+            ],
+            body
         }
     }
     return dispatch(action)
 }
 
-export const getFeed = () => (dispatch, getState): AppDispatch => {
+export const getFeed = () => (dispatch): AppDispatch => {
     const response: ISchema[] = [
         {
             id: "PID-1001",
@@ -58,7 +60,7 @@ export const getFeed = () => (dispatch, getState): AppDispatch => {
     return dispatch(action)
 }
 
-export const addFeed = () => (dispatch, getState): AppDispatch => {
+export const addFeed = () => (dispatch): AppDispatch => {
     const response: IEducation = {
         content: "Long time no see",
         createdAt: "Long time no see",

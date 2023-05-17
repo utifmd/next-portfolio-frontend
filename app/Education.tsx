@@ -21,10 +21,9 @@ const Education = ({state, getMorelEducations}: Props) => {
         </div>
     )
 }
-export function EducationItem ({education, onClicked}: {
-    education: IEducation, onClicked?: (e: MouseEvent) => void}) {
+export function EducationItem ({education, onClick, innerRef}: TBoxProps & {education: IEducation}) {
     return(
-        <Box title={education.title} onNextClicked={onClicked}>
+        <Box title={education.title} onClick={onClick} innerRef={innerRef}>
             <div className="relative h-48 sm:h-[256px] mx-0 sm:mx-6">
                 <Image
                     className="object-cover rounded-md shadow-md cursor-pointer" layout="fill" objectFit="cover"

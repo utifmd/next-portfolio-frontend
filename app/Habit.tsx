@@ -1,18 +1,11 @@
-import {BtnNext} from "../components/Button";
+import {Box} from "../components/sections";
 
-type Props = {
-    title: string,
-    description: string,
-    items: { type: string, icon: string, label: string }[],
-    // onBtnNextClicked: () => void
+type Props = TBoxProps & {
+    items: { type: string, icon: string, label: string }[]
 }
-const Habit = ({title, description, items}: Props) =>
-    <div className="w-full space-y-6 py-24 px-0 sm:px-6 justify-center text-center">
-        <p className="font-bold xl:text-3xl md:text-3xl text-2xl uppercase">{title}</p>
-        <div className="flex justify-center">
-            <div className="h-0.5 w-24 bg-gray-700 dark:bg-gray-300"/>
-        </div>
-        <p className="font-base">{description}</p>
+const Habit = ({innerRef, title, description, items, onClick}: Props) =>
+    <Box innerRef={innerRef} title={title} onClick={onClick}>
+        <p className="font-base px-0 sm:px-6">{description}</p>
         <div className="grid grid-cols-2 mx-0">
             {items.length && items.map((habit, index) =>
                 <div key={index} className="flex flex-col py-6 items-center justify-center text-center"> {
@@ -21,6 +14,5 @@ const Habit = ({title, description, items}: Props) =>
                 </div>
             )}
         </div>
-        <BtnNext />
-    </div>
+    </Box>
 export default Habit

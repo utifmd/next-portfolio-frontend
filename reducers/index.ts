@@ -1,5 +1,5 @@
 import {combineReducers, Reducer} from "redux";
-import {AppAction} from "../actions";
+import {AppAction, PAGINATION_SIZE} from "../actions";
 import educationReducer from "./educationReducer"
 import experienceReducer from "./experienceReducer";
 import {groupingListByPropKey} from "../utils";
@@ -26,17 +26,25 @@ const initialState: IAppState = {
 const homeReducer: Reducer<IAppState> =
     (state: IAppState = initialState, action: TAnyAction): IAppState => {
     switch (action.type) {
+        case AppAction.PAGED_FEED_REQUEST:
+            return {...state, status: "request"}
+        case AppAction.PAGED_FEED_FAILED:
+            return {...state, status: "failed"}
         case AppAction.PAGED_FEED_SUCCESS: {
-            const feed: ISchema[] = state.feed.concat(action.payload)
+            const item = action.payload as ISchema[]
+            const feed = state.feed.concat(item)
+
             return {...state, status: "success", feed}
         }
 
         case AppAction.READ_FEED_SUCCESS: {
-            return {...state, status: "success", feed: action.payload}
+            const feed = action.payload as ISchema[]
+            return {...state, status: "success", feed}
         }
 
         case AppAction.CREATE_FEED_SUCCESS:
-            const feed: ISchema[] = state.feed.concat(action.payload)
+            const item = action.payload as ISchema[]
+            const feed = state.feed.concat(item)
             groupingListByPropKey(feed, "content")
             return {...state, status: "success", feed}
 

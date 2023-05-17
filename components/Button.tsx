@@ -1,12 +1,14 @@
-export const BtnPrimary = (props: { [key: string]: any }) => <button
-    className="w-[75%] sm:w-[50%] py-4 uppercase bg-green-600 font-bold text-white dark:text-white-200 active:bg-green-900 hover:bg-green-700 focus:outline-none ease-linear transition-all duration-350" {...props}>{props?.label ?? "Button"}
-</button>
+export const ButtonPrimary = ({label, onClick}: TBoxProps & {label: string}) =>
+    <button onClick={onClick}
+        className="w-[75%] sm:w-[50%] py-4 uppercase bg-green-600 font-bold text-white dark:text-white-200 active:bg-green-900 hover:bg-green-700 focus:outline-none ease-linear transition-all duration-350">{label || "Button"}
+    </button>
 
-export const BtnNext = ({onClick}: { onClick?: (e: MouseEvent) => void }) =>
+export const ButtonNext = ({onClick}: TBoxProps) =>
     <div className="flex justify-center">
         <div onClick={onClick}
              className="rounded-full ring-1 ring-gray-900/5 h-16 w-16 flex items-center justify-center bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-800 dark:bg-gray-700 dark:hover:bg-gray-800 cursor-pointer">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 fill-current text-green-600" viewBox="0 0 24 24"
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 fill-current text-green-600"
+                 viewBox="0 0 24 24"
                  stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
             </svg>

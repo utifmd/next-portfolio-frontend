@@ -1,6 +1,7 @@
-import {BtnNext} from '../components/Button'
+import {ButtonNext} from '../components/Button'
 import Image from "next/image";
 import {AppDispatch} from "../store";
+import {Box} from "../components/sections";
 
 type Props = {
     state: IExperienceState, getAllExperience: () => AppDispatch
@@ -20,13 +21,9 @@ const Experience = ({state, getAllExperience}: Props) => {
     </div>
 }
 export function ExperienceItem(
-    {experience}: {experience: IExperience}) {
+    {experience, onClick, innerRef}: TBoxProps & {experience: IExperience}) {
     return(
-        <div className="w-full space-y-6 py-24 justify-center text-center">
-            <p className="font-bold xl:text-3xl md:text-3xl text-2xl uppercase">{experience.title}</p>
-            <div className="flex justify-center">
-                <div className="h-0.5 w-24 bg-gray-700 dark:bg-gray-300"/>
-            </div>
+        <Box title={experience.title} onClick={onClick} innerRef={innerRef}>
             <div className="flex flex-wrap justify-center">
                 <div className="relative w-48 h-48">
                     <Image
@@ -96,8 +93,7 @@ export function ExperienceItem(
                     <box-icon color="#059669" name="credit-card-front"/>
                 </a>
             </div>
-            <BtnNext/>
-        </div>
+        </Box>
     )
 }
 export default Experience
