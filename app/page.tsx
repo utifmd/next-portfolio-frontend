@@ -1,7 +1,5 @@
 "use server"
 
-import {Surface} from "../components/sections";
-import {ButtonPrimary} from "../components/Button";
 import StateProvider from "../store/StateProvider";
 import Footer from "./Footer";
 import Home from "./Home";

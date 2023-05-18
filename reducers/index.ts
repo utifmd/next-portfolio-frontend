@@ -28,8 +28,10 @@ const homeReducer: Reducer<IAppState> =
     switch (action.type) {
         case AppAction.PAGED_FEED_REQUEST:
             return {...state, status: "request"}
+
         case AppAction.PAGED_FEED_FAILED:
-            return {...state, status: "failed"}
+            return {...state, status: "failed", message: action.payload}
+
         case AppAction.PAGED_FEED_SUCCESS: {
             const item = action.payload as ISchema[]
             const feed = state.feed.concat(item)

@@ -11,15 +11,14 @@ interface IAppAction {
 }
 interface IAppState {
     status: "idle" | "request" | "failed" | "success",
-    intro: {
-        title: string, description: string
-    },
+    message?: string,
+    feed: ISchema[],
+    intro: {title: string, description: string},
     habit: {
         title: string,
         description: string,
         data: {icon: string, label: string}[]
     }
-    feed: ISchema[]
 }
 interface IRootState {
     home: {},
@@ -28,6 +27,8 @@ interface IRootState {
 }
 type TBoxProps = {
     innerRef?: any,
+    isLoading?: boolean,
+    // isLastOne?: boolean,
     onClick?: (e: MouseEvent) => void
 }
 type TTileProps = {

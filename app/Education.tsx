@@ -21,9 +21,9 @@ const Education = ({state, getMorelEducations}: Props) => {
         </div>
     )
 }
-export function EducationItem ({education, onClick, innerRef}: TBoxProps & {education: IEducation}) {
+export function EducationItem ({education, isLoading, onClick, innerRef}: TBoxProps & {education: IEducation}) {
     return(
-        <Box title={education.title} onClick={onClick} innerRef={innerRef}>
+        <Box title={education.title} isLoading={isLoading} onClick={onClick} innerRef={innerRef}>
             <div className="relative h-48 sm:h-[256px] mx-0 sm:mx-6">
                 <Image
                     className="object-cover rounded-md shadow-md cursor-pointer" layout="fill" objectFit="cover"

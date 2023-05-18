@@ -44,8 +44,11 @@ const restApiMiddleware: Middleware<TDispatchApp> = () => (next: any) => (action
     }
     next(actionWith(<TAnyAction>{type: requestType}))
     return httpRequest(requestAction).then(
-        (response) => next(actionWith(<TAnyAction>{type: successType, payload: response})),
-        (error) => next(actionWith(<TAnyAction>{type: failedType, payload: error}))
+        response => next(actionWith(<TAnyAction>{type: successType, payload: response})),
+        error => {
+            const message = ("message" in error) ? (error as Error).message : error.toString()
+            next(actionWith(<TAnyAction>{type: failedType, payload: message}))
+        }
     )
 }
 export default restApiMiddleware

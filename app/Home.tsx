@@ -13,13 +13,13 @@ import {useAppDispatch, useAppSelector} from "./hooks";
 import {ButtonPrimary} from "../components/Button";
 /*
 * TODO:
-*  1. mutate next button to loading indicator
-*  2. hide next button if isExpDataReachedEnd
+*  1. hide next button if isExpDataReachedEnd
+*  2.
 * */
 export default function Home() {
     const reference = useRef({})
     const dispatch = useAppDispatch()
-    const {intro, habit, feed} = useAppSelector(({home}) => home as IAppState)
+    const {intro, habit, feed, status} = useAppSelector(({home}) => home as IAppState)
     const [[curEduPage, curExpPage], setFeedPage] = useState<[number, number]>([1, 1])
 
     useEffect(onPaginationFeed, [pagedFeed])
@@ -73,12 +73,14 @@ export default function Home() {
                         key={i}
                         innerRef={handleBoxJumper(i)}
                         education={item as IEducation}
+                        isLoading={status === "request" && (i + 1) >= feed.length}
                         onClick={onFeedNextClicked(feed.length, i)}/>
 
                     : <ExperienceItem
                         key={i}
                         innerRef={handleBoxJumper(i)}
                         experience={item as IExperience}
+                        isLoading={status === "request" && (i + 1) >= feed.length}
                         onClick={onFeedNextClicked(feed.length, i)}/>
                 )}
                 <QuickAction onHomeClicked={onJumpToBox("top")}/>
