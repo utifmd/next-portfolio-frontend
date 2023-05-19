@@ -21,9 +21,9 @@ const Experience = ({state, getAllExperience}: Props) => {
     </div>
 }
 export function ExperienceItem(
-    {experience, onClick, innerRef}: TBoxProps & {experience: IExperience}) {
+    {experience, isLoading, isBottom, onClick, innerRef}: TBoxProps & {experience: IExperience}) {
     return(
-        <Box title={experience.title} onClick={onClick} innerRef={innerRef}>
+        <Box title={experience.title} isLoading={isLoading} isBottom={isBottom} onClick={onClick} innerRef={innerRef}>
             <div className="flex flex-wrap justify-center">
                 <div className="relative w-48 h-48">
                     <Image

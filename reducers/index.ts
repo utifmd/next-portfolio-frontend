@@ -1,5 +1,5 @@
 import {combineReducers, Reducer} from "redux";
-import {AppAction, PAGINATION_SIZE} from "../actions";
+import {AppAction} from "../actions";
 import educationReducer from "./educationReducer"
 import experienceReducer from "./experienceReducer";
 import {groupingListByPropKey} from "../utils";
@@ -20,7 +20,7 @@ const initialState: IAppState = {
             {icon: "devices", label: "X-Platform"}
         ]
     },
-    feed: [],
+    feed: {isExpTurn: false, page: 1, value: []},
     status: "idle",
 }
 const homeReducer: Reducer<IAppState> =
@@ -33,22 +33,24 @@ const homeReducer: Reducer<IAppState> =
             return {...state, status: "failed", message: action.payload}
 
         case AppAction.PAGED_FEED_SUCCESS: {
-            const item = action.payload as ISchema[]
-            const feed = state.feed.concat(item)
+            const response = action.payload as IFeedState
+            const feed = {...response,
+                value: state.feed.value.concat(response.value),
+            }
+            return {...state, status: "success", feed}
+        }
 
+        case AppAction.CREATE_FEED_SUCCESS: {
+            const item = action.payload as IFeedState
+            const feed = {...state.feed, feed: state.feed.value.concat(item)}
+            groupingListByPropKey(feed, "content")
             return {...state, status: "success", feed}
         }
 
         case AppAction.READ_FEED_SUCCESS: {
-            const feed = action.payload as ISchema[]
+            const feed = {...state.feed, feed: action.payload as IFeedState}
             return {...state, status: "success", feed}
         }
-
-        case AppAction.CREATE_FEED_SUCCESS:
-            const item = action.payload as ISchema[]
-            const feed = state.feed.concat(item)
-            groupingListByPropKey(feed, "content")
-            return {...state, status: "success", feed}
 
         default:
             return state

@@ -1,32 +1,39 @@
 import {setTimeout} from "timers";
 import {Middleware} from "redux";
-import {TAnyAction} from "../store";
+import {TAnyAction, educationsData, experiencesData} from "../store";
+import {paginateListOf} from "../utils";
+import {PAGINATION_SIZE} from "../actions";
 
 export const CALL_API = "CALL_API"
 
-const httpRequest = ({header, body}: IHttpRequestAction) =>
+const httpRequest = ({header}: IHttpRequestAction) =>
     new Promise<ISchema[]>((resolve, reject) => {
     setTimeout(() => {
         if (!("page" in header)) {
             reject("request with no pagination.")
             return
         }
-        resolve(body)
-
-        /*if (!("page" in header)) {
-            //data = educations; resolve(data)
-            reject("request with no pagination.")
+        if (header.isExpTurn){
+            const response = paginateListOf(experiencesData, header.page, header.size)
+            const isDone = response.length <= 0 || response.length < PAGINATION_SIZE
+            const experience: IFeedState = {
+                isDone,
+                isExpTurn: true,
+                page: header.page +1,
+                value: response
+            }
+            resolve(experience)
             return
         }
-        const {page, size} = header
-        const educationData = paginateListOf(educations, page, size)
-
-        if (!educationData.length) {
-            const experienceData = paginateListOf(experiences, 1, size)
-            resolve(experienceData)
-            return;
+        const response = paginateListOf(educationsData, header.page, header.size)
+        const isExpTurn = response.length <= 0 || response.length < PAGINATION_SIZE
+        const educations: IFeedState = {
+            isDone: false,
+            isExpTurn,
+            page: isExpTurn ? 1 : header.page +1,
+            value: response
         }
-        resolve(educationData)*/
+        resolve(educations)
     }, 1500)
 })
 const restApiMiddleware: Middleware<TDispatchApp> = () => (next: any) => (action: IAppAction) => {
@@ -46,7 +53,7 @@ const restApiMiddleware: Middleware<TDispatchApp> = () => (next: any) => (action
     return httpRequest(requestAction).then(
         response => next(actionWith(<TAnyAction>{type: successType, payload: response})),
         error => {
-            const message = ("message" in error) ? (error as Error).message : error.toString()
+            const message = ("message" in error) ? (error as Error).message : JSON.stringify(error)
             next(actionWith(<TAnyAction>{type: failedType, payload: message}))
         }
     )

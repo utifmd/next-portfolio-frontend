@@ -13,25 +13,18 @@ import {useAppDispatch, useAppSelector} from "./hooks";
 import {ButtonPrimary} from "../components/Button";
 /*
 * TODO:
-*  1. hide next button if isExpDataReachedEnd
-*  2.
+* - [x]. placing the paging state
+* - [ ]. testing with another page size
 * */
 export default function Home() {
     const reference = useRef({})
     const dispatch = useAppDispatch()
-    const {intro, habit, feed, status} = useAppSelector(({home}) => home as IAppState)
-    const [[curEduPage, curExpPage], setFeedPage] = useState<[number, number]>([1, 1])
+    const {intro, habit, feed, status} = useAppSelector(root => root.home)
 
     useEffect(onPaginationFeed, [pagedFeed])
 
     function onPaginationFeed() {
-        if (educationsData.length <= feed.length) {
-            dispatch(pagedFeed(experiencesData, curExpPage))
-            setFeedPage([curEduPage, curExpPage + 1])
-            return
-        }
-        dispatch(pagedFeed(educationsData, curEduPage))
-        setFeedPage([curEduPage + 1, curExpPage])
+        dispatch(pagedFeed())
     }
     const onFeedNextClicked = (
         feedLength: number, i: number) => (e: MouseEvent) => {
@@ -68,20 +61,21 @@ export default function Home() {
                     description={habit.description}
                     innerRef={handleBoxJumper("habit")} onClick={onJumpToBox(0)}/>
 
-                {feed.map((item, i) => "content" in item
+                {feed.value.map((item, i) => "content" in item
                     ? <EducationItem
                         key={i}
                         innerRef={handleBoxJumper(i)}
                         education={item as IEducation}
-                        isLoading={status === "request" && (i + 1) >= feed.length}
-                        onClick={onFeedNextClicked(feed.length, i)}/>
+                        isLoading={status === "request" && (i + 1) >= feed.value.length}
+                        onClick={onFeedNextClicked(feed.value.length, i)}/>
 
                     : <ExperienceItem
                         key={i}
                         innerRef={handleBoxJumper(i)}
                         experience={item as IExperience}
-                        isLoading={status === "request" && (i + 1) >= feed.length}
-                        onClick={onFeedNextClicked(feed.length, i)}/>
+                        isLoading={status === "request" && (i + 1) >= feed.value.length}
+                        isBottom={feed.isDone && (i + 1) >= feed.value.length}
+                        onClick={onFeedNextClicked(feed.value.length, i)}/>
                 )}
                 <QuickAction onHomeClicked={onJumpToBox("top")}/>
             </Surface>

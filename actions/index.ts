@@ -1,22 +1,25 @@
 import {AppDispatch} from "../store";
 import {AnyAction} from "redux";
 import {CALL_API} from "../middlewares/restApi";
-import {paginateListOf} from "../utils";
 
 export const PAGINATION_SIZE = 2
-export const pagedFeed = (
-    schemas: ISchema[], page: number, size: number = PAGINATION_SIZE) => (dispatch): AppDispatch => {
-    let body: ISchema[] = paginateListOf(schemas, page, size)
+export const pagedFeed = () => (dispatch, getState): AppDispatch => {
+    const {feed} = (getState() as IRootState).home
+
     const action: IAppAction = {
         [CALL_API]: {
             method: "GET",
-            header: { page, size, endpoints: ["/educations", "/experiences"] },
+            header: {
+                page: feed.page,
+                isExpTurn: feed.isExpTurn,
+                size: PAGINATION_SIZE,
+                endpoints: ["/educations", "/experiences"]
+            },
             status: [
                 AppAction.PAGED_FEED_REQUEST,
                 AppAction.PAGED_FEED_FAILED,
                 AppAction.PAGED_FEED_SUCCESS
-            ],
-            body
+            ]
         }
     }
     return dispatch(action)
@@ -87,5 +90,5 @@ export enum AppAction {
 
     PAGED_FEED_REQUEST = "@@PAGED_FEED_REQUEST",
     PAGED_FEED_FAILED = "@@PAGED_FEED_FAILED",
-    PAGED_FEED_SUCCESS = "@@PAGED_FEED_SUCCESS",
+    PAGED_FEED_SUCCESS = "@@PAGED_FEED_SUCCESS"
 }
