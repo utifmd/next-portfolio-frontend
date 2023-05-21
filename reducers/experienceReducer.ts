@@ -9,7 +9,7 @@ const reducer: Reducer<IExperienceState> =
     (state: IExperienceState = initialState, action: TAnyAction): IExperienceState => {
     switch (action.type) {
         case ExperienceAction.READ_ALL_SUCCESS:
-            return {...state, status: "success", value: state.value.concat(action.payload)}
+            return {...state, value: state.value.concat(action.payload)}
         default:
             return state
     }

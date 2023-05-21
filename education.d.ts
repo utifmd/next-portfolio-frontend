@@ -8,7 +8,7 @@ interface IEducation extends ISchema {
     createdAt: string
 }
 interface IEducationState {
-    status: "idle" | "failed" | "success",
+    status: "idle" | "loading" | "error",
     value: IEducation[]
 }
 type TDispatchEducation = (state: IEducationState) => IEducationState

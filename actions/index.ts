@@ -2,7 +2,7 @@ import {AppDispatch} from "../store";
 import {AnyAction} from "redux";
 import {CALL_API} from "../middlewares/restApi";
 
-export const PAGINATION_SIZE = 2
+export const PAGINATION_SIZE = 3
 export const pagedFeed = () => (dispatch, getState): AppDispatch => {
     const {feed} = (getState() as IRootState).home
 

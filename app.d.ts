@@ -10,7 +10,7 @@ interface IAppAction {
     [key: string]: ISchema | ISchema[] | IHttpRequestAction
 }
 interface IAppState {
-    status: "idle" | "request" | "failed" | "success",
+    status: "idle" | "loading" | "error",
     message?: string,
     feed: IFeedState,
     intro: {title: string, description: string},
@@ -28,6 +28,7 @@ interface IRootState {
 interface IFeedState {
     isExpTurn: boolean,
     isDone: boolean,
+    scrollTo?: number,
     page: number,
     value: ISchema[]
 }

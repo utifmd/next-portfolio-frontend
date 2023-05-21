@@ -8,7 +8,7 @@ const reducer: Reducer<IEducationState> =
     (state: IEducationState = initialState, action): IEducationState => {
     switch (action.type) {
         case EducationAction.READ_ALL_SUCCESS:
-            return {...state, status: "success", value: action.payload}
+            return {...state, value: action.payload}
         default:
             return state
     }

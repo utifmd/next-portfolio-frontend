@@ -1,8 +1,8 @@
 import {configureStore, Store} from "@reduxjs/toolkit";
-import reducer from "../reducers"
+import {AnyAction} from "redux";
 import thunk from "redux-thunk"
 import restApiMiddleware from "../middlewares/restApi";
-import {AnyAction} from "redux";
+import reducer from "../reducers"
 
 const mStore: Store<IAppState, TDispatchApp> & {
     dispatch: TDispatchApp
