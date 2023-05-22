@@ -36,7 +36,7 @@ const httpRequest = ({header}: IHttpRequestAction) =>
         resolve(educations)
     }, 1500)
 })
-const restApiMiddleware: Middleware<TDispatchApp> = () => (next: any) => (action: IAppAction) => {
+const restApiMiddleware: Middleware<IAppState> = () => (next: any) => (action: IAppAction) => {
     const callApi = action[CALL_API]
     if (typeof callApi === "undefined") return next(action)
     if (!("method" in callApi)) throw Error("Invalid call api.")

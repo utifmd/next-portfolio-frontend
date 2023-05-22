@@ -1,34 +1,20 @@
-import {ButtonNext} from '../components/Button'
+import {Box} from "../../components/sections";
 import Image from "next/image";
-import {AppDispatch} from "../store";
-import {Box} from "../components/sections";
+import {attachmentKeys} from "../../utils";
 
-type Props = {
-    state: IExperienceState, getAllExperience: () => AppDispatch
-}
-let attachmentKeys = (platform: string): [string, string] =>
-    platform === 'android' || platform === 'ios'
-        ? ['Released apps', 'Download'] : ['Link address', 'Visit']
-
-const Experience = ({state, getAllExperience}: Props) => {
-    /*useEffect(() => {
-        getAllExperience()
-
-    }, [getAllExperience])*/
-
-    return <div className="flex flex-col w-full">
-        {state.value.map(experience => <ExperienceItem experience={experience}/>)}
-    </div>
-}
-export function ExperienceItem(
-    {experience, isLoading, isBottom, onClick, innerRef}: TBoxProps & {experience: IExperience}) {
+export default function(
+    {experience, isLoading, onBottomClick, onNextClick, innerRef}: TBoxProps & {experience: IExperience}) {
     return(
-        <Box title={experience.title} isLoading={isLoading} isBottom={isBottom} onClick={onClick} innerRef={innerRef}>
+        <Box title={experience.title}
+             isLoading={isLoading}
+             onNextClick={onNextClick}
+             onBottomClick={onBottomClick}
+             innerRef={innerRef}>
+
             <div className="flex flex-wrap justify-center">
                 <div className="relative w-48 h-48">
-                    <Image
-                        className="object-cover shadow-lg rounded-full align-middle border-none cursor-pointer" layout="fill" objectFit="cover"
-                        src={experience.iconUrl} alt={experience.title} loader={() => experience.iconUrl}/>
+                    <Image className="object-cover shadow-lg rounded-full align-middle border-none cursor-pointer" layout="fill" objectFit="cover"
+                           src={experience.iconUrl} alt={experience.title} loader={() => experience.iconUrl}/>
                 </div>
             </div>
             <div className="appearance-none mx-0 sm:mx-6 bg-gray-200 dark:bg-gray-700 overflow-hidden sm:rounded-lg text-left">
@@ -55,7 +41,6 @@ export function ExperienceItem(
                                 <ul role="listitem" className="border border-gray-300 dark:border-gray-600 rounded-md divide-y divide-gray-300 dark:divide-gray-600">{experience.imageUrls?.length ?
                                     <li className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
                                         <div key="key1" className="w-0 flex-1 flex items-center">
-                                            {/*<box-icon color="#111827" name="image"/>*/}
                                             <i className='bx bx-image'/>
                                             <span className="ml-2 flex-1 w-0 truncate">Screenshot</span>
                                         </div>
@@ -74,7 +59,6 @@ export function ExperienceItem(
                                     </li>: null}
                                     <li className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
                                         <div className="w-0 flex-1 flex items-center">
-                                            {/*<box-icon color="#111827" name="link-external"/>*/}
                                             <i className="bx bx-link-external"/>
                                             <span className="ml-2 flex-1 w-0 truncate">{ attachmentKeys(experience.platform)[0] }</span>
                                         </div>
@@ -96,4 +80,3 @@ export function ExperienceItem(
         </Box>
     )
 }
-export default Experience

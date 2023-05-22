@@ -3,24 +3,21 @@ import {AnyAction} from "redux";
 import thunk from "redux-thunk"
 import restApiMiddleware from "../middlewares/restApi";
 import reducer from "../reducers"
+import {pagedFeed} from "../actions";
+import StateProvider from "./StateProvider"
 
-const mStore: Store<IAppState, TDispatchApp> & {
-    dispatch: TDispatchApp
-
-} & Store<IEducationState, TDispatchEducation> & {
-    dispatch: TDispatchEducation
-
-} & Store<IExperienceState, TDispatchExperience> & {
-    dispatch: TDispatchExperience
-
-} = configureStore({
+const mStore: Store<IAppState, IAppAction | TAppAction> = configureStore({
     reducer, middleware: [thunk, restApiMiddleware]
 })
-export type AppDispatch = ReturnType<typeof mStore.dispatch>
-export type AppState = typeof mStore.getState
-export type TAnyAction = AnyAction & {payload?: any}
+mStore.dispatch(pagedFeed())
 
-export const educationsData: IEducation[] = [
+type AppDispatch = ReturnType<typeof mStore.dispatch>
+type AppState = typeof mStore.getState
+
+type TAppAction = (dispatch: AppDispatch, getState: () => IAppState) => AppDispatch
+type TAnyAction = AnyAction & {payload?: any}
+
+const educationsData: IEducation[] = [
     {
         id: "PID-1001",
         fileUrl: "",
@@ -85,7 +82,8 @@ export const educationsData: IEducation[] = [
         title: "Ini Judul"
     }
 ]
-export const experiencesData: IExperience[] = [
+
+const experiencesData: IExperience[] = [
     {
         createdAt: "Hati mana jatuh",
         demoUrl: "Hati mana jatuh",
@@ -173,4 +171,8 @@ export const experiencesData: IExperience[] = [
     },
 ]
 
+export {
+    StateProvider, AppDispatch, AppState, TAppAction, TAnyAction,
+    educationsData, experiencesData
+}
 export default mStore

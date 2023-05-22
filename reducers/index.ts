@@ -1,7 +1,5 @@
-import {combineReducers, Reducer} from "redux";
+import {Reducer} from "redux";
 import {AppAction, PAGINATION_SIZE} from "../actions";
-import educationReducer from "./educationReducer"
-import experienceReducer from "./experienceReducer";
 import {groupingListByPropKey} from "../utils";
 import {TAnyAction} from "../store";
 
@@ -60,8 +58,4 @@ const homeReducer: Reducer<IAppState> =
             return state
     }
 }
-export default combineReducers(<IRootState>{
-    home: homeReducer,
-    education: educationReducer,
-    experience: experienceReducer,
-})
+export default homeReducer

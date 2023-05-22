@@ -3,8 +3,8 @@ import {Box} from "../components/sections";
 type Props = TBoxProps & {
     items: { type: string, icon: string, label: string }[]
 }
-const Habit = ({innerRef, title, description, items, onClick}: Props) =>
-    <Box innerRef={innerRef} title={title} onClick={onClick}>
+const Habit = ({innerRef, title, description, items, onNextClick}: Props) =>
+    <Box innerRef={innerRef} title={title} onNextClick={onNextClick}>
         <p className="font-base px-0 sm:px-6">{description}</p>
         <div className="grid grid-cols-2 mx-0">
             {items.length && items.map((habit, index) =>

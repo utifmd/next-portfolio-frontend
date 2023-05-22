@@ -1,9 +1,9 @@
 import {AppState} from "../store";
 import {getAllEducations} from "../actions/educationAction"
 import {connect} from "react-redux";
-import Education from "../app/Education";
+import Educations from "../app/education/Educations";
 
 const mapStateToProps = (state: Record<string, IEducationState>) => ({state: state.education})
 const mapReducerToProps = ({getAllEducations})
 
-export default connect(mapStateToProps, mapReducerToProps)(Education)
+export default connect(mapStateToProps, mapReducerToProps)(Educations)

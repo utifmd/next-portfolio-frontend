@@ -3,8 +3,7 @@ interface ISchema {}
 interface IHttpRequestAction {
     method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
     status: [string, string, string],
-    header: string | {page: number, size: number, isExpTurn: boolean, endpoints?: string[]}, //schema?: ISchema
-    // body: ISchema | ISchema[]
+    header: string | {page: number, size: number, isExpTurn: boolean, endpoints?: string[]}
 }
 interface IAppAction {
     [key: string]: ISchema | ISchema[] | IHttpRequestAction
@@ -20,11 +19,6 @@ interface IAppState {
         data: {icon: string, label: string}[]
     }
 }
-interface IRootState {
-    home: IAppState,
-    education: {},
-    experience: {},
-}
 interface IFeedState {
     isExpTurn: boolean,
     isDone: boolean,
@@ -35,11 +29,10 @@ interface IFeedState {
 type TBoxProps = {
     innerRef?: any,
     isLoading?: boolean,
-    isBottom?: boolean,
-    onClick?: (e: MouseEvent) => void
+    onNextClick?: (e: MouseEvent) => void
+    onBottomClick?: (e: MouseEvent) => void,
 }
 type TTileProps = {
     title: string,
     description?: string
 }
-type TDispatchApp = (state: IAppState) => IAppState

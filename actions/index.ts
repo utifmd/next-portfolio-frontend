@@ -1,10 +1,11 @@
-import {AppDispatch} from "../store";
 import {AnyAction} from "redux";
+import {AppDispatch, TAppAction} from "../store";
 import {CALL_API} from "../middlewares/restApi";
 
 export const PAGINATION_SIZE = 3
-export const pagedFeed = () => (dispatch, getState): AppDispatch => {
-    const {feed} = (getState() as IRootState).home
+export const pagedFeed = () =>
+    (dispatch: AppDispatch, getState: () => IAppState): TAppAction => {
+    const {feed} = getState()
 
     const action: IAppAction = {
         [CALL_API]: {

@@ -20,3 +20,6 @@ export function paginateListOf<T>(list: T[], page, size: number): T[] {
     }
     return paged
 }
+export const attachmentKeys = (platform: string): [string, string] =>
+    platform === 'android' || platform === 'ios'
+        ? ['Released apps', 'Download'] : ['Link address', 'Visit']
