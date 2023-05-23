@@ -1,4 +1,4 @@
-export const ButtonPrimary = ({label, onClick}: TBoxProps & { label: string }) =>
+export const ButtonPrimary = ({label, onClick}: TBoxProps & {label: string, onClick?: (e: MouseEvent) => void}) =>
     <button onClick={onClick}
             className="w-[75%] sm:w-[50%] py-4 uppercase bg-green-600 font-bold text-white dark:text-white-200 active:bg-green-900 hover:bg-green-700 focus:outline-none ease-linear transition-all duration-350">{label || "Button"}
     </button>

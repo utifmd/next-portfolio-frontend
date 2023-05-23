@@ -4,9 +4,8 @@ import {connect} from "react-redux";
 import Home from "../app/Home";
 import {pagedFeed} from "../actions"
 
-const mapStateToProps = (
-    {feed, intro, status, habit, message}: IAppState) => ({
-    feed, intro, status, habit, message
+const mapStateToProps = ({home}: IAppState) => ({
+    feed: home.feed, intro: home.intro, habit: home.habit
 })
 const mapReducerToProps = ({
     morePagination: pagedFeed

@@ -4,7 +4,6 @@ import thunk from "redux-thunk"
 import restApiMiddleware from "../middlewares/restApi";
 import reducer from "../reducers"
 import {pagedFeed} from "../actions";
-import StateProvider from "./StateProvider"
 
 const mStore: Store<IAppState, IAppAction | TAppAction> = configureStore({
     reducer, middleware: [thunk, restApiMiddleware]
@@ -14,7 +13,7 @@ mStore.dispatch(pagedFeed())
 type AppDispatch = ReturnType<typeof mStore.dispatch>
 type AppState = typeof mStore.getState
 
-type TAppAction = (dispatch: AppDispatch, getState: () => IAppState) => AppDispatch
+type TAppAction = (dispatch: AppDispatch, getState?: () => IAppState) => AppDispatch
 type TAnyAction = AnyAction & {payload?: any}
 
 const educationsData: IEducation[] = [
@@ -172,7 +171,7 @@ const experiencesData: IExperience[] = [
 ]
 
 export {
-    StateProvider, AppDispatch, AppState, TAppAction, TAnyAction,
+    AppDispatch, AppState, TAppAction, TAnyAction,
     educationsData, experiencesData
 }
 export default mStore

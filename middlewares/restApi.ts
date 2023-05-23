@@ -6,9 +6,13 @@ import {PAGINATION_SIZE} from "../actions";
 
 export const CALL_API = "CALL_API"
 
-const httpRequest = ({header}: IHttpRequestAction) =>
+const httpRequest = ({header, body}: IHttpRequestAction) =>
     new Promise<ISchema[]>((resolve, reject) => {
     setTimeout(() => {
+        if (typeof header === "string" && typeof body !== "undefined") {
+            resolve(body)
+            return;
+        }
         if (!("page" in header)) {
             reject("request with no pagination.")
             return
@@ -16,7 +20,7 @@ const httpRequest = ({header}: IHttpRequestAction) =>
         if (header.isExpTurn){
             const response = paginateListOf(experiencesData, header.page, header.size)
             const isDone = response.length <= 0 || response.length < PAGINATION_SIZE
-            const experience: IFeedState = {
+            const experience = <IFeedState>{
                 isDone,
                 isExpTurn: true,
                 page: header.page +1,
@@ -27,7 +31,7 @@ const httpRequest = ({header}: IHttpRequestAction) =>
         }
         const response = paginateListOf(educationsData, header.page, header.size)
         const isExpTurn = response.length <= 0 || response.length < PAGINATION_SIZE
-        const educations: IFeedState = {
+        const educations = <IFeedState>{
             isDone: false,
             isExpTurn,
             page: isExpTurn ? 1 : header.page +1,

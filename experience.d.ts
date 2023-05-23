@@ -13,6 +13,6 @@ interface IExperience extends ISchema {
 }
 interface IExperienceState {
     status: "idle" | "loading" | "error",
-    value: IExperience[]
+    value: IExperience
 }
-type TDispatchExperience = (state: IExperienceState) => IExperienceState
+// type TDispatchExperience = (state: IExperienceState) => IExperienceState

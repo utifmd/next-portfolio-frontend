@@ -3,14 +3,18 @@ interface ISchema {}
 interface IHttpRequestAction {
     method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
     status: [string, string, string],
-    header: string | {page: number, size: number, isExpTurn: boolean, endpoints?: string[]}
+    header: string | {page: number, size: number, isExpTurn: boolean, endpoints?: string[]},
+    body?: ISchema | ISchema[]
 }
 interface IAppAction {
     [key: string]: ISchema | ISchema[] | IHttpRequestAction
 }
 interface IAppState {
-    status: "idle" | "loading" | "error",
-    message?: string,
+    education: IEducationState,
+    experience: IExperienceState,
+    home: IHomeState
+}
+interface IHomeState {
     feed: IFeedState,
     intro: {title: string, description: string},
     habit: {
@@ -20,6 +24,8 @@ interface IAppState {
     }
 }
 interface IFeedState {
+    status: "idle" | "loading" | "error",
+    message?: string,
     isExpTurn: boolean,
     isDone: boolean,
     scrollTo?: number,

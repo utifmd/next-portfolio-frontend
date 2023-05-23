@@ -1,11 +1,10 @@
-import {AnyAction} from "redux";
 import {AppDispatch, TAppAction} from "../store";
 import {CALL_API} from "../middlewares/restApi";
 
-export const PAGINATION_SIZE = 3
-export const pagedFeed = () =>
+const PAGINATION_SIZE = 3
+const pagedFeed = () =>
     (dispatch: AppDispatch, getState: () => IAppState): TAppAction => {
-    const {feed} = getState()
+    const {feed} = getState().home
 
     const action: IAppAction = {
         [CALL_API]: {
@@ -26,61 +25,7 @@ export const pagedFeed = () =>
     return dispatch(action)
 }
 
-export const getFeed = () => (dispatch): AppDispatch => {
-    const response: ISchema[] = [
-        {
-            id: "PID-1001",
-            fileUrl: "",
-            content: "Ini content 1001",
-            createdAt: "A minute ago",
-            desc: "Ini description",
-            imageUrl: "https://via.placeholder.com/150",
-            title: "Ini Judul"
-        }, {
-            id: "PID-1002",
-            fileUrl: "",
-            content: "Ini content 1002",
-            createdAt: "A minute ago",
-            desc: "Ini description",
-            imageUrl: "https://via.placeholder.com/150",
-            title: "Ini Judul"
-        }, {
-            createdAt: "Hati mana jatuh",
-            demoUrl: "Hati mana jatuh",
-            description: "Hati mana jatuh",
-            iconUrl: "Hati mana jatuh",
-            id: "Hati mana jatuh",
-            imageUrls: ["manusia"],
-            platform: "Hati mana jatuh",
-            releasedUrl: "Hati mana jatuh",
-            stack: ["manusia"],
-            title: "Hati mana jatuh 1001",
-            type: "IOS"
-        }
-    ]
-    const action: AnyAction = {
-        type: AppAction.READ_FEED_SUCCESS, payload: response
-    }
-    return dispatch(action)
-}
-
-export const addFeed = () => (dispatch): AppDispatch => {
-    const response: IEducation = {
-        content: "Long time no see",
-        createdAt: "Long time no see",
-        desc: "Long time no see",
-        fileUrl: "Long time no see",
-        id: "Long time no see",
-        imageUrl: "Long time no see",
-        title: "Long time no see"
-    }
-    const action: AnyAction = {
-        type: AppAction.CREATE_FEED_SUCCESS, payload: response
-    }
-    return dispatch(action)
-}
-
-export enum AppAction {
+enum AppAction {
     CREATE_FEED_REQUEST = "@@CREATE_FEED_REQUEST",
     CREATE_FEED_FAILED = "@@CREATE_FEED_FAILED",
     CREATE_FEED_SUCCESS = "@@CREATE_FEED_SUCCESS",
@@ -92,4 +37,9 @@ export enum AppAction {
     PAGED_FEED_REQUEST = "@@PAGED_FEED_REQUEST",
     PAGED_FEED_FAILED = "@@PAGED_FEED_FAILED",
     PAGED_FEED_SUCCESS = "@@PAGED_FEED_SUCCESS"
+}
+export {
+    PAGINATION_SIZE,
+    pagedFeed, //getFeed, addFeed,
+    AppAction
 }

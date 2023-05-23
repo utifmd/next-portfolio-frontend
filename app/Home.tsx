@@ -1,22 +1,20 @@
 "use client"
 
 import "boxicons"
-import React, {useEffect, useRef} from "react";
 import Habit from "./Habit";
 import Introduction from "./Introduction";
 import Profile from "./Profile";
 import Footer from "./Footer";
+import Feed from "./Feed";
+import React, {useEffect, useRef} from "react";
 import {QuickAction, Surface} from "../components/sections";
 import {ButtonPrimary} from "../components/Button";
-import {EducationItem} from "./education";
-import {ExperienceItem} from "./experience";
 import {TAppAction} from "../store";
 
-type Props = IAppState & {
+type Props = IHomeState & {
     morePagination: () => TAppAction
 }
-export default function Home(
-    {feed, habit, intro, status, morePagination}: Props) {
+export default function Home({feed, intro, habit, morePagination}: Props) {
     const reference = useRef({})
 
     const onFeedNextClicked = (
@@ -58,22 +56,13 @@ export default function Home(
                     innerRef={handleBoxJumper("habit")}
                     onNextClick={onJumpToBox(0)}/>
 
-                {feed.value.map((item, i) => "content" in item
-                    ? <EducationItem
-                        key={i}
-                        innerRef={handleBoxJumper(i)}
-                        education={item as IEducation}
-                        isLoading={status === "loading" && (i + 1) >= feed.value.length}
-                        onNextClick={onFeedNextClicked(feed.value.length, i)}/>
-
-                    : <ExperienceItem
-                        key={i}
-                        innerRef={handleBoxJumper(i)}
-                        experience={item as IExperience}
-                        isLoading={status === "loading" && (i + 1) >= feed.value.length}
-                        onNextClick={onFeedNextClicked(feed.value.length, i)}
-                        onBottomClick={feed.isDone && (i + 1) >= feed.value.length && onJumpToBox("base")}/>
-                )}
+                <Feed
+                    feedValues={feed.value}
+                    isLoading={feed.status === "loading"}
+                    isDone={feed.isDone}
+                    onJumpToBox={onJumpToBox}
+                    onFeedNextClicked={onFeedNextClicked}
+                    handleBoxJumper={handleBoxJumper}/>
             </Surface>
             <Profile innerRef={handleBoxJumper("profile")} />
             <Footer />

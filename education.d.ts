@@ -9,6 +9,6 @@ interface IEducation extends ISchema {
 }
 interface IEducationState {
     status: "idle" | "loading" | "error",
-    value: IEducation[]
+    value: IEducation
 }
-type TDispatchEducation = (state: IEducationState) => IEducationState
+// type TDispatchEducation = (state: IEducationState) => IEducationState

@@ -1,8 +1,7 @@
 import {AppDispatch} from "../store";
 import {AnyAction} from "redux";
 
-export const getAllExperience = () =>
-    (dispatch: AppDispatch, getState: AnyAction) => {
+export const getAllExperience = () => (dispatch: AppDispatch) => {
     const response: IExperience[] = [
         {
             createdAt: "asf",
@@ -24,7 +23,10 @@ export const getAllExperience = () =>
     return dispatch(action)
 }
 export enum ExperienceAction {
-    CREATE = "@@EXPERIENCE_CREATE",
+    CREATE_REQUEST = "@@EXPERIENCE_CREATE_REQUEST",
+    CREATE_FAILED = "@@EXPERIENCE_CREATE_FAILED",
+    CREATE_SUCCESS = "@@EXPERIENCE_CREATE_SUCCESS",
+
     READ_ALL_REQUEST = "@@EXPERIENCE_READ_ALL_REQUEST",
     READ_ALL_FAILED = "@@EXPERIENCE_READ_ALL_FAILED",
     READ_ALL_SUCCESS = "@@EXPERIENCE_READ_ALL_SUCCESS",
