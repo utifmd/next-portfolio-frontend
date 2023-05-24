@@ -1,28 +1,96 @@
-import {AppDispatch} from "../store";
+import {AppDispatch, TAnyAction, TAppAction} from "../store";
 import {AnyAction} from "redux";
+import {readFileAsImgSrcAsync} from "../utils";
+import {BROWSER_API, CALL_API} from "../middlewares";
+import {EducationAction} from "./educationAction";
+
+export const addExperience = () =>
+    (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
+    const {value} = getState().experience
+    const experience: IExperience = {
+        ...value,
+        id: "EXP-1001",
+        createdAt: new Date()
+    }
+    const action: IAppAction = {
+        [CALL_API]: {
+            method: "POST",
+            header: "/experiences",
+            types: [
+                ExperienceAction.CREATE_REQUEST,
+                ExperienceAction.CREATE_FAILED,
+                EducationAction.CREATE_SUCCESS
+            ],
+            body: experience
+        }
+    }
+    return dispatch(action)
+}
+
+export const onImageAppended = (file: any) =>
+    (dispatch: AppDispatch): TAppAction => {
+    const action: IAppAction = {
+        [BROWSER_API]: {
+            api: readFileAsImgSrcAsync(file),
+            types: [
+                ExperienceAction.IMAGES_APPENDED_REQUEST,
+                ExperienceAction.IMAGES_APPENDED_FAILED,
+                ExperienceAction.IMAGES_APPENDED_SUCCESS
+            ]
+        }
+    }
+    return dispatch(action)
+}
+
+export const onIconAppended = (file: any) =>
+    (dispatch: AppDispatch): TAppAction => {
+    const action: IAppAction = {
+        [BROWSER_API]: {
+            api: readFileAsImgSrcAsync(file),
+            types: [
+                ExperienceAction.ICON_APPENDED_REQUEST,
+                ExperienceAction.ICON_APPENDED_FAILED,
+                ExperienceAction.ICON_APPENDED_SUCCESS
+            ]
+        }
+    }
+    return dispatch(action)
+}
+
+export const onInputChange = (idValue: [string, any]) =>
+    (dispatch: AppDispatch): TAppAction => {
+    const action: TAnyAction = {
+        type: ExperienceAction.INPUT_CHANGED, payload: idValue
+    }
+    return dispatch(action)
+}
+export const onInputUnfocused = () =>
+    (dispatch: AppDispatch): TAppAction => {
+    const action: TAnyAction = {
+        type: ExperienceAction.INPUT_UNFOCUSED
+    }
+    return dispatch(action)
+}
 
 export const getAllExperience = () => (dispatch: AppDispatch) => {
-    const response: IExperience[] = [
-        {
-            createdAt: "asf",
-            demoUrl: "ngdn",
-            description: "xgf",
-            iconUrl: "https://via.placeholder.com/150",
-            id: "cnxvn",
-            imageUrls: ["https://via.placeholder.com/150", "https://via.placeholder.com/150"],
-            platform: "xvmxgm",
-            releasedUrl: "https://via.placeholder.com/150",
-            stack: ["asdjk", "dfsdjgkz", "oash"],
-            title: "sjsfj",
-            type: "hjljl"
-        }
-    ]
+    const response: IExperience[] = []
     const action: AnyAction = {
         type: ExperienceAction.READ_ALL_SUCCESS, payload: response
     }
     return dispatch(action)
 }
 export enum ExperienceAction {
+    INPUT_CHANGED = "@@EXPERIENCE_INPUT_CHANGED",
+    INPUT_UNFOCUSED = "@@EXPERIENCE_INPUT_UNFOCUSED",
+
+    IMAGES_APPENDED_REQUEST = "@@EXPERIENCE_IMAGES_APPENDED_REQUEST",
+    IMAGES_APPENDED_FAILED = "@@EXPERIENCE_IMAGES_APPENDED_FAILED",
+    IMAGES_APPENDED_SUCCESS = "@@EXPERIENCE_IMAGES_APPENDED_SUCCESS",
+
+    ICON_APPENDED_REQUEST = "@@EXPERIENCE_ICON_APPENDED_REQUEST",
+    ICON_APPENDED_FAILED = "@@EXPERIENCE_ICON_APPENDED_FAILED",
+    ICON_APPENDED_SUCCESS = "@@EXPERIENCE_ICON_APPENDED_SUCCESS",
+
     CREATE_REQUEST = "@@EXPERIENCE_CREATE_REQUEST",
     CREATE_FAILED = "@@EXPERIENCE_CREATE_FAILED",
     CREATE_SUCCESS = "@@EXPERIENCE_CREATE_SUCCESS",
@@ -30,6 +98,7 @@ export enum ExperienceAction {
     READ_ALL_REQUEST = "@@EXPERIENCE_READ_ALL_REQUEST",
     READ_ALL_FAILED = "@@EXPERIENCE_READ_ALL_FAILED",
     READ_ALL_SUCCESS = "@@EXPERIENCE_READ_ALL_SUCCESS",
+
     UPDATE = "@@EXPERIENCE_UPDATE",
     DELETE = "@@EXPERIENCE_DELETE",
 }

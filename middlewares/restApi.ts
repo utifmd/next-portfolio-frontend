@@ -46,7 +46,7 @@ const restApiMiddleware: Middleware<IAppState> = () => (next: any) => (action: I
     if (!("method" in callApi)) throw Error("Invalid call api.")
 
     const requestAction: IHttpRequestAction = callApi
-    const [requestType, failedType, successType] = requestAction.status
+    const [requestType, failedType, successType] = requestAction.types
 
     const actionWith = (data: TAnyAction) => {
         const act = Object.assign({}, action, data)

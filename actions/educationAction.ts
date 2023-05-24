@@ -1,7 +1,6 @@
 import {AppDispatch, TAnyAction, TAppAction} from "../store";
-import {CALL_API} from "../middlewares/restApi";
-import {readFileAsImgSrc, readFileAsImgSrcAsync} from "../utils";
-import {BROWSER_API} from "../middlewares/browserApi";
+import {readFileAsImgSrcAsync} from "../utils";
+import {BROWSER_API, CALL_API} from "../middlewares";
 
 export const addEducation = () =>
     (dispatch: AppDispatch, getState: () => IAppState): TAppAction => {
@@ -15,7 +14,7 @@ export const addEducation = () =>
         [CALL_API]: {
             method: "POST",
             header: "/educations",
-            status: [
+            types: [
                 EducationAction.CREATE_REQUEST,
                 EducationAction.CREATE_FAILED,
                 EducationAction.CREATE_SUCCESS

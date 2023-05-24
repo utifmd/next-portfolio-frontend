@@ -15,7 +15,7 @@ const pagedFeed = () =>
                 size: PAGINATION_SIZE,
                 endpoints: ["/educations", "/experiences"]
             },
-            status: [
+            types: [
                 AppAction.PAGED_FEED_REQUEST,
                 AppAction.PAGED_FEED_FAILED,
                 AppAction.PAGED_FEED_SUCCESS

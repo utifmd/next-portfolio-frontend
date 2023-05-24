@@ -14,7 +14,7 @@ const initialState: IEducationState = {
 }
 const reducer: Reducer<IEducationState> =
     (state: IEducationState = initialState, action): IEducationState => {
-        const isValid = typeof state.value.imageUrl !== "undefined" &&
+        const isValid = typeof state.images !== "undefined" &&
             Object.values(state.value)
                 .filter(mValue => typeof mValue === "string")
                 .every(mValue => mValue.length >= 3)

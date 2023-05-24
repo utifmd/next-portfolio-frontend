@@ -1,5 +1,5 @@
-import browserApiMiddleware from "./browserApi";
-import restApiMiddleware from "./restApi";
+import browserApiMiddleware, {BROWSER_API} from "./browserApi";
+import restApiMiddleware, {CALL_API} from "./restApi";
 export {
-    browserApiMiddleware, restApiMiddleware
+    BROWSER_API, CALL_API, browserApiMiddleware, restApiMiddleware
 }
