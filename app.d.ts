@@ -6,8 +6,12 @@ interface IHttpRequestAction {
     header: string | {page: number, size: number, isExpTurn: boolean, endpoints?: string[]},
     body?: ISchema | ISchema[]
 }
+interface IAPIAction {
+    api: Promise<any>,
+    types: [string, string, string]
+}
 interface IAppAction {
-    [key: string]: ISchema | ISchema[] | IHttpRequestAction
+    [key: string]: ISchema | ISchema[] | IHttpRequestAction | IAPIAction
 }
 interface IAppState {
     education: IEducationState,
@@ -35,10 +39,14 @@ interface IFeedState {
 type TBoxProps = {
     innerRef?: any,
     isLoading?: boolean,
+    isDisable?: boolean,
     onNextClick?: (e: MouseEvent) => void
     onBottomClick?: (e: MouseEvent) => void,
 }
 type TTileProps = {
     title: string,
     description?: string
+}
+type TFileProps = {
+    name: string, size: number, type: string
 }

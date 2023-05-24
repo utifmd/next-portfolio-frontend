@@ -1,6 +1,16 @@
-export const ButtonPrimary = ({label, onClick}: TBoxProps & {label: string, onClick?: (e: MouseEvent) => void}) =>
-    <button onClick={onClick}
-            className="w-[75%] sm:w-[50%] py-4 uppercase bg-green-600 font-bold text-white dark:text-white-200 active:bg-green-900 hover:bg-green-700 focus:outline-none ease-linear transition-all duration-350">{label || "Button"}
+import {ChangeEvent} from "react";
+
+export const ButtonPrimary = (
+    {label, onClick, onBlur, isDisable, isLoading}: TBoxProps & {
+        label: string, onClick?: (e: MouseEvent) => void, onBlur?: (e: ChangeEvent) => void}) =>
+    <button
+        className={`w-[75%] sm:w-[50%] py-4 uppercase font-bold ${!isDisable ? 'bg-green-600 text-white dark:text-white-200 active:bg-green-900 hover:bg-green-700 focus:outline-none ease-linear transition-all duration-350' : 'bg-gray-300 dark:bg-gray-700 text-green-600'}`}
+        disabled={isDisable}
+        onClick={onClick} onBlur={onBlur}>
+        <div className="flex justify-center items-center space-x-3">
+            {isLoading && <box-icon color="#059669" name='loader' animation='spin'/>}
+            <div>{label || "Button"}</div>
+        </div>
     </button>
 
 export const ButtonNext = ({isLoading, onNextClick, onBottomClick}: TBoxProps) =>

@@ -1,3 +1,27 @@
+export function readFileAsImgSrcAsync(file: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        const base64 = reader.readAsDataURL(file)
+        reader.onload = () => resolve(reader.result)
+        reader.onerror = e => {
+            console.log(e)
+            reject(e)
+        }
+    })
+}
+export function readFileAsImgSrc(file: any) {
+    let output: any
+    const reader = new FileReader()
+    const base64 = reader.readAsDataURL(file)
+    reader.onload = () => {
+        output = reader.result
+    }
+    reader.onerror = e => {
+        console.log(e)
+        output = null
+    }
+    return output
+}
 export function groupingListByPropKey<T>(list: T, propKey: string): T {
     for (let i = 0; i < list.length; i++){
         for (let j = 0; j < list.length; j++){

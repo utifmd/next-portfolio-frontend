@@ -1,12 +1,16 @@
 import {configureStore, Store} from "@reduxjs/toolkit";
 import {AnyAction} from "redux";
 import thunk from "redux-thunk"
-import restApiMiddleware from "../middlewares/restApi";
+import {restApiMiddleware, browserApiMiddleware} from "../middlewares";
 import reducer from "../reducers"
 import {pagedFeed} from "../actions";
 
 const mStore: Store<IAppState, IAppAction | TAppAction> = configureStore({
-    reducer, middleware: [thunk, restApiMiddleware]
+    reducer, middleware: [
+        thunk,
+        restApiMiddleware,
+        browserApiMiddleware
+    ]
 })
 mStore.dispatch(pagedFeed())
 
