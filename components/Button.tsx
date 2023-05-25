@@ -2,9 +2,10 @@ import {ChangeEvent} from "react";
 
 export const ButtonPrimary = (
     {label, onClick, onBlur, isDisable, isLoading}: TBoxProps & {
-        label: string, onClick?: (e: MouseEvent) => void, onBlur?: (e: ChangeEvent) => void}) =>
+        label: string, onClick?: (e: MouseEvent) => void, onBlur?: (e: ChangeEvent) => void
+    }) =>
     <button
-        className={`w-[75%] sm:w-[50%] py-4 uppercase font-bold ${!isDisable ? 'bg-green-600 text-white dark:text-white-200 active:bg-green-900 hover:bg-green-700 focus:outline-none ease-linear transition-all duration-350' : 'bg-gray-300 dark:bg-gray-700 text-green-600'}`}
+        className={`w-[75%] sm:w-[50%] py-4 uppercase font-bold text-white dark:text-white-200 ${!isDisable ? 'bg-green-600 active:bg-green-900 hover:bg-green-700 focus:outline-none ease-linear transition-all duration-350' : 'bg-gray-300 dark:bg-gray-700'}`}
         disabled={isDisable}
         onClick={onClick} onBlur={onBlur}>
         <div className="flex justify-center items-center space-x-3">
@@ -19,8 +20,14 @@ export const ButtonNext = ({isLoading, onNextClick, onBottomClick}: TBoxProps) =
              className="rounded-full ring-1 ring-gray-900/5 h-16 w-16 flex items-center justify-center bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-800 dark:bg-gray-700 dark:hover:bg-gray-800 cursor-pointer">
             {isLoading
                 ? <box-icon color="#059669" name='loader' animation='spin'/>
-                : <box-icon color="#059669" name={onBottomClick ? 'up-arrow-alt': 'down-arrow-alt'}/>}
+                : <box-icon color="#059669" name={onBottomClick ? 'up-arrow-alt' : 'down-arrow-alt'}/>}
         </div>
+    </div>
+
+export const RoundedButton = ({label, onClick}: { label: string, onClick: (e: MouseEvent) => void }) =>
+    <div className="rounded-full ring-1 ring-gray-900/5 h-20 w-20 px-2 flex items-center justify-center bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-800 dark:bg-gray-700 dark:hover:bg-gray-800 cursor-pointer text-sm uppercase text-green-600 font-medium"
+        onClick={onClick}>
+        {label}
     </div>
 
 export const BtnCollapse = ({className, onClick}: { className: string, onClick: () => void }) =>

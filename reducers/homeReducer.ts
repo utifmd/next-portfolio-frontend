@@ -36,8 +36,11 @@ const homeReducer: Reducer<IHomeState> =
             case AppAction.PAGED_FEED_SUCCESS: {
                 const response = action.payload as IFeedState
                 const feedValue = state.feed.value
+                /*const value = feedValue.concat(response.value)
+                groupingListByPropKey(value, "content")*/
+
                 const feed = {...response,
-                    value: feedValue.concat(response.value),
+                    value: [...feedValue, ...response.value],
                     scrollTo: feedValue.length >= PAGINATION_SIZE && feedValue.length
                 }
                 return {...state, feed: {...feed, status: "idle"}}

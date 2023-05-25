@@ -9,7 +9,7 @@ const initialState: IEducationState = {
         title: "",
         content: "",
         desc: "",
-        fileUrl: "https://via.placeholder.com/150"
+        fileUrl: ""
     }
 }
 const reducer: Reducer<IEducationState> =

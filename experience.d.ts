@@ -1,9 +1,9 @@
 interface IExperience extends ISchema {
     id?: string,
-    type: string,
+    type: string, // "front-end" | "back-end" | "mobile",
     title: string,
     description: string,
-    platform: string,
+    platform: string, // "android" | "ios" | "web",
     stack: string[],
     imageUrls?: string[],
     iconUrl?: string,

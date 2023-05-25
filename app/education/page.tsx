@@ -1,6 +1,6 @@
 "use client"
 
-import {ButtonPrimary} from "../../components/Button";
+import {ButtonPrimary, RoundedButton} from "../../components/Button";
 import {Input} from "../../components";
 import {AppDispatch} from "../../store";
 import {onInputChange, onInputUnfocused, addEducation, onImageAppended} from "../../actions/educationAction"
@@ -60,7 +60,7 @@ export default function() {
                     <div className="flex justify-center items-center">
                         <input ref={handleOnInputFileClick} className={"hidden"} id="imageUrl" type="file" accept="image/*" multiple={false} onChange={handleOnFileChange} onBlur={handleOnTextBlur} /> {images.length
                         ? images.map((image, i) => <Image key={i} src={image} alt={"image appendable"} width={86} height={86}/>)
-                        : <ButtonPrimary label="select image" onClick={onInputFileClick} onBlur={handleOnTextBlur}/>
+                        : <RoundedButton label="select image" onClick={onInputFileClick}/>
                     }
                     </div>
                     <div className="h-full w-full space-y-4 text-left">

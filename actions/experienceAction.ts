@@ -79,6 +79,12 @@ export const getAllExperience = () => (dispatch: AppDispatch) => {
     }
     return dispatch(action)
 }
+export enum ExperienceType {
+    FRONTEND = "FRONTEND", BACKEND = "BACKEND", MOBILE = "MOBILE"
+}
+export enum ExperiencePlatform {
+    ANDROID = "ANDROID", IOS = "IOS", WEB = "WEB"
+}
 export enum ExperienceAction {
     INPUT_CHANGED = "@@EXPERIENCE_INPUT_CHANGED",
     INPUT_UNFOCUSED = "@@EXPERIENCE_INPUT_UNFOCUSED",

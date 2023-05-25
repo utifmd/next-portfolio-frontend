@@ -3,17 +3,17 @@
 import Image from "next/image";
 import {ChangeEvent, useRef} from "react";
 import {Input} from "../../components";
-import {ButtonPrimary} from "../../components/Button";
+import {RoundedButton, ButtonPrimary} from "../../components/Button";
 import {AppDispatch} from "../../store";
 import {
-    addExperience,
+    addExperience, ExperiencePlatform, ExperienceType,
     onIconAppended,
     onImageAppended,
     onInputChange,
     onInputUnfocused
 } from "../../actions/experienceAction";
 import {useAppDispatch, useAppSelector} from "../hooks";
-
+import Select from "../../components/Select";
 
 export default function () {
     const {value, icon, images, isValid, status} = useAppSelector((state) => state.experience)
@@ -27,6 +27,10 @@ export default function () {
     const handleOnTextBlur = (e: FocusEvent) => {
         e.preventDefault()
         dispatch(onInputUnfocused())
+    }
+    const handleOnTextPush = (e: ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault()
+
     }
     const handleOnTextChange = (e: ChangeEvent<HTMLInputElement>) => {
         e.preventDefault()
@@ -59,29 +63,47 @@ export default function () {
                     <div className="h-0.5 w-24 bg-gray-900 dark:bg-gray-100"/>
                 </div>
                 <div className="grid gap-4 md:grid-cols-2 mb-4">
-                    <div className="md:col-span-2">
+                    <div>
+                        <Select id="platform" label="platform" onChange={handleOnTextChange} onBlur={handleOnTextBlur}>{Object.keys(ExperiencePlatform).map((platform) =>
+                            <option value={platform} selected={value.platform === platform}>{platform}</option>)}
+                        </Select>
+                    </div>
+                    <div>
+                        <Select id="type" label="type" onChange={handleOnTextChange} onBlur={handleOnTextBlur}>{Object.keys(ExperienceType).map((type) =>
+                            <option value={type} selected={value.type === type}>{type}</option>)}
+                        </Select>
+                    </div>
+                    <div>
                         <Input id="title" type="text" placeholder="Enter title" value={value.title} onChange={handleOnTextChange} onBlur={handleOnTextBlur}/>
                     </div>
-                    <div className="md:col-span-2">
+                    <div>
                         <Input id="description" type="text" placeholder="Enter description" value={value.description} onChange={handleOnTextChange} onBlur={handleOnTextBlur}/>
                     </div>
-                    <div className="flex justify-center items-center">
-                        <input id="iconUrl" ref={handleOnInputFileClick("icon")} className={"hidden"} type="file" accept="image/*" multiple={false} onChange={handleOnFileChange(onIconAppended)} onBlur={handleOnTextBlur}/>{icon
-                        ? <Image className="cursor-pointer" src={icon} alt={"icon appendable"} width={86} height={86} onClick={onInputFileClick("icon")} onBlur={handleOnTextBlur}/>
-                        : <ButtonPrimary label="select icon" onClick={onInputFileClick("icon")} onBlur={handleOnTextBlur}/>}
-                    </div>
-                    <div className="h-full w-full space-y-4 text-left">
+                    <div className="md:col-span-2">
                         <Input id="demoUrl" type="text" placeholder="Enter file url" value={value.demoUrl} onChange={handleOnTextChange} onBlur={handleOnTextBlur}/>
+                    </div>
+                    <div className="md:col-span-2">
                         <Input id="releasedUrl" type="text" placeholder="Enter released url" value={value.releasedUrl} onChange={handleOnTextChange} onBlur={handleOnTextBlur}/>
                     </div>
-                    <div className="flex justify-center items-center">
-                        <input id="imageUrls" ref={handleOnInputFileClick("image")} className={"hidden"} type="file" accept="image/*" multiple={true} onChange={handleOnFileChange(onImageAppended)} onBlur={handleOnTextBlur}/>{images.length
-                        ? images.map((image) => <Image className="cursor-pointer" src={image} alt={"images appendable"} width={86} height={86} onClick={onInputFileClick("image")} onBlur={handleOnTextBlur}/>)
-                        : <ButtonPrimary label="select images" onClick={onInputFileClick("image")} onBlur={handleOnTextBlur}/>}
+                    <div className="flex flex-wrap">
+                        {value.stack.map(mStack => <span className="text-base px-1">#{mStack}</span>)}
                     </div>
-                    <div className="h-full w-full space-y-4 text-left">
-                        <Input id="platform" type="text" placeholder="Enter platform" value={value.platform} onChange={handleOnTextChange} onBlur={handleOnTextBlur}/>
-                        <Input id="type" type="text" placeholder="Enter type" value={value.type} onChange={handleOnTextChange} onBlur={handleOnTextBlur}/>
+                    <div>
+                        <Input id="stack" type="text" placeholder="Add stack" value={value.description} onChange={handleOnTextPush} onBlur={handleOnTextBlur}/>
+                    </div>
+                    <div>
+                        <input id="iconUrl" ref={handleOnInputFileClick("icon")} className={"hidden"} type="file" accept="image/*" multiple={false} onChange={handleOnFileChange(onIconAppended)} onBlur={handleOnTextBlur}/>
+                        <input id="imageUrls" className="hidden" ref={handleOnInputFileClick("image")} type="file" accept="image/*" multiple={true} onChange={handleOnFileChange(onImageAppended)} onBlur={handleOnTextBlur}/>
+                        {icon ?
+                            <Image className="cursor-pointer" src={icon} alt={"icon appendable"} width={86} height={86} onClick={onInputFileClick("icon")} onBlur={handleOnTextBlur}/> :
+                            <RoundedButton label="select icon" onClick={onInputFileClick("icon")}/>
+                        }
+                    </div>
+                    <div>
+                        {images.length ? images.map((image) =>
+                            <div className="grid grid-cols-3 gap-1 w-full"><Image className="cursor-pointer" src={image} alt={"images appendable"} width={86} height={86} onClick={onInputFileClick("image")} onBlur={handleOnTextBlur}/></div>) :
+                            <RoundedButton label="add images" onClick={onInputFileClick("image")}/>
+                        }
                     </div>
                 </div>
                 <ButtonPrimary label="Post" isDisable={status === "loading" || !isValid} isLoading={status === "loading"} onClick={onPostExperience}/>
