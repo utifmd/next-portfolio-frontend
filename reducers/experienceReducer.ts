@@ -1,5 +1,5 @@
 import {Reducer} from "redux";
-import {ExperienceAction} from "../actions/experienceAction";
+import {ExperienceAction} from "@/actions/experienceAction";
 
 const initialState: IExperienceState = {
     status: "idle",

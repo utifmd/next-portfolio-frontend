@@ -1,9 +1,9 @@
-import {AppDispatch, TAnyAction, TAppAction} from "../store";
-import {readFileAsImgSrcAsync} from "../utils";
-import {BROWSER_API, CALL_API} from "../middlewares";
+import {AppDispatch, TAnyAction} from "@/store";
+import {readFileAsImgSrcAsync} from "@/utils";
+import {BROWSER_API, CALL_API} from "@/middlewares";
 
 export const addEducation = () =>
-    (dispatch: AppDispatch, getState: () => IAppState): TAppAction => {
+    (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
     const {value} = getState().education
     const education: IEducation = {
         ...value,
@@ -26,21 +26,21 @@ export const addEducation = () =>
     return dispatch(action)
 }
 export const onInputChange = (idValue: [string, any]) =>
-    (dispatch: AppDispatch): TAppAction => {
+    (dispatch: AppDispatch): IAppAction => {
     const action: TAnyAction = {
         type: EducationAction.INPUT_CHANGED, payload: idValue
     }
     return dispatch(action)
 }
 export const onInputUnfocused = () =>
-    (dispatch: AppDispatch): TAppAction => {
+    (dispatch: AppDispatch): IAppAction => {
     const action: TAnyAction = {
         type: EducationAction.INPUT_UNFOCUSED
     }
     return dispatch(action)
 }
 export const onImageAppended = (file: any) =>
-    (dispatch: AppDispatch): TAppAction => {
+    (dispatch: AppDispatch): IAppAction => {
 
     const action: IAppAction = {
         [BROWSER_API]: {

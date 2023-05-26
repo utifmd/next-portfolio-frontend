@@ -1,6 +1,6 @@
 "use client"
 
-import {HomeContainer} from "../containers";
+import {HomeContainer} from "@/containers";
 import React from "react";
 
 export default function Main() {

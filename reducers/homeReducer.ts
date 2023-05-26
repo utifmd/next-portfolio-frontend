@@ -1,9 +1,9 @@
 import {Reducer} from "redux";
-import {TAnyAction} from "../store";
-import {AppAction, PAGINATION_SIZE} from "../actions";
-import {EducationAction} from "../actions/educationAction";
-import {ExperienceAction} from "../actions/experienceAction";
-import {groupingListByPropKey} from "../utils";
+import {TAnyAction} from "@/store";
+import {AppAction, PAGINATION_SIZE} from "@/actions";
+import {EducationAction} from "@/actions/educationAction";
+import {ExperienceAction} from "@/actions/experienceAction";
+import {groupingListByPropKey} from "@/utils";
 
 const initialState: IHomeState = {
     intro: {
@@ -34,7 +34,7 @@ const homeReducer: Reducer<IHomeState> =
                 return {...state, feed: {...state.feed, status: "error", message: action.payload}}
 
             case AppAction.PAGED_FEED_SUCCESS: {
-                const response = action.payload as IFeedState
+                const response = action.payload
                 const feedValue = state.feed.value
                 /*const value = feedValue.concat(response.value)
                 groupingListByPropKey(value, "content")*/

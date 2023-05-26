@@ -1,9 +1,9 @@
-import {AppDispatch, TAppAction} from "../store";
-import {CALL_API} from "../middlewares/restApi";
+import {AppDispatch} from "@/store";
+import {CALL_API} from "@/middlewares";
 
 const PAGINATION_SIZE = 3
 const pagedFeed = () =>
-    (dispatch: AppDispatch, getState: () => IAppState): TAppAction => {
+    (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
     const {feed} = getState().home
 
     const action: IAppAction = {

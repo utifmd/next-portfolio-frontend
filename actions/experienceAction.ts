@@ -1,7 +1,7 @@
-import {AppDispatch, TAnyAction, TAppAction} from "../store";
+import {AppDispatch, TAnyAction} from "@/store";
 import {AnyAction} from "redux";
-import {readFileAsImgSrcAsync} from "../utils";
-import {BROWSER_API, CALL_API} from "../middlewares";
+import {readFileAsImgSrcAsync} from "@/utils";
+import {BROWSER_API, CALL_API} from "@/middlewares";
 import {EducationAction} from "./educationAction";
 
 export const addExperience = () =>
@@ -28,7 +28,7 @@ export const addExperience = () =>
 }
 
 export const onImageAppended = (file: any) =>
-    (dispatch: AppDispatch): TAppAction => {
+    (dispatch: AppDispatch): IAppAction => {
     const action: IAppAction = {
         [BROWSER_API]: {
             api: readFileAsImgSrcAsync(file),
@@ -43,7 +43,7 @@ export const onImageAppended = (file: any) =>
 }
 
 export const onIconAppended = (file: any) =>
-    (dispatch: AppDispatch): TAppAction => {
+    (dispatch: AppDispatch): IAppAction => {
     const action: IAppAction = {
         [BROWSER_API]: {
             api: readFileAsImgSrcAsync(file),
@@ -58,14 +58,14 @@ export const onIconAppended = (file: any) =>
 }
 
 export const onInputChange = (idValue: [string, any]) =>
-    (dispatch: AppDispatch): TAppAction => {
+    (dispatch: AppDispatch): IAppAction => {
     const action: TAnyAction = {
         type: ExperienceAction.INPUT_CHANGED, payload: idValue
     }
     return dispatch(action)
 }
 export const onInputUnfocused = () =>
-    (dispatch: AppDispatch): TAppAction => {
+    (dispatch: AppDispatch): IAppAction => {
     const action: TAnyAction = {
         type: ExperienceAction.INPUT_UNFOCUSED
     }

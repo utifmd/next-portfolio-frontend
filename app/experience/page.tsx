@@ -1,35 +1,35 @@
 "use client"
 
 import Image from "next/image";
-import {ChangeEvent, useRef} from "react";
+import {ChangeEvent, KeyboardEventHandler, LegacyRef, useRef} from "react";
 import {Input} from "../../components";
-import {RoundedButton, ButtonPrimary} from "../../components/Button";
-import {AppDispatch} from "../../store";
+import {RoundedButton, ButtonPrimary} from "@/components/Button";
+import {AppDispatch} from "@/store";
 import {
-    addExperience, ExperiencePlatform, ExperienceType,
+    ExperiencePlatform, ExperienceType,
+    addExperience,
     onIconAppended,
     onImageAppended,
     onInputChange,
     onInputUnfocused
-} from "../../actions/experienceAction";
+} from "@/actions/experienceAction";
 import {useAppDispatch, useAppSelector} from "../hooks";
 import Select from "../../components/Select";
 
 export default function () {
     const {value, icon, images, isValid, status} = useAppSelector((state) => state.experience)
     const dispatch: AppDispatch = useAppDispatch()
-    const reference = useRef({})
+    const reference = useRef<Record<string, any>>({})
 
-    const onPostExperience = (e: MouseEvent) => {
+    const onPostExperience = (e: any) => {
         e.preventDefault()
         dispatch(addExperience())
     }
-    const handleOnTextBlur = (e: FocusEvent) => {
+    const handleOnTextBlur = (e: any) => {
         e.preventDefault()
         dispatch(onInputUnfocused())
     }
-    const handleOnTextPush = (e: ChangeEvent<HTMLInputElement>) => {
-        e.preventDefault()
+    const handleOnTextPush = (e: KeyboardEventHandler<HTMLInputElement>) => {
 
     }
     const handleOnTextChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -48,12 +48,12 @@ export default function () {
             dispatch(appendable(file))
         }
     }
-    const onInputFileClick = (key: string) => (e: MouseEvent) => {
+    const onInputFileClick = (key: string) => (e: any) => {
         e.preventDefault()
         reference.current[key]?.click()
     }
-    const handleOnInputFileClick = (key: string) => (e: HTMLImageElement) => {
-        reference.current[key] = e
+    const handleOnInputFileClick = (key: string) => (ref: any) => {
+        reference.current[key] = ref
     }
     return (
         <div className="flex min-h-screen justify-center items-center">
@@ -89,7 +89,7 @@ export default function () {
                         {value.stack.map(mStack => <span className="text-base px-1">#{mStack}</span>)}
                     </div>
                     <div>
-                        <Input id="stack" type="text" placeholder="Add stack" value={value.description} onChange={handleOnTextPush} onBlur={handleOnTextBlur}/>
+                        <Input id="stack" type="text" placeholder="Add stack" value={value.description} onKeyUp={handleOnTextPush} onBlur={handleOnTextBlur}/>
                     </div>
                     <div>
                         <input id="iconUrl" ref={handleOnInputFileClick("icon")} className={"hidden"} type="file" accept="image/*" multiple={false} onChange={handleOnFileChange(onIconAppended)} onBlur={handleOnTextBlur}/>
