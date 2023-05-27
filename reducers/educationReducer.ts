@@ -1,5 +1,5 @@
 import {Reducer} from "redux";
-import {EducationAction} from "../actions/educationAction";
+import {EducationAction} from "@/actions/educationAction";
 
 const initialState: IEducationState = {
     status: "idle",
@@ -9,6 +9,7 @@ const initialState: IEducationState = {
         title: "",
         content: "",
         desc: "",
+        imageUrl: "https://via.placeholder.com/150",
         fileUrl: ""
     }
 }

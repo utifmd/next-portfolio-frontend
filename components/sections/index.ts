@@ -1,7 +1,7 @@
 import Surface from "./Surface";
 import Box from "./Box";
-import QuickAction from "./QuickAction";
+import StickyNavbar from "./StickyNavbar";
 
 export {
-    Box, Surface, QuickAction
+    Box, Surface, StickyNavbar
 }

@@ -10,6 +10,7 @@ const initialState: IExperienceState = {
         description: "",
         platform: "",
         type: "",
+        iconUrl: "https://via.placeholder.com/150",
         demoUrl: "",
         releasedUrl: "",
         stack: []
@@ -27,6 +28,10 @@ const reducer: Reducer<IExperienceState> =
         case ExperienceAction.INPUT_CHANGED: {
             const [id, value] = action.payload as [string, any]
             return {...state, value: {...state.value, [id]: value}, isValid}
+        }
+        case ExperienceAction.INPUT_ADD_STACK: {
+            const stack = [...state.value.stack, action.payload as string]
+            return {...state, value: {...state.value, stack}}
         }
         case ExperienceAction.INPUT_UNFOCUSED:
             return {...state, isValid}

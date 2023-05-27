@@ -9,11 +9,12 @@ interface IProfileLinks {
     email: string
 }
 interface IProfile {
-    id: string,
+    id?: string,
     fullName: string,
     bio: string,
     role: string,
+    jobTitle: string,
     links: IProfileLinks,
-    createdAt: string,
-    updatedAt: string
+    createdAt?: string,
+    updatedAt?: string
 }

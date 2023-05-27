@@ -3,7 +3,8 @@ import {ButtonNext} from "../Button";
 type Props = TTileProps & TBoxProps & {
     children: React.ReactNode
 }
-const Box = ({title, innerRef, isLoading, onBottomClick, onNextClick, children}: Props) => {
+const Box = (
+    {title, innerRef, isLoading, onBottomClick, onNextClick, children}: Props) => {
     return(
         <div ref={innerRef} className="w-full space-y-6 py-24 justify-center text-center">
             <p className="font-bold xl:text-3xl md:text-3xl text-2xl uppercase">{title}</p>

@@ -21,10 +21,11 @@ interface IAppState {
 interface IHomeState {
     feed: IFeedState,
     intro: {title: string, description: string},
+    profile: IProfile,
     habit: {
         title: string,
         description: string,
-        data: {icon: string, label: string}[]
+        data: {icon: any, label: string}[]
     }
 }
 interface IFeedState {
@@ -40,13 +41,10 @@ type TBoxProps = {
     innerRef?: any,
     isLoading?: boolean,
     isDisable?: boolean,
-    onNextClick?: (e: MouseEvent) => void
-    onBottomClick?: (e: MouseEvent) => void,
+    onNextClick?: (e: any) => void
+    onBottomClick?: (e: any) => void,
 }
 type TTileProps = {
     title: string,
     description?: string
-}
-type TFileProps = {
-    name: string, size: number, type: string
 }

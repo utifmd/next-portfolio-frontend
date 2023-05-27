@@ -64,6 +64,13 @@ export const onInputChange = (idValue: [string, any]) =>
     }
     return dispatch(action)
 }
+export const onAddStack = (stack: string) =>
+    (dispatch: AppDispatch): IAppAction => {
+    const action: TAnyAction = {
+        type: ExperienceAction.INPUT_ADD_STACK, payload: stack
+    }
+    return dispatch(action)
+}
 export const onInputUnfocused = () =>
     (dispatch: AppDispatch): IAppAction => {
     const action: TAnyAction = {
@@ -88,6 +95,7 @@ export enum ExperiencePlatform {
 export enum ExperienceAction {
     INPUT_CHANGED = "@@EXPERIENCE_INPUT_CHANGED",
     INPUT_UNFOCUSED = "@@EXPERIENCE_INPUT_UNFOCUSED",
+    INPUT_ADD_STACK = "@@EXPERIENCE_INPUT_ADD_STACK",
 
     IMAGES_APPENDED_REQUEST = "@@EXPERIENCE_IMAGES_APPENDED_REQUEST",
     IMAGES_APPENDED_FAILED = "@@EXPERIENCE_IMAGES_APPENDED_FAILED",

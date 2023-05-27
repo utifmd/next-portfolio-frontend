@@ -6,15 +6,15 @@ type Props = {
     feedValues: ISchema[],
     isLoading: boolean,
     isDone: boolean,
-    onJumpToBox: (id: number | string | undefined) => void,
-    onFeedNextClicked: (length: number, i: number) => void,
-    handleBoxJumper: (id: number) => void,
+    onJumpToBox?: any,
+    onFeedNextClicked: (length: number, i: number) => any,
+    handleBoxJumper: (key: number | string) => any,
 }
 export default function Feed(
     {feedValues, isLoading, isDone, onJumpToBox, onFeedNextClicked, handleBoxJumper}: Props) {
     const feedLength = feedValues.length
 
-    return feedValues.map((item, i) => {
+    return (<>{feedValues.map((item, i) => {
         const isTheLastOne = (i + 1) >= feedLength
         let component = <EducationItem
             key={i}
@@ -31,6 +31,6 @@ export default function Feed(
             onNextClick={onFeedNextClicked(feedLength, i)}
             onBottomClick={isDone && isTheLastOne && onJumpToBox("base")}/>
 
-        return(component)
-    })
+        return component
+    })}</>)
 }

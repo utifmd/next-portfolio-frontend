@@ -1,7 +1,9 @@
 import {Box} from "../components/sections";
+import {IconDefinition} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
-type Props = TBoxProps & {
-    items: { type: string, icon: string, label: string }[]
+type Props = TTileProps & TBoxProps & {
+    items: {icon: IconDefinition, label: string}[]
 }
 const Habit = ({innerRef, title, description, items, onNextClick}: Props) =>
     <Box innerRef={innerRef} title={title} onNextClick={onNextClick}>
@@ -9,7 +11,7 @@ const Habit = ({innerRef, title, description, items, onNextClick}: Props) =>
         <div className="grid grid-cols-2 mx-0">
             {items.length && items.map((habit, index) =>
                 <div key={index} className="flex flex-col py-6 items-center justify-center text-center"> {
-                    <box-icon name={habit.icon} type={habit.type} color="#16a34a"/>}
+                    <FontAwesomeIcon color={"#16a34a"} icon={habit.icon} size="3x" />}
                     <p className={`text-base truncate uppercase font-bold tracking-widest mt-3.5`}>{habit.label}</p>
                 </div>
             )}

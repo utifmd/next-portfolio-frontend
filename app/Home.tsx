@@ -1,36 +1,31 @@
 "use client"
 
-import "boxicons"
 import Habit from "./Habit";
 import Introduction from "./Introduction";
 import Profile from "./Profile";
 import Footer from "./Footer";
 import Feed from "./Feed";
 import React, {useEffect, useRef} from "react";
-import {QuickAction, Surface} from "../components/sections";
-import {ButtonPrimary} from "../components/Button";
-import {TAppAction} from "../store";
+import {StickyNavbar, Surface} from "../components/sections";
+import {ButtonPrimary} from "@/components/Button";
 
 type Props = IHomeState & {
-    morePagination: () => TAppAction
+    morePagination: any
 }
-export default function Home({feed, intro, habit, morePagination}: Props) {
-    const reference = useRef({})
-
+export default function Home({feed, intro, habit, profile, morePagination}: Props) {
+    const reference = useRef<Record<string, any>>({})
     const onFeedNextClicked = (
         feedLength: number, i: number) => (e: MouseEvent) => {
         e.preventDefault()
         if ((i + 1) >= feedLength) morePagination()
         onJumpToBox(i +1)()
     }
-    const onJumpToBox = (key: string | number | undefined) => () => {
-        reference.current[key]?.scrollIntoView({
-            behavior: "smooth", top: 0
-        })
+    const onJumpToBox = (key?: string | number) => () => {
+        key && reference.current[key]?.scrollIntoView({behavior: "smooth"})
     }
     useEffect(onJumpToBox(feed.scrollTo), [feed.scrollTo])
 
-    const handleBoxJumper = (key: string | number) => (e) => {
+    const handleBoxJumper = (key: string | number) => (e: any) => {
         if (typeof key === "undefined") return
         reference.current[key] = e
     }
@@ -41,21 +36,19 @@ export default function Home({feed, intro, habit, morePagination}: Props) {
                     <ButtonPrimary label="Begin" onClick={onJumpToBox("intro")}/>
                 </Surface>
             </div>
-            <QuickAction onLogoutClick={onJumpToBox("profile")}/>
+            <StickyNavbar onLogoutClick={onJumpToBox("profile")}/>
             <Surface>
                 <Introduction
                     title={intro.title}
                     description={intro.description}
                     innerRef={handleBoxJumper("intro")}
                     onNextClick={onJumpToBox("habit")}/>
-
                 <Habit
                     title={habit.title}
                     items={habit.data}
                     description={habit.description}
                     innerRef={handleBoxJumper("habit")}
                     onNextClick={onJumpToBox(0)}/>
-
                 <Feed
                     feedValues={feed.value}
                     isLoading={feed.status === "loading"}
@@ -64,8 +57,7 @@ export default function Home({feed, intro, habit, morePagination}: Props) {
                     onFeedNextClicked={onFeedNextClicked}
                     handleBoxJumper={handleBoxJumper}/>
             </Surface>
-            <Profile innerRef={handleBoxJumper("profile")} />
-            <Footer />
+            <Profile innerRef={handleBoxJumper("profile")} profile={profile} />
         </div>
     )
 }

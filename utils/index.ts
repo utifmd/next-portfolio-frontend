@@ -23,6 +23,8 @@ export function readFileAsImgSrc(file: any) {
     return output
 }
 export function groupingListByPropKey<T>(list: T, propKey: string): T {
+    if (!Array.isArray(list)) return list
+
     for (let i = 0; i < list.length; i++){
         for (let j = 0; j < list.length; j++){
             if (propKey in list[i]){
@@ -32,8 +34,8 @@ export function groupingListByPropKey<T>(list: T, propKey: string): T {
     }
     return list
 }
-export function paginateListOf<T>(list: T[], page, size: number): T[] {
-    const output: T[] = []
+export function paginateListOf<T>(list: T[], page: number, size: number): T[] {
+    const output: any[] = []
     let paged: T[] = []
     for (let i = 0; i < list.length; i+= size){
         const paginated: T[] = list.slice(i, i +size)
@@ -47,3 +49,12 @@ export function paginateListOf<T>(list: T[], page, size: number): T[] {
 export const attachmentKeys = (platform: string): [string, string] =>
     platform === 'android' || platform === 'ios'
         ? ['Released apps', 'Download'] : ['Link address', 'Visit']
+
+export function camelize(str: string) {
+    return str.replace(/^\w|[A-Z]|\b\w/g, function(word, index) {
+        return index === 0 ? word.toLowerCase() : word.toUpperCase();
+    }).replace(/\s+/g, '');
+}
+export function capitalize(str: string) {
+   return str.replace(str[0], str[0].toUpperCase())
+}

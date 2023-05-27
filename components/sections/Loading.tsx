@@ -1,7 +1,10 @@
+import {faSpinner} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+
 export default function() {
     return(
         <div className="flex min-h-screen justify-center items-center">
-            <box-icon color="#059669" name='loader' animation='spin'/>
+            <FontAwesomeIcon color={"#059669"} icon={faSpinner} spin={true} />
         </div>
     )
 }

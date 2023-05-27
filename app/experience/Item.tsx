@@ -1,6 +1,8 @@
 import {Box} from "../../components/sections";
 import Image from "next/image";
-import {attachmentKeys} from "../../utils";
+import {attachmentKeys} from "@/utils";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faExternalLink} from "@fortawesome/free-solid-svg-icons";
 
 export default function(
     {experience, isLoading, onBottomClick, onNextClick, innerRef}: TBoxProps & {experience: IExperience}) {
@@ -13,8 +15,10 @@ export default function(
 
             <div className="flex flex-wrap justify-center">
                 <div className="relative w-48 h-48">
-                    <Image className="object-cover shadow-lg rounded-full align-middle border-none cursor-pointer" layout="fill" objectFit="cover"
+                    <Image className="object-cover w-full shadow-lg rounded-full align-middle border-none cursor-pointer"
+                           style={{objectFit: "cover"}}
                            src={experience.iconUrl} alt={experience.title} loader={() => experience.iconUrl}/>
+                    {/*layout="fill" objectFit="cover"*/}
                 </div>
             </div>
             <div className="appearance-none mx-0 sm:mx-6 bg-gray-200 dark:bg-gray-700 overflow-hidden sm:rounded-lg text-left">
@@ -74,7 +78,7 @@ export default function(
             </div>
             <div className="flex justify-center space-x-4">
                 <a rel="noreferrer" target="_blank" className="p-3 cursor-pointer">
-                    <box-icon color="#059669" name="credit-card-front"/>
+                    <FontAwesomeIcon color={"#059669"} icon={faExternalLink} />
                 </a>
             </div>
         </Box>

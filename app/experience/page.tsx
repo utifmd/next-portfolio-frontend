@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image";
-import {ChangeEvent, KeyboardEventHandler, LegacyRef, useRef} from "react";
+import {ChangeEvent, useRef} from "react";
 import {Input} from "../../components";
 import {RoundedButton, ButtonPrimary} from "@/components/Button";
 import {AppDispatch} from "@/store";
@@ -11,14 +11,20 @@ import {
     onIconAppended,
     onImageAppended,
     onInputChange,
-    onInputUnfocused
+    onInputUnfocused, onAddStack
 } from "@/actions/experienceAction";
 import {useAppDispatch, useAppSelector} from "../hooks";
 import Select from "../../components/Select";
+import {camelize} from "@/utils";
 
 export default function () {
-    const {value, icon, images, isValid, status} = useAppSelector((state) => state.experience)
     const dispatch: AppDispatch = useAppDispatch()
+    const {
+        value,
+        icon,
+        images,
+        isValid,
+        status} = useAppSelector<IExperienceState>((state) => state.experience)
     const reference = useRef<Record<string, any>>({})
 
     const onPostExperience = (e: any) => {
@@ -29,15 +35,19 @@ export default function () {
         e.preventDefault()
         dispatch(onInputUnfocused())
     }
-    const handleOnTextPush = (e: KeyboardEventHandler<HTMLInputElement>) => {
+    const handleOnTextPush = (e: any) => {
+        const elem = e.currentTarget
+        if (e.key !== "Enter") return
 
+        dispatch(onAddStack(camelize(elem.value)))
+        elem.value = ""
     }
     const handleOnTextChange = (e: ChangeEvent<HTMLInputElement>) => {
         e.preventDefault()
         const {id, value} = e.currentTarget
         dispatch(onInputChange([id, value]))
     }
-    const handleOnFileChange = (appendable: any) => (e: Record<string, any>) => {
+    const handleOnFileChange = (action: any) => (e: Record<string, any>) => {
         e.preventDefault()
         const {id} = e.currentTarget
         const files: [] = e.target.files
@@ -45,12 +55,12 @@ export default function () {
 
         for (const file of files) {
             dispatch(onInputChange([id, file]))
-            dispatch(appendable(file))
+            dispatch(action(file))
         }
     }
     const onInputFileClick = (key: string) => (e: any) => {
         e.preventDefault()
-        reference.current[key]?.click()
+        reference.current[key].click()
     }
     const handleOnInputFileClick = (key: string) => (ref: any) => {
         reference.current[key] = ref
@@ -64,13 +74,13 @@ export default function () {
                 </div>
                 <div className="grid gap-4 md:grid-cols-2 mb-4">
                     <div>
-                        <Select id="platform" label="platform" onChange={handleOnTextChange} onBlur={handleOnTextBlur}>{Object.keys(ExperiencePlatform).map((platform) =>
-                            <option value={platform} selected={value.platform === platform}>{platform}</option>)}
+                        <Select id="platform" label="platform" onChange={handleOnTextChange} onBlur={handleOnTextBlur}>{Object.keys(ExperiencePlatform).map((platform, i) =>
+                            <option key={i} value={platform} selected={value.platform === platform}>{platform}</option>)}
                         </Select>
                     </div>
                     <div>
-                        <Select id="type" label="type" onChange={handleOnTextChange} onBlur={handleOnTextBlur}>{Object.keys(ExperienceType).map((type) =>
-                            <option value={type} selected={value.type === type}>{type}</option>)}
+                        <Select id="type" label="type" onChange={handleOnTextChange} onBlur={handleOnTextBlur}>{Object.keys(ExperienceType).map((type, i) =>
+                            <option key={i} value={type} selected={value.type === type}>{type}</option>)}
                         </Select>
                     </div>
                     <div>
@@ -89,21 +99,17 @@ export default function () {
                         {value.stack.map(mStack => <span className="text-base px-1">#{mStack}</span>)}
                     </div>
                     <div>
-                        <Input id="stack" type="text" placeholder="Add stack" value={value.description} onKeyUp={handleOnTextPush} onBlur={handleOnTextBlur}/>
+                        <Input id="stack" type="text" placeholder="Add stack" onKeyUp={handleOnTextPush} onBlur={handleOnTextBlur}/>
                     </div>
                     <div>
                         <input id="iconUrl" ref={handleOnInputFileClick("icon")} className={"hidden"} type="file" accept="image/*" multiple={false} onChange={handleOnFileChange(onIconAppended)} onBlur={handleOnTextBlur}/>
-                        <input id="imageUrls" className="hidden" ref={handleOnInputFileClick("image")} type="file" accept="image/*" multiple={true} onChange={handleOnFileChange(onImageAppended)} onBlur={handleOnTextBlur}/>
-                        {icon ?
-                            <Image className="cursor-pointer" src={icon} alt={"icon appendable"} width={86} height={86} onClick={onInputFileClick("icon")} onBlur={handleOnTextBlur}/> :
-                            <RoundedButton label="select icon" onClick={onInputFileClick("icon")}/>
-                        }
+                        <input id="imageUrls" className="hidden" ref={handleOnInputFileClick("image")} type="file" accept="image/*" multiple={true} onChange={handleOnFileChange(onImageAppended)} onBlur={handleOnTextBlur}/>{icon ?
+                        <Image className="cursor-pointer" src={icon} alt={"icon appendable"} width={86} height={86} onClick={onInputFileClick("icon")} onBlur={handleOnTextBlur}/> :
+                        <RoundedButton label="select icon" onClick={onInputFileClick("icon")}/>}
                     </div>
-                    <div>
-                        {images.length ? images.map((image) =>
-                            <div className="grid grid-cols-3 gap-1 w-full"><Image className="cursor-pointer" src={image} alt={"images appendable"} width={86} height={86} onClick={onInputFileClick("image")} onBlur={handleOnTextBlur}/></div>) :
-                            <RoundedButton label="add images" onClick={onInputFileClick("image")}/>
-                        }
+                    <div>{images.length ? images.map((image) =>
+                        <div className="grid grid-cols-3 gap-1 w-full"><Image className="cursor-pointer" src={image} alt={"images appendable"} width={86} height={86} onClick={onInputFileClick("image")} onBlur={handleOnTextBlur}/></div>) :
+                        <RoundedButton label="add images" onClick={onInputFileClick("image")}/>}
                     </div>
                 </div>
                 <ButtonPrimary label="Post" isDisable={status === "loading" || !isValid} isLoading={status === "loading"} onClick={onPostExperience}/>

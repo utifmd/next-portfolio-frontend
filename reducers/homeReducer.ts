@@ -4,6 +4,7 @@ import {AppAction, PAGINATION_SIZE} from "@/actions";
 import {EducationAction} from "@/actions/educationAction";
 import {ExperienceAction} from "@/actions/experienceAction";
 import {groupingListByPropKey} from "@/utils";
+import {faLayerGroup, faMobilePhone, faServer, faLaptop} from "@fortawesome/free-solid-svg-icons";
 
 const initialState: IHomeState = {
     intro: {
@@ -14,14 +15,30 @@ const initialState: IHomeState = {
         title: "Stuff I do",
         description: "Some of the projects we are building include android mobile application, web application, multi platform development such as react by facebook and so on, but for now we are focusing on developing android applications.",
         data: [
-            {icon: "layout", label: "Frontend"},
-            {icon: "server", label: "Backend"},
-            {icon: "mobile-alt", label: "Android"},
-            {icon: "devices", label: "X-Platform"}
+            {icon: faLayerGroup, label: "Frontend"},
+            {icon: faServer, label: "Backend"},
+            {icon: faMobilePhone, label: "Android"},
+            {icon: faLaptop, label: "X-Platform"}
         ]
     },
     feed: {
         status: "idle", isExpTurn: false, isDone: false, page: 1, value: []
+    },
+    profile: {
+        bio: "seorang pemuda tua ophiucus",
+        fullName: "utif milkedori",
+        jobTitle: "software engineer",
+        links: {
+            email: "mailto:utifmd@gmail.com",
+            github: "https://github.com/utifmd/",
+            instagram: "https://instagram/@utifmd",
+            linkedin: "https://linkedin.com/in/utifmd",
+            medium: "https://medium.com/@utifmd",
+            resume: "https://www.canva.com/design/DAEwDqEOVBQ/E4W4OrSCSwUxUQLkhApu7Q/view?utm_content=DAEwDqEOVBQ&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink",
+            stackOverflow: "https://stackoverflow.com/users/6235678/utif-milkedori",
+            twitter: "https://twitter.com/utifmd/"
+        },
+        role: "owner"
     }
 }
 const homeReducer: Reducer<IHomeState> =
@@ -36,8 +53,6 @@ const homeReducer: Reducer<IHomeState> =
             case AppAction.PAGED_FEED_SUCCESS: {
                 const response = action.payload
                 const feedValue = state.feed.value
-                /*const value = feedValue.concat(response.value)
-                groupingListByPropKey(value, "content")*/
 
                 const feed = {...response,
                     value: [...feedValue, ...response.value],

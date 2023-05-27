@@ -4,7 +4,7 @@ interface IEducation extends ISchema {
     desc: string,
     content: string,
     fileUrl: string,
-    imageUrl?: string,
+    imageUrl: string,
     createdAt?: any
 }
 interface IEducationState {
