@@ -1,4 +1,4 @@
-import {AppDispatch} from "../../store";
+import {AppDispatch} from "@/store";
 import {ExperienceItem} from "./index";
 
 type Props = {
@@ -11,7 +11,7 @@ const Experiences = ({state}: Props) => {
     }, [getAllExperience])*/
 
     return <div className="flex flex-col w-full">
-        {state.value.map(experience => <ExperienceItem experience={experience}/>)}
+        {/*{state.value.map(experience => <ExperienceItem experience={experience}/>)}*/}
     </div>
 }
 export default Experiences

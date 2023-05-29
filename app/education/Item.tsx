@@ -1,7 +1,7 @@
-import {Box} from "../../components/sections";
 import Image from "next/image";
+import {Box} from "../../components/sections";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import { faExternalLink } from '@fortawesome/free-solid-svg-icons'
+import {faExternalLink} from '@fortawesome/free-solid-svg-icons'
 
 export default function(
     {education, isLoading, onNextClick, innerRef}: TBoxProps & {education: IEducation}) {

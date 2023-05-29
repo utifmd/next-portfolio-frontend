@@ -53,22 +53,22 @@ const homeReducer: Reducer<IHomeState> =
             case AppAction.PAGED_FEED_SUCCESS: {
                 const response = action.payload
                 const feedValue = state.feed.value
-
                 const feed = {...response,
                     value: [...feedValue, ...response.value],
                     scrollTo: feedValue.length >= PAGINATION_SIZE && feedValue.length
                 }
                 return {...state, feed: {...feed, status: "idle"}}
             }
-
             case AppAction.CREATE_FEED_SUCCESS:
             case EducationAction.CREATE_SUCCESS:
             case ExperienceAction.CREATE_SUCCESS: {
+                const response = action.payload as ISchema
                 const mState: ISchema[] = state.feed.value
-                const value = mState.concat(action.payload as ISchema)
+                const value = [...mState, response]
+                const scrollTo = "content" in response ? 0 : mState.length -1
 
                 groupingListByPropKey(value, "content")
-                return {...state, feed: {...state.feed, value, scrollTo: mState.length}}
+                return {...state, feed: {...state.feed, value, scrollTo}}
             }
 
             default:

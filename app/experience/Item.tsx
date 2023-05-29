@@ -1,8 +1,7 @@
-import {Box} from "../../components/sections";
 import Image from "next/image";
+import Link from "next/link";
 import {attachmentKeys} from "@/utils";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faExternalLink} from "@fortawesome/free-solid-svg-icons";
+import {Box} from "../../components/sections";
 
 export default function(
     {experience, isLoading, onBottomClick, onNextClick, innerRef}: TBoxProps & {experience: IExperience}) {
@@ -16,9 +15,7 @@ export default function(
             <div className="flex flex-wrap justify-center">
                 <div className="relative w-48 h-48">
                     <Image className="object-cover w-full shadow-lg rounded-full align-middle border-none cursor-pointer"
-                           style={{objectFit: "cover"}}
-                           src={experience.iconUrl} alt={experience.title} loader={() => experience.iconUrl}/>
-                    {/*layout="fill" objectFit="cover"*/}
+                           style={{objectFit: "cover"}} fill={true} src={experience.iconUrl} alt={experience.title} loader={() => experience.iconUrl}/>
                 </div>
             </div>
             <div className="appearance-none mx-0 sm:mx-6 bg-gray-200 dark:bg-gray-700 overflow-hidden sm:rounded-lg text-left">
@@ -67,7 +64,7 @@ export default function(
                                             <span className="ml-2 flex-1 w-0 truncate">{ attachmentKeys(experience.platform)[0] }</span>
                                         </div>
                                         <div className="ml-4 flex-shrink-0">
-                                            <a href={experience.releasedUrl} rel="noreferrer" target="_blank" className="font-medium text-green-600 hover:text-green-500">{ attachmentKeys(experience.platform)[1] }</a>
+                                            <Link href={experience.releasedUrl} rel="noreferrer" target="_blank" className="font-medium text-green-600 hover:text-green-500">{ attachmentKeys(experience.platform)[1] }</Link>
                                         </div>
                                     </li>
                                 </ul>
@@ -75,11 +72,6 @@ export default function(
                         </div>
                     </dl>
                 </div>
-            </div>
-            <div className="flex justify-center space-x-4">
-                <a rel="noreferrer" target="_blank" className="p-3 cursor-pointer">
-                    <FontAwesomeIcon color={"#059669"} icon={faExternalLink} />
-                </a>
             </div>
         </Box>
     )

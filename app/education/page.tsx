@@ -1,27 +1,51 @@
 "use client"
 
-import {ButtonPrimary, RoundedButton} from "../../components/Button";
-import {Input} from "../../components";
-import {AppDispatch} from "../../store";
-import {onInputChange, onInputUnfocused, addEducation, onImageAppended} from "../../actions/educationAction"
-import {useAppDispatch, useAppSelector} from "../hooks"
-import {ChangeEvent, useRef} from "react";
+import {useEffect, useRef} from "react";
+import Router, {useRouter} from "next/router";
 import Image from "next/image";
+import {faTrash} from "@fortawesome/free-solid-svg-icons";
+import {AppDispatch} from "@/store";
+import {Input, HoverIconBox} from "@/components";
+import {ButtonPrimary, RoundedButton} from "@/components/Button";
+import {
+    onInputChange,
+    onInputUnfocused,
+    addEducation,
+    onImageAppended,
+    onResetImageAppended
+} from "@/actions/educationAction"
+import {useAppDispatch, useAppSelector} from "../hooks"
 
 export default function() {
-    const {value, status, isValid, images} = useAppSelector((state) => state.education)
+    const router = useRouter()
     const dispatch: AppDispatch = useAppDispatch()
-    const imageRef = useRef({})
+    const {
+        value,
+        status,
+        isValid,
+        image
+    } = useAppSelector((state) => state.education)
+    const {scrollTo} = useAppSelector(({home}) => home.feed)
 
+    useEffect(() => {
+        if (typeof scrollTo === "number") router.back()
+
+    }, [scrollTo])
+
+    const reference = useRef<Record<string, any>>({})
     const onPostEducation = (e: MouseEvent) => {
         e.preventDefault()
         dispatch(addEducation())
     }
-    const handleOnTextBlur = (e: FocusEvent) => {
+    const onResetFileClick = (e: any) => {
+        e.preventDefault()
+        dispatch(onResetImageAppended())
+    }
+    const handleOnTextBlur = (e: any) => {
         e.preventDefault()
         dispatch(onInputUnfocused())
     }
-    const handleOnTextChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleOnTextChange = (e: any) => {
         e.preventDefault()
         const {id, value} = e.currentTarget
         dispatch(onInputChange([id, value]))
@@ -37,11 +61,12 @@ export default function() {
             dispatch(onImageAppended(file))
         }
     }
-    const onInputFileClick = (e: MouseEvent) => {
-        imageRef.current["image"]?.click()
+    const onInputFileClick = (e: any) => {
+        e.preventDefault()
+        reference.current["image"]?.click()
     }
-    const handleOnInputFileClick = (e: HTMLImageElement) => {
-        imageRef.current["image"] = e
+    const handleOnInputFileClick = (e: any) => {
+        reference.current["image"] = e
     }
     return (
         <div className="flex min-h-screen justify-center items-center">
@@ -58,9 +83,10 @@ export default function() {
                         <Input id="fileUrl" type="text" placeholder="Enter file url" value={value.fileUrl} onChange={handleOnTextChange} onBlur={handleOnTextBlur}/>
                     </div>
                     <div className="flex justify-center items-center">
-                        <input ref={handleOnInputFileClick} className={"hidden"} id="imageUrl" type="file" accept="image/*" multiple={false} onChange={handleOnFileChange} onBlur={handleOnTextBlur} /> {images.length
-                        ? images.map((image, i) => <Image key={i} src={image} alt={"image appendable"} width={86} height={86}/>)
-                        : <RoundedButton label="select image" onClick={onInputFileClick}/>
+                        <input ref={handleOnInputFileClick} className={"hidden"} id="imageUrl" type="file" accept="image/*" multiple={false} onChange={handleOnFileChange} onBlur={handleOnTextBlur} /> {image
+                        ? <HoverIconBox icon={faTrash} onClick={onResetFileClick} onBlur={handleOnTextBlur}>
+                            <Image className="absolute inset-0 object-cover" fill={true} src={image} alt={"image appendable"}/></HoverIconBox>
+                        : <RoundedButton label="select image" onClick={onInputFileClick} />
                     }
                     </div>
                     <div className="h-full w-full space-y-4 text-left">

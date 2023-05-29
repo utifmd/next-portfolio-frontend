@@ -14,8 +14,7 @@ type Props = IHomeState & {
 }
 export default function Home({feed, intro, habit, profile, morePagination}: Props) {
     const reference = useRef<Record<string, any>>({})
-    const onFeedNextClicked = (
-        feedLength: number, i: number) => (e: MouseEvent) => {
+    const onFeedNextClicked = (feedLength: number, i: number) => (e: MouseEvent) => {
         e.preventDefault()
         if ((i + 1) >= feedLength) morePagination()
         onJumpToBox(i +1)()
@@ -48,14 +47,15 @@ export default function Home({feed, intro, habit, profile, morePagination}: Prop
                     items={habit.data}
                     description={habit.description}
                     innerRef={handleBoxJumper("habit")}
-                    onNextClick={onJumpToBox(0)}/>
+                    onNextClick={onJumpToBox("feed")}/>
                 <Feed
                     feedValues={feed.value}
                     isLoading={feed.status === "loading"}
                     isDone={feed.isDone}
                     onJumpToBox={onJumpToBox}
                     onFeedNextClicked={onFeedNextClicked}
-                    handleBoxJumper={handleBoxJumper}/>
+                    handleBoxJumper={handleBoxJumper}
+                    innerRef={handleBoxJumper("feed")}/>
             </Surface>
             <Profile innerRef={handleBoxJumper("profile")} profile={profile} />
         </div>

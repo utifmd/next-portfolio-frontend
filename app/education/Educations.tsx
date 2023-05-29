@@ -1,5 +1,5 @@
 import React from "react";
-import {AppDispatch} from "../../store";
+import {AppDispatch} from "@/store";
 import {EducationItem} from "./index";
 
 type Props = {
@@ -7,16 +7,22 @@ type Props = {
 }
 const Educations = ({state, getMorelEducations}: Props) => {
     /*useEffect(() => getAllEducations(), [getAllEducations])*/
-
+    /*const [loading, setLoading] = useState(false)
+    useEffect(() => {
+        Router.events.on("routeChangeStart", () => {setLoading(true)})
+        return () => {
+            Router.events.off("routeChangeStart", () => {setLoading(false)})
+        }
+    }, [Router.events])*/
     const onEducationNextClicked = (e: MouseEvent) => (educationLength: number, i: number) => {
         e.preventDefault()
         if((i +1) >= educationLength) getMorelEducations()
     }
     return (
-        <div className="flex flex-col w-full">{state.value.map((education, i) =>
+        <div className="flex flex-col w-full">{/*state.value.map((education, i) =>
             <EducationItem
                 education={education}
-                onClicked={e => onEducationNextClicked(e)(state.value.length, i)} />)}
+                onClicked={e => onEducationNextClicked(e)(state.value.length, i)} />)*/}
         </div>
     )
 }

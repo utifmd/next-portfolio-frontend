@@ -11,11 +11,13 @@ import {
     onIconAppended,
     onImageAppended,
     onInputChange,
-    onInputUnfocused, onAddStack
+    onInputUnfocused, onAddStack, onRemoveImageAppended
 } from "@/actions/experienceAction";
 import {useAppDispatch, useAppSelector} from "../hooks";
 import Select from "../../components/Select";
 import {camelize} from "@/utils";
+import HoverIconBox from "@/components/sections/HoverIconBox";
+import {faTrash} from "@fortawesome/free-solid-svg-icons";
 
 export default function () {
     const dispatch: AppDispatch = useAppDispatch()
@@ -24,20 +26,29 @@ export default function () {
         icon,
         images,
         isValid,
-        status} = useAppSelector<IExperienceState>((state) => state.experience)
+        status
+    } = useAppSelector<IExperienceState>((state) => state.experience)
     const reference = useRef<Record<string, any>>({})
 
     const onPostExperience = (e: any) => {
         e.preventDefault()
         dispatch(addExperience())
     }
+    const onRemoveFileClick = (i: number) => (e: any) => {
+        e.preventDefault()
+        dispatch(onRemoveImageAppended(i))
+    }
+    const onResetIconClick = (e: any) => {
+        e.preventDefault()
+        dispatch(onRemoveImageAppended(-1))
+    }
     const handleOnTextBlur = (e: any) => {
         e.preventDefault()
         dispatch(onInputUnfocused())
     }
     const handleOnTextPush = (e: any) => {
-        const elem = e.currentTarget
         if (e.key !== "Enter") return
+        const elem = e.currentTarget
 
         dispatch(onAddStack(camelize(elem.value)))
         elem.value = ""
@@ -102,14 +113,18 @@ export default function () {
                         <Input id="stack" type="text" placeholder="Add stack" onKeyUp={handleOnTextPush} onBlur={handleOnTextBlur}/>
                     </div>
                     <div>
-                        <input id="iconUrl" ref={handleOnInputFileClick("icon")} className={"hidden"} type="file" accept="image/*" multiple={false} onChange={handleOnFileChange(onIconAppended)} onBlur={handleOnTextBlur}/>
-                        <input id="imageUrls" className="hidden" ref={handleOnInputFileClick("image")} type="file" accept="image/*" multiple={true} onChange={handleOnFileChange(onImageAppended)} onBlur={handleOnTextBlur}/>{icon ?
-                        <Image className="cursor-pointer" src={icon} alt={"icon appendable"} width={86} height={86} onClick={onInputFileClick("icon")} onBlur={handleOnTextBlur}/> :
-                        <RoundedButton label="select icon" onClick={onInputFileClick("icon")}/>}
+                        <input id="iconUrl" ref={handleOnInputFileClick("icon")} className={"hidden"} type="file" accept="image/*" multiple={false} onChange={handleOnFileChange(onIconAppended)} onBlur={handleOnTextBlur}/>{icon
+                        ? <HoverIconBox icon={faTrash} onClick={onResetIconClick} onBlur={handleOnTextBlur}>
+                            <Image className="absolute inset-0 object-cover" src={icon} alt={"icon appendable"} fill={true}/></HoverIconBox>
+                        : <RoundedButton label="select icon" onClick={onInputFileClick("icon")}/>}
                     </div>
-                    <div>{images.length ? images.map((image) =>
-                        <div className="grid grid-cols-3 gap-1 w-full"><Image className="cursor-pointer" src={image} alt={"images appendable"} width={86} height={86} onClick={onInputFileClick("image")} onBlur={handleOnTextBlur}/></div>) :
-                        <RoundedButton label="add images" onClick={onInputFileClick("image")}/>}
+                    <div>
+                        <input id="imageUrls" className="hidden" ref={handleOnInputFileClick("image")} type="file" accept="image/*" multiple={true} onChange={handleOnFileChange(onImageAppended)} onBlur={handleOnTextBlur}/>
+                        <div className="grid grid-cols-3 gap-1 w-full">{images.length > 0 && images.map((image, i) =>
+                            <HoverIconBox key={i} icon={faTrash} onClick={onRemoveFileClick(i)} onBlur={handleOnTextBlur}>
+                                <Image className="object-cover" fill={true} src={image} alt={"image appendable"}/></HoverIconBox>)}
+                            <RoundedButton label="add images" onClick={onInputFileClick("image")}/>
+                        </div>
                     </div>
                 </div>
                 <ButtonPrimary label="Post" isDisable={status === "loading" || !isValid} isLoading={status === "loading"} onClick={onPostExperience}/>

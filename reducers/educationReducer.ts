@@ -1,21 +1,21 @@
 import {Reducer} from "redux";
 import {EducationAction} from "@/actions/educationAction";
+import {TAnyAction} from "@/store";
 
 const initialState: IEducationState = {
     status: "idle",
     isValid: false,
-    images: [],
     value: {
         title: "",
         content: "",
         desc: "",
-        imageUrl: "https://via.placeholder.com/150",
+        imageUrl: "",
         fileUrl: ""
     }
 }
 const reducer: Reducer<IEducationState> =
-    (state: IEducationState = initialState, action): IEducationState => {
-        const isValid = typeof state.images !== "undefined" &&
+    (state: IEducationState = initialState, action: TAnyAction): IEducationState => {
+        const isValid = state.image &&
             Object.values(state.value)
                 .filter(mValue => typeof mValue === "string")
                 .every(mValue => mValue.length >= 3)
@@ -35,7 +35,10 @@ const reducer: Reducer<IEducationState> =
                 return {...state, status: "error", message: action.payload}
 
             case EducationAction.IMAGE_APPENDED_SUCCESS:
-                return {...state, status: "idle", images: [...state.images, action.payload]}
+                return {...state, status: "idle", image: action.payload}
+
+            case EducationAction.DELETE_IMAGE_APPENDED:
+                return {...state, image: null}
 
             case EducationAction.CREATE_REQUEST:
                 return {...state, status: "loading"}
@@ -46,8 +49,6 @@ const reducer: Reducer<IEducationState> =
             case EducationAction.CREATE_SUCCESS:
                 return initialState
 
-            /*case EducationAction.READ_ALL_SUCCESS:
-                return {...state, status: "idle", value: state.value.concat(action.payload)}*/
             default:
                 return state
         }

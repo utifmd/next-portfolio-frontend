@@ -1,17 +1,17 @@
 import {setTimeout} from "timers";
 import {Middleware} from "redux";
-import {TAnyAction, educationsData, experiencesData} from "../store";
-import {paginateListOf} from "../utils";
-import {PAGINATION_SIZE} from "../actions";
+import {TAnyAction, educationsData, experiencesData} from "@/store";
+import {paginateListOf} from "@/utils";
+import {PAGINATION_SIZE} from "@/actions";
 
 export const CALL_API = "CALL_API"
 
 const httpRequest = ({header, body}: IHttpRequestAction) =>
-    new Promise<ISchema[]>((resolve, reject) => {
+    new Promise<any>((resolve, reject) => {
     setTimeout(() => {
-        if (typeof header === "string" && typeof body !== "undefined") {
-            resolve(body)
-            return;
+        if (typeof header === "string") {
+            body ? resolve(body) : reject("undefined body")
+            return
         }
         if (!("page" in header)) {
             reject("request with no pagination.")
@@ -22,6 +22,7 @@ const httpRequest = ({header, body}: IHttpRequestAction) =>
             const isDone = response.length <= 0 || response.length < PAGINATION_SIZE
             const experience = <IFeedState>{
                 isDone,
+                status: "idle",
                 isExpTurn: true,
                 page: header.page +1,
                 value: response
@@ -33,6 +34,7 @@ const httpRequest = ({header, body}: IHttpRequestAction) =>
         const isExpTurn = response.length <= 0 || response.length < PAGINATION_SIZE
         const educations = <IFeedState>{
             isDone: false,
+            status: "idle",
             isExpTurn,
             page: isExpTurn ? 1 : header.page +1,
             value: response

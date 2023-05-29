@@ -7,10 +7,11 @@ import {EducationAction} from "./educationAction";
 export const addExperience = () =>
     (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
     const {value} = getState().experience
+    const date = new Date()
     const experience: IExperience = {
         ...value,
-        id: "EXP-1001",
-        createdAt: new Date()
+        id: `EXP-${date.getTime()}`,
+        createdAt: date
     }
     const action: IAppAction = {
         [CALL_API]: {
@@ -41,7 +42,13 @@ export const onImageAppended = (file: any) =>
     }
     return dispatch(action)
 }
-
+export const onRemoveImageAppended = (index: number) =>
+    (dispatch: AppDispatch): IAppAction => {
+        const action: TAnyAction = {
+            type: ExperienceAction.DELETE_IMAGES_APPENDED, payload: index
+        }
+        return dispatch(action)
+    }
 export const onIconAppended = (file: any) =>
     (dispatch: AppDispatch): IAppAction => {
     const action: IAppAction = {
@@ -78,7 +85,6 @@ export const onInputUnfocused = () =>
     }
     return dispatch(action)
 }
-
 export const getAllExperience = () => (dispatch: AppDispatch) => {
     const response: IExperience[] = []
     const action: AnyAction = {
@@ -100,6 +106,7 @@ export enum ExperienceAction {
     IMAGES_APPENDED_REQUEST = "@@EXPERIENCE_IMAGES_APPENDED_REQUEST",
     IMAGES_APPENDED_FAILED = "@@EXPERIENCE_IMAGES_APPENDED_FAILED",
     IMAGES_APPENDED_SUCCESS = "@@EXPERIENCE_IMAGES_APPENDED_SUCCESS",
+    DELETE_IMAGES_APPENDED = "@@EXPERIENCE_DELETE_IMAGES_APPENDED",
 
     ICON_APPENDED_REQUEST = "@@EXPERIENCE_ICON_APPENDED_REQUEST",
     ICON_APPENDED_FAILED = "@@EXPERIENCE_ICON_APPENDED_FAILED",

@@ -18,7 +18,7 @@ const initialState: IExperienceState = {
 }
 const reducer: Reducer<IExperienceState> =
     (state: IExperienceState = initialState, action): IExperienceState => {
-    const isValid = typeof state.images !== "undefined" &&
+    const isValid = state.images.length > 0 &&
         typeof state.icon !== "undefined" &&
         Object.values(state.value)
             .filter(mValue => typeof mValue === "string" || Array.isArray(mValue))
@@ -54,6 +54,15 @@ const reducer: Reducer<IExperienceState> =
         case ExperienceAction.IMAGES_APPENDED_SUCCESS:
             return {...state, status: "idle", images: [...state.images, action.payload]}
 
+        case ExperienceAction.DELETE_IMAGES_APPENDED: {
+            const index = action.payload as number
+            if (index === -1) return {...state, icon: null}
+
+            const images = state.images.filter(
+                (_, i) => i !== index
+            )
+            return {...state, images}
+        }
         case ExperienceAction.CREATE_REQUEST:
             return {...state, status: "loading"}
 

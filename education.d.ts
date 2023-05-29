@@ -11,7 +11,7 @@ interface IEducationState {
     status: "idle" | "loading" | "error",
     message?: string,
     isValid: boolean,
-    images: any[],
+    image?: any,
     value: IEducation
 }
 // type TDispatchEducation = (state: IEducationState) => IEducationState

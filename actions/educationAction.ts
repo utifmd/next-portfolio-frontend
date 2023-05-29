@@ -4,10 +4,10 @@ import {BROWSER_API, CALL_API} from "@/middlewares";
 
 export const addEducation = () =>
     (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
-    const {value} = getState().education
-    const education: IEducation = {
-        ...value,
-        id: "101",
+    const {value/*, image*/} = getState().education
+    const education: IEducation /*& {image: any}*/ = {
+        ...value, //image,
+        id: "EDU-101",
         createdAt: new Date(),
     }
     const action: IAppAction = {
@@ -22,7 +22,6 @@ export const addEducation = () =>
             body: education
         }
     }
-    console.log(education)
     return dispatch(action)
 }
 export const onInputChange = (idValue: [string, any]) =>
@@ -36,6 +35,13 @@ export const onInputUnfocused = () =>
     (dispatch: AppDispatch): IAppAction => {
     const action: TAnyAction = {
         type: EducationAction.INPUT_UNFOCUSED
+    }
+    return dispatch(action)
+}
+export const onResetImageAppended = () =>
+    (dispatch: AppDispatch): IAppAction => {
+    const action: TAnyAction = {
+        type: EducationAction.DELETE_IMAGE_APPENDED
     }
     return dispatch(action)
 }
@@ -61,6 +67,7 @@ export enum EducationAction {
     IMAGE_APPENDED_REQUEST = "@@EDUCATION_IMAGE_APPENDED_REQUEST",
     IMAGE_APPENDED_FAILED = "@@EDUCATION_IMAGE_APPENDED_FAILED",
     IMAGE_APPENDED_SUCCESS = "@@EDUCATION_IMAGE_APPENDED_SUCCESS",
+    DELETE_IMAGE_APPENDED = "@@EDUCATION_DELETE_IMAGE_APPENDED",
 
     CREATE_REQUEST = "@@EDUCATION_CREATE_REQUEST",
     CREATE_FAILED = "@@EDUCATION_CREATE_FAILED",

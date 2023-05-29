@@ -7,30 +7,32 @@ type Props = {
     isLoading: boolean,
     isDone: boolean,
     onJumpToBox?: any,
+    innerRef?: any,
     onFeedNextClicked: (length: number, i: number) => any,
-    handleBoxJumper: (key: number | string) => any,
+    handleBoxJumper: (key: number | string) => (e: any) => any,
 }
-export default function Feed(
-    {feedValues, isLoading, isDone, onJumpToBox, onFeedNextClicked, handleBoxJumper}: Props) {
+export default function Feed({feedValues, innerRef, isLoading, isDone, onJumpToBox, onFeedNextClicked, handleBoxJumper}: Props) {
     const feedLength = feedValues.length
 
-    return (<>{feedValues.map((item, i) => {
-        const isTheLastOne = (i + 1) >= feedLength
-        let component = <EducationItem
-            key={i}
-            innerRef={handleBoxJumper(i)}
-            education={item as IEducation}
-            isLoading={isLoading && isTheLastOne}
-            onNextClick={onFeedNextClicked(feedLength, i)}/>
+    return (
+        <div ref={innerRef} className="w-full">{feedValues.map((item, i) => {
+            const isTheLastOne = (i + 1) >= feedLength
+            let component = <EducationItem
+                key={i}
+                innerRef={handleBoxJumper(i)}
+                education={item as IEducation}
+                isLoading={isLoading && isTheLastOne}
+                onNextClick={onFeedNextClicked(feedLength, i)}/>
 
-        if(!("content" in item)) component = <ExperienceItem
-            key={i}
-            innerRef={handleBoxJumper(i)}
-            experience={item as IExperience}
-            isLoading={isLoading && isTheLastOne}
-            onNextClick={onFeedNextClicked(feedLength, i)}
-            onBottomClick={isDone && isTheLastOne && onJumpToBox("base")}/>
+            if(!("content" in item)) component = <ExperienceItem
+                key={i}
+                innerRef={handleBoxJumper(i)}
+                experience={item as IExperience}
+                isLoading={isLoading && isTheLastOne}
+                onNextClick={onFeedNextClicked(feedLength, i)}
+                onBottomClick={isDone && isTheLastOne && onJumpToBox("base")}/>
 
-        return component
-    })}</>)
+            return component})}
+        </div>
+    )
 }
