@@ -27,15 +27,18 @@ const pagedFeed = () =>
 
 const onSelectToUpdate = (index: number) =>
     (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
-    const selectedFeedItem = getState().home.feed.value[index]
-    const schemaState = "content" in selectedFeedItem
-        ? <IEducationState>{
-            value: selectedFeedItem, isSubmitted: false, isValid: true, status: "idle"
-        }
-        : <IExperienceState>{}
 
+    const selectedFeedItem = getState().home.feed.value[index]
+    if("content" in selectedFeedItem){
+        const payload = <IEducationState>{value: selectedFeedItem, isSubmitted: false, isValid: false, status: "idle"}
+        const action: TAnyAction = {
+            payload, type: HomeAction.UPDATE_FEED_EDUCATION_PREPARATION
+        }
+        return dispatch(action)
+    }
+    const payload = <IExperienceState>{value: selectedFeedItem as IExperience, isSubmitted: false, isValid: false, images: [], status: "idle"}
     const action: TAnyAction = {
-        payload: schemaState, type: HomeAction.UPDATE_FEED_PREPARATION
+        payload, type: HomeAction.UPDATE_FEED_EXPERIENCE_PREPARATION
     }
     return dispatch(action)
 }
@@ -53,10 +56,9 @@ enum HomeAction {
     PAGED_FEED_FAILED = "@@PAGED_FEED_FAILED",
     PAGED_FEED_SUCCESS = "@@PAGED_FEED_SUCCESS",
 
-    UPDATE_FEED_PREPARATION = "@UPDATE_FEED_PREPARATION",
+    UPDATE_FEED_EDUCATION_PREPARATION = "@UPDATE_FEED_EDUCATION_PREPARATION",
+    UPDATE_FEED_EXPERIENCE_PREPARATION = "@UPDATE_FEED_EXPERIENCE_PREPARATION",
 }
 export {
-    PAGINATION_SIZE,
-    pagedFeed, onSelectToUpdate, //getFeed, addFeed,
-    HomeAction
+    PAGINATION_SIZE, pagedFeed, onSelectToUpdate, HomeAction
 }

@@ -23,10 +23,8 @@ const reducer: Reducer<IEducationState> =
                 .every(mValue => mValue.length >= 3)
 
         switch (action.type) {
-            case HomeAction.UPDATE_FEED_PREPARATION: {
-                console.log("case HomeAction.UPDATE_FEED_PREPARATION")
+            case HomeAction.UPDATE_FEED_EDUCATION_PREPARATION:
                 return action.payload as IEducationState
-            }
 
             case EducationAction.INPUT_CHANGED: {
                 const [id, value] = action.payload as [string, any]

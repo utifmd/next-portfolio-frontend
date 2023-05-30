@@ -122,4 +122,6 @@ export enum ExperienceAction {
 
     UPDATE = "@@EXPERIENCE_UPDATE",
     DELETE = "@@EXPERIENCE_DELETE",
+
+    RESET_SUBMISSION = "@@EXPERIENCE_RESET_SUBMISSION",
 }

@@ -104,7 +104,7 @@ export const experiencesData: IExperience[] = [
         description: "Hati mana jatuh",
         iconUrl: "https://via.placeholder.com/150",
         id: "Hati mana jatuh",
-        imageUrls: ["manusia"],
+        imageUrls: ["https://via.placeholder.com/150", "https://via.placeholder.com/150", "https://via.placeholder.com/150"],
         platform: "Hati mana jatuh",
         releasedUrl: "Hati mana jatuh",
         stack: ["manusia"],

@@ -1,33 +1,38 @@
 import {Reducer} from "redux";
 import {ExperienceAction} from "@/actions/experienceAction";
+import {HomeAction} from "@/actions";
 
 const initialState: IExperienceState = {
     status: "idle",
     isValid: false,
+    isSubmitted: false,
     images: [],
     value: {
         title: "",
         description: "",
         platform: "",
         type: "",
-        iconUrl: "https://via.placeholder.com/150",
+        iconUrl: "",
         demoUrl: "",
         releasedUrl: "",
+        imageUrls:[],
         stack: []
     }
 }
 const reducer: Reducer<IExperienceState> =
     (state: IExperienceState = initialState, action): IExperienceState => {
-    const isValid = state.images.length > 0 &&
-        typeof state.icon !== "undefined" &&
+    const isValid = state.icon && state.images.length > 0 &&
         Object.values(state.value)
             .filter(mValue => typeof mValue === "string" || Array.isArray(mValue))
             .every(mValue => mValue.length >= 3)
 
     switch (action.type) {
+        case HomeAction.UPDATE_FEED_EXPERIENCE_PREPARATION:
+            return action.payload as IExperienceState
+
         case ExperienceAction.INPUT_CHANGED: {
             const [id, value] = action.payload as [string, any]
-            return {...state, value: {...state.value, [id]: value}, isValid}
+            return {...state, isValid, value: {...state.value, [id]: value}}
         }
         case ExperienceAction.INPUT_ADD_STACK: {
             const stack = [...state.value.stack, action.payload as string]
@@ -70,10 +75,11 @@ const reducer: Reducer<IExperienceState> =
             return {...state, status: "error", message: action.payload}
 
         case ExperienceAction.CREATE_SUCCESS:
-            return initialState
+            return {...initialState, isSubmitted: true}
 
-        /*case ExperienceAction.READ_ALL_SUCCESS:
-            return {...state, value: state.value.concat(action.payload)}*/
+        case ExperienceAction.RESET_SUBMISSION:
+            return {...state, isSubmitted: false}
+
         default:
             return state
     }

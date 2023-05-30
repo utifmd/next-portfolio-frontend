@@ -2,9 +2,14 @@ import Image from "next/image";
 import Link from "next/link";
 import {attachmentKeys} from "@/utils";
 import {Box} from "../../components/sections";
-
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faEdit, faExternalLink} from "@fortawesome/free-solid-svg-icons";
+type Props = TBoxProps & {
+    experience: IExperience,
+    onEditIconClick: (e: any) => void
+}
 export default function(
-    {experience, isLoading, onBottomClick, onNextClick, innerRef}: TBoxProps & {experience: IExperience}) {
+    {experience, isLoading, onBottomClick, onNextClick, onEditIconClick, innerRef}: Props) {
     return(
         <Box title={experience.title}
              isLoading={isLoading}
@@ -71,6 +76,11 @@ export default function(
                             </dd>
                         </div>
                     </dl>
+                </div>
+            </div>
+            <div className="flex justify-center space-x-4">
+                <div className="cursor-pointer" onClick={onEditIconClick} >
+                    <FontAwesomeIcon color={"#059669"} icon={faEdit}/>
                 </div>
             </div>
         </Box>

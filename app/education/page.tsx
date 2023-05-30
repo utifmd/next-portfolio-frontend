@@ -87,10 +87,10 @@ export default function() {
                         <Input id="fileUrl" type="text" placeholder="Enter file url" value={value.fileUrl} onChange={handleOnTextChange} onBlur={handleOnTextBlur}/>
                     </div>
                     <div className="flex justify-center items-center">
-                        <input ref={handleOnInputFileClick} className={"hidden"} id="imageUrl" type="file" accept="image/*" multiple={false} onChange={handleOnFileChange} onBlur={handleOnTextBlur} /> {image || value.imageUrl.length
+                        <input ref={handleOnInputFileClick} className={"hidden"} id="image" type="file" accept="image/*" multiple={false} onChange={handleOnFileChange} onBlur={handleOnTextBlur} /> {image || value.imageUrl.length > 0
                         ? <HoverIconBox icon={faTrash} onClick={handleOnFileClick(value.imageUrl)} onBlur={handleOnTextBlur}>{image
                             ? <Image className="absolute inset-0 object-cover" fill={true} src={image} alt={"image appendable"}/>: value.imageUrl.length > 0
-                                ? <Image className="absolute inset-0 object-cover" fill={true} src={value.imageUrl} loader={() => value.imageUrl} alt={"image appendable"}/>:null}</HoverIconBox>
+                                ? <Image className="absolute inset-0 object-cover" fill={true} src={value.imageUrl} loader={() => value.imageUrl} alt={"image appendable"}/>: null}</HoverIconBox>
                         : <RoundedButton label="select image" onClick={onInputFileClick} />}
                     </div>
                     <div className="h-full w-full space-y-4 text-left">

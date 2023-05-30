@@ -16,8 +16,7 @@ export default function(
             isLoading={isLoading}
             onNextClick={onNextClick}>
             <div className="relative h-48 sm:h-[256px] mx-0 sm:mx-6">
-                <Image className="rounded-md shadow-md cursor-pointer" fill={true} style={{objectFit: "cover"}}
-                   src={education.imageUrl} alt={education.title} loader={() => education.imageUrl}/>
+                <Image className="object-cover rounded-md shadow-md cursor-pointer" fill={true} src={education.imageUrl} alt={education.title} loader={() => education.imageUrl}/>
             </div>
             <p className="text">{education.content}</p>
             <div className="flex justify-center space-x-4">

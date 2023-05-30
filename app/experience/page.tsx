@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image";
-import {ChangeEvent, useRef} from "react";
+import {ChangeEvent, useEffect, useRef} from "react";
 import {Input} from "../../components";
 import {RoundedButton, ButtonPrimary} from "@/components/Button";
 import {AppDispatch} from "@/store";
@@ -18,29 +18,41 @@ import Select from "../../components/Select";
 import {camelize} from "@/utils";
 import HoverIconBox from "@/components/sections/HoverIconBox";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
+import {onResetSubmission} from "@/actions/educationAction";
+import {useRouter} from "next/navigation";
 
 export default function () {
-    const dispatch: AppDispatch = useAppDispatch()
     const {
         value,
-        icon,
         images,
         isValid,
-        status
-    } = useAppSelector<IExperienceState>((state) => state.experience)
+        status,
+        isSubmitted, icon } = useAppSelector<IExperienceState>((state) => state.experience)
+    const dispatch: AppDispatch = useAppDispatch()
+    const router = useRouter()
     const reference = useRef<Record<string, any>>({})
+
+    const onFormSubmitted = () => {
+        if (!isSubmitted || status !== "idle") return () => void
+
+            dispatch(onResetSubmission())
+        router.back()
+    }
+    useEffect(onFormSubmitted, [isSubmitted])
 
     const onPostExperience = (e: any) => {
         e.preventDefault()
         dispatch(addExperience())
     }
-    const onRemoveFileClick = (i: number) => (e: any) => {
+    const handleOnFileClick =
+        (i: number) => (url: string) => (e: any) => {
         e.preventDefault()
+        if (url.length > 0) {
+            console.log(`delete image ${url} on the server`)
+            // dispatch(onRemoveImage(url))
+            return
+        }
         dispatch(onRemoveImageAppended(i))
-    }
-    const onResetIconClick = (e: any) => {
-        e.preventDefault()
-        dispatch(onRemoveImageAppended(-1))
     }
     const handleOnTextBlur = (e: any) => {
         e.preventDefault()
@@ -113,16 +125,23 @@ export default function () {
                         <Input id="stack" type="text" placeholder="Add stack" onKeyUp={handleOnTextPush} onBlur={handleOnTextBlur}/>
                     </div>
                     <div>
-                        <input id="iconUrl" ref={handleOnInputFileClick("icon")} className={"hidden"} type="file" accept="image/*" multiple={false} onChange={handleOnFileChange(onIconAppended)} onBlur={handleOnTextBlur}/>{icon
-                        ? <HoverIconBox icon={faTrash} onClick={onResetIconClick} onBlur={handleOnTextBlur}>
-                            <Image className="absolute inset-0 object-cover" src={icon} alt={"icon appendable"} fill={true}/></HoverIconBox>
+                        <input id="icon" ref={handleOnInputFileClick("icon")} className={"hidden"} type="file" accept="image/*" multiple={false} onChange={handleOnFileChange(onIconAppended)} onBlur={handleOnTextBlur}/>{icon || value.iconUrl.length > 0
+                        ? <HoverIconBox icon={faTrash} onClick={handleOnFileClick(-1)(value.iconUrl)} onBlur={handleOnTextBlur}>{ icon
+                            ? <Image className="absolute inset-0 object-cover" src={icon} alt={"icon appendable"} fill={true}/> : value.iconUrl
+                                ? <Image className="absolute inset-0 object-cover" src={value.iconUrl} loader={() => value.iconUrl} alt={"icon appendable"} fill={true}/> : null}</HoverIconBox>
                         : <RoundedButton label="select icon" onClick={onInputFileClick("icon")}/>}
                     </div>
                     <div>
-                        <input id="imageUrls" className="hidden" ref={handleOnInputFileClick("image")} type="file" accept="image/*" multiple={true} onChange={handleOnFileChange(onImageAppended)} onBlur={handleOnTextBlur}/>
-                        <div className="grid grid-cols-3 gap-1 w-full">{images.length > 0 && images.map((image, i) =>
-                            <HoverIconBox key={i} icon={faTrash} onClick={onRemoveFileClick(i)} onBlur={handleOnTextBlur}>
-                                <Image className="object-cover" fill={true} src={image} alt={"image appendable"}/></HoverIconBox>)}
+                        <input id="images" className="hidden" ref={handleOnInputFileClick("image")} type="file" accept="image/*" multiple={true} onChange={handleOnFileChange(onImageAppended)} onBlur={handleOnTextBlur}/>
+                        <div className="grid grid-cols-3 gap-1 w-full">
+                            {value.imageUrls.length > 0 && value.imageUrls.map((url, i) =>
+                                <HoverIconBox key={i} icon={faTrash} onClick={handleOnFileClick(i)(url)} onBlur={handleOnTextBlur}>
+                                    <Image className="object-cover" fill={true} src={url} loader={() => url} alt={"image appendable"}/>
+                                </HoverIconBox>)}
+                            {images.length > 0 && images.map((image, i) =>
+                                <HoverIconBox key={i} icon={faTrash} onClick={handleOnFileClick(i)("")} onBlur={handleOnTextBlur}>
+                                    <Image className="object-cover" fill={true} src={image} alt={"image appendable"}/>
+                                </HoverIconBox>)}
                             <RoundedButton label="add images" onClick={onInputFileClick("image")}/>
                         </div>
                     </div>

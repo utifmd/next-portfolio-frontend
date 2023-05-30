@@ -17,10 +17,15 @@ export default function Feed(
     {feedValues, innerRef, isLoading, isDone, onJumpToBox, onFeedNextClicked, handleBoxJumper, onSelectToUpdate}: Props) {
     const router = useRouter()
     const feedLength = feedValues.length
-    const handleOnSelectToUpdate = (i: number) => (e: any) => {
+    const handleOnSelectToUpdate =
+        (i: number, isEducation: boolean) => (e: any) => {
         e.preventDefault()
         onSelectToUpdate(i)
-        router.push("/education")
+        if(isEducation) {
+            router.push("/education")
+            return
+        }
+        router.push("/experience")
     }
     return (
         <div ref={innerRef} className="w-full">{feedValues.map((item, i) => {
@@ -30,7 +35,7 @@ export default function Feed(
                 innerRef={handleBoxJumper(i)}
                 education={item as IEducation}
                 isLoading={isLoading && isTheLastOne}
-                onEditIconClick={handleOnSelectToUpdate(i)}
+                onEditIconClick={handleOnSelectToUpdate(i, true)}
                 onNextClick={onFeedNextClicked(feedLength, i)}/>
 
             if(!("content" in item)) component = <ExperienceItem
@@ -39,6 +44,7 @@ export default function Feed(
                 experience={item as IExperience}
                 isLoading={isLoading && isTheLastOne}
                 onNextClick={onFeedNextClicked(feedLength, i)}
+                onEditIconClick={handleOnSelectToUpdate(i, false)}
                 onBottomClick={isDone && isTheLastOne && onJumpToBox("base")}/>
 
             return component})}

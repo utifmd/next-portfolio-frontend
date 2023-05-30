@@ -5,7 +5,7 @@ interface IExperience extends ISchema {
     description: string,
     platform: string, // "android" | "ios" | "web",
     stack: string[],
-    imageUrls?: string[],
+    imageUrls: string[],
     iconUrl: string,
     releasedUrl: string,
     demoUrl: string,
@@ -17,6 +17,7 @@ interface IExperienceState {
     icon?: any,
     images: any[],
     value: IExperience,
-    isValid: boolean
+    isValid: boolean,
+    isSubmitted: boolean
 }
 // type TDispatchExperience = (state: IExperienceState) => IExperienceState
