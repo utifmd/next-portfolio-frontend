@@ -1,10 +1,15 @@
 import Image from "next/image";
 import {Box} from "../../components/sections";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faExternalLink} from '@fortawesome/free-solid-svg-icons'
+import {faExternalLink, faEdit} from '@fortawesome/free-solid-svg-icons'
+import Link from "next/link";
 
+type Props = TBoxProps & {
+    education: IEducation,
+    onEditIconClick: (e: any) => void
+}
 export default function(
-    {education, isLoading, onNextClick, innerRef}: TBoxProps & {education: IEducation}) {
+    {education, isLoading, onNextClick, onEditIconClick, innerRef}: Props) {
     return(
         <Box innerRef={innerRef}
             title={education.title}
@@ -16,9 +21,12 @@ export default function(
             </div>
             <p className="text">{education.content}</p>
             <div className="flex justify-center space-x-4">
-                <a className="p-3 cursor-pointer">
+                <Link href={education.fileUrl} className="cursor-pointer">
                     <FontAwesomeIcon color={"#059669"} icon={faExternalLink} />
-                </a>
+                </Link>
+                <div className="cursor-pointer" onClick={onEditIconClick} >
+                    <FontAwesomeIcon color={"#059669"} icon={faEdit}/>
+                </div>
             </div>
         </Box>
     )

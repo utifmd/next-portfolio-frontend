@@ -1,6 +1,6 @@
 import {Reducer} from "redux";
 import {TAnyAction} from "@/store";
-import {AppAction, PAGINATION_SIZE} from "@/actions";
+import {HomeAction, PAGINATION_SIZE} from "@/actions";
 import {EducationAction} from "@/actions/educationAction";
 import {ExperienceAction} from "@/actions/experienceAction";
 import {groupingListByPropKey} from "@/utils";
@@ -44,13 +44,13 @@ const initialState: IHomeState = {
 const homeReducer: Reducer<IHomeState> =
     (state: IHomeState = initialState, action: TAnyAction): IHomeState => {
         switch (action.type) {
-            case AppAction.PAGED_FEED_REQUEST:
+            case HomeAction.PAGED_FEED_REQUEST:
                 return {...state, feed: {...state.feed, status: "loading"}}
 
-            case AppAction.PAGED_FEED_FAILED:
+            case HomeAction.PAGED_FEED_FAILED:
                 return {...state, feed: {...state.feed, status: "error", message: action.payload}}
 
-            case AppAction.PAGED_FEED_SUCCESS: {
+            case HomeAction.PAGED_FEED_SUCCESS: {
                 const response = action.payload
                 const feedValue = state.feed.value
                 const feed = {...response,
@@ -59,7 +59,7 @@ const homeReducer: Reducer<IHomeState> =
                 }
                 return {...state, feed: {...feed, status: "idle"}}
             }
-            case AppAction.CREATE_FEED_SUCCESS:
+            case HomeAction.CREATE_FEED_SUCCESS:
             case EducationAction.CREATE_SUCCESS:
             case ExperienceAction.CREATE_SUCCESS: {
                 const response = action.payload as ISchema

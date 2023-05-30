@@ -15,7 +15,7 @@ export default function(
             <div className="flex flex-wrap justify-center">
                 <div className="relative w-48 h-48">
                     <Image className="object-cover w-full shadow-lg rounded-full align-middle border-none cursor-pointer"
-                           style={{objectFit: "cover"}} fill={true} src={experience.iconUrl} alt={experience.title} loader={() => experience.iconUrl}/>
+                           fill={true} src={experience.iconUrl} alt={experience.title} loader={() => experience.iconUrl}/>
                 </div>
             </div>
             <div className="appearance-none mx-0 sm:mx-6 bg-gray-200 dark:bg-gray-700 overflow-hidden sm:rounded-lg text-left">

@@ -22,7 +22,7 @@ export type TAnyAction = AnyAction & {payload?: any}
 export const educationsData: IEducation[] = [
     {
         id: "PID-1001",
-        fileUrl: "",
+        fileUrl: "https://via.placeholder.com/150",
         content: "Ini content 1001",
         createdAt: "A minute ago",
         desc: "Ini description",
@@ -31,7 +31,7 @@ export const educationsData: IEducation[] = [
     },
     {
         id: "PID-1002",
-        fileUrl: "",
+        fileUrl: "https://via.placeholder.com/150",
         content: "Ini content 1002",
         createdAt: "A minute ago",
         desc: "Ini description",
@@ -40,7 +40,7 @@ export const educationsData: IEducation[] = [
     },
     {
         id: "PID-1003",
-        fileUrl: "",
+        fileUrl: "https://via.placeholder.com/150",
         content: "Ini content 1003",
         createdAt: "A minute ago",
         desc: "Ini description",
@@ -49,7 +49,7 @@ export const educationsData: IEducation[] = [
     },
     {
         id: "PID-1004",
-        fileUrl: "",
+        fileUrl: "https://via.placeholder.com/150",
         content: "Ini content 1004",
         createdAt: "A minute ago",
         desc: "Ini description",
@@ -58,7 +58,7 @@ export const educationsData: IEducation[] = [
     },
     {
         id: "PID-1005",
-        fileUrl: "",
+        fileUrl: "https://via.placeholder.com/150",
         content: "Ini content 1005",
         createdAt: "A minute ago",
         desc: "Ini description",
@@ -67,7 +67,7 @@ export const educationsData: IEducation[] = [
     },
     {
         id: "PID-1006",
-        fileUrl: "",
+        fileUrl: "https://via.placeholder.com/150",
         content: "Ini content 1006",
         createdAt: "A minute ago",
         desc: "Ini description",
@@ -76,7 +76,7 @@ export const educationsData: IEducation[] = [
     },
     {
         id: "PID-1007",
-        fileUrl: "",
+        fileUrl: "https://via.placeholder.com/150",
         content: "Ini content 1007",
         createdAt: "A minute ago",
         desc: "Ini description",

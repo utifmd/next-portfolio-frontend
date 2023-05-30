@@ -11,6 +11,7 @@ interface IEducationState {
     status: "idle" | "loading" | "error",
     message?: string,
     isValid: boolean,
+    isSubmitted: boolean,
     image?: any,
     value: IEducation
 }

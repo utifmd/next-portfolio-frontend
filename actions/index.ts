@@ -1,4 +1,4 @@
-import {AppDispatch} from "@/store";
+import {AppDispatch, TAnyAction} from "@/store";
 import {CALL_API} from "@/middlewares";
 
 const PAGINATION_SIZE = 3
@@ -16,16 +16,31 @@ const pagedFeed = () =>
                 endpoints: ["/educations", "/experiences"]
             },
             types: [
-                AppAction.PAGED_FEED_REQUEST,
-                AppAction.PAGED_FEED_FAILED,
-                AppAction.PAGED_FEED_SUCCESS
+                HomeAction.PAGED_FEED_REQUEST,
+                HomeAction.PAGED_FEED_FAILED,
+                HomeAction.PAGED_FEED_SUCCESS
             ]
         }
     }
     return dispatch(action)
 }
 
-enum AppAction {
+const onSelectToUpdate = (index: number) =>
+    (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
+    const selectedFeedItem = getState().home.feed.value[index]
+    const schemaState = "content" in selectedFeedItem
+        ? <IEducationState>{
+            value: selectedFeedItem, isSubmitted: false, isValid: true, status: "idle"
+        }
+        : <IExperienceState>{}
+
+    const action: TAnyAction = {
+        payload: schemaState, type: HomeAction.UPDATE_FEED_PREPARATION
+    }
+    return dispatch(action)
+}
+
+enum HomeAction {
     CREATE_FEED_REQUEST = "@@CREATE_FEED_REQUEST",
     CREATE_FEED_FAILED = "@@CREATE_FEED_FAILED",
     CREATE_FEED_SUCCESS = "@@CREATE_FEED_SUCCESS",
@@ -36,10 +51,12 @@ enum AppAction {
 
     PAGED_FEED_REQUEST = "@@PAGED_FEED_REQUEST",
     PAGED_FEED_FAILED = "@@PAGED_FEED_FAILED",
-    PAGED_FEED_SUCCESS = "@@PAGED_FEED_SUCCESS"
+    PAGED_FEED_SUCCESS = "@@PAGED_FEED_SUCCESS",
+
+    UPDATE_FEED_PREPARATION = "@UPDATE_FEED_PREPARATION",
 }
 export {
     PAGINATION_SIZE,
-    pagedFeed, //getFeed, addFeed,
-    AppAction
+    pagedFeed, onSelectToUpdate, //getFeed, addFeed,
+    HomeAction
 }

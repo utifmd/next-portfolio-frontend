@@ -45,6 +45,10 @@ export const onResetImageAppended = () =>
     }
     return dispatch(action)
 }
+export const onResetSubmission = () =>
+    (dispatch: AppDispatch): IAppAction => dispatch(
+    <TAnyAction>{type: EducationAction.RESET_SUBMISSION}
+)
 export const onImageAppended = (file: any) =>
     (dispatch: AppDispatch): IAppAction => {
 
@@ -77,6 +81,7 @@ export enum EducationAction {
     READ_ALL_FAILED = "@@EDUCATION_READ_ALL_FAILED",
     READ_ALL_SUCCESS = "@@EDUCATION_READ_ALL_SUCCESS",
 
+    RESET_SUBMISSION = "@@EDUCATION_RESET_SUBMISSION",
     UPDATE = "@@EDUCATION_UPDATE",
 
     DELETE = "@@EDUCATION_DELETE",

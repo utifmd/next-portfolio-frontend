@@ -10,9 +10,9 @@ import {StickyNavbar, Surface} from "../components/sections";
 import {ButtonPrimary} from "@/components/Button";
 
 type Props = IHomeState & {
-    morePagination: any
+    morePagination: any, onSelectToUpdate: any
 }
-export default function Home({feed, intro, habit, profile, morePagination}: Props) {
+export default function Home({feed, intro, habit, profile, morePagination, onSelectToUpdate}: Props) {
     const reference = useRef<Record<string, any>>({})
     const onFeedNextClicked = (feedLength: number, i: number) => (e: MouseEvent) => {
         e.preventDefault()
@@ -54,6 +54,7 @@ export default function Home({feed, intro, habit, profile, morePagination}: Prop
                     isDone={feed.isDone}
                     onJumpToBox={onJumpToBox}
                     onFeedNextClicked={onFeedNextClicked}
+                    onSelectToUpdate={onSelectToUpdate}
                     handleBoxJumper={handleBoxJumper}
                     innerRef={handleBoxJumper("feed")}/>
             </Surface>

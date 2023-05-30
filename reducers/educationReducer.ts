@@ -1,10 +1,12 @@
 import {Reducer} from "redux";
 import {EducationAction} from "@/actions/educationAction";
 import {TAnyAction} from "@/store";
+import {HomeAction} from "@/actions";
 
 const initialState: IEducationState = {
     status: "idle",
     isValid: false,
+    isSubmitted: false,
     value: {
         title: "",
         content: "",
@@ -21,6 +23,11 @@ const reducer: Reducer<IEducationState> =
                 .every(mValue => mValue.length >= 3)
 
         switch (action.type) {
+            case HomeAction.UPDATE_FEED_PREPARATION: {
+                console.log("case HomeAction.UPDATE_FEED_PREPARATION")
+                return action.payload as IEducationState
+            }
+
             case EducationAction.INPUT_CHANGED: {
                 const [id, value] = action.payload as [string, any]
                 return {...state, value: {...state.value, [id]: value}, isValid}
@@ -47,7 +54,10 @@ const reducer: Reducer<IEducationState> =
                 return {...state, status: "error", message: action.payload}
 
             case EducationAction.CREATE_SUCCESS:
-                return initialState
+                return {...initialState, isSubmitted: true}
+
+            case EducationAction.RESET_SUBMISSION:
+                return {...state, isSubmitted: false}
 
             default:
                 return state
