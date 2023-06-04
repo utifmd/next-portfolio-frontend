@@ -1,6 +1,7 @@
 import './globals.css'
 import React from "react";
 import StateProvider from "../store/StateProvider";
+import '@fortawesome/fontawesome-svg-core/styles.css';
 
 export const metadata = {
     title: 'Create Next App',

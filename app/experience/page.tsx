@@ -11,7 +11,7 @@ import {
     onIconAppended,
     onImageAppended,
     onInputChange,
-    onInputUnfocused, onAddStack, onRemoveImageAppended
+    onInputUnfocused, onAddStack, onRemoveImageAppended, onRemoveStack
 } from "@/actions/experienceAction";
 import {useAppDispatch, useAppSelector} from "../hooks";
 import Select from "../../components/Select";
@@ -27,10 +27,10 @@ export default function () {
         images,
         isValid,
         status,
-        isSubmitted, icon } = useAppSelector<IExperienceState>((state) => state.experience)
+        isSubmitted, icon} = useAppSelector<IExperienceState>((state) => state.experience)
     const dispatch: AppDispatch = useAppDispatch()
     const router = useRouter()
-    const reference = useRef<Record<string, any>>({})
+    const reference = useRef<any>({})
 
     const onFormSubmitted = () => {
         if (!isSubmitted || status !== "idle") return () => void
@@ -60,7 +60,9 @@ export default function () {
     }
     const handleOnTextPush = (e: any) => {
         if (e.key !== "Enter") return
+
         const elem = e.currentTarget
+        if (elem.value.trim().length <= 0) return
 
         dispatch(onAddStack(camelize(elem.value)))
         elem.value = ""
@@ -68,13 +70,13 @@ export default function () {
     const handleOnTextChange = (e: ChangeEvent<HTMLInputElement>) => {
         e.preventDefault()
         const {id, value} = e.currentTarget
-        dispatch(onInputChange([id, value]))
+        dispatch(onInputChange([id, value.trim()]))
     }
     const handleOnFileChange = (action: any) => (e: Record<string, any>) => {
         e.preventDefault()
         const {id} = e.currentTarget
-        const files: [] = e.target.files
-        if (typeof files === "undefined") return
+        const files = e.target.files
+        if (!files.length) return
 
         for (const file of files) {
             dispatch(onInputChange([id, file]))
@@ -88,9 +90,13 @@ export default function () {
     const handleOnInputFileClick = (key: string) => (ref: any) => {
         reference.current[key] = ref
     }
+    const handleOnItemStackClick = (i: number) => (e: any) => {
+        e.preventDefault()
+        dispatch(onRemoveStack(i))
+    }
     return (
         <div className="flex min-h-screen justify-center items-center">
-            <div className="w-full sm:w-[50%] p-6 text-center space-y-7">
+            <form className="w-full sm:w-[50%] p-6 text-center space-y-7" onSubmit={onPostExperience}>
                 <p className="font-bold text-3xl uppercase text-gray-900 dark:text-gray-100">Experience Entry</p>
                 <div className="flex justify-center">
                     <div className="h-0.5 w-24 bg-gray-900 dark:bg-gray-100"/>
@@ -118,9 +124,9 @@ export default function () {
                     <div className="md:col-span-2">
                         <Input id="releasedUrl" type="text" placeholder="Enter released url" value={value.releasedUrl} onChange={handleOnTextChange} onBlur={handleOnTextBlur}/>
                     </div>
-                    <div className="flex flex-wrap">
-                        {value.stack.map(mStack => <span className="text-base px-1">#{mStack}</span>)}
-                    </div>
+                    <div className="flex flex-wrap">{value.stack.map((mStack, i) =>
+                        <span onClick={handleOnItemStackClick(i)} className="text-base px-1 cursor-pointer hover:text-red-600 hover:dark:text-red-400 hover:line-through">#{mStack}</span>
+                    )}</div>
                     <div>
                         <Input id="stack" type="text" placeholder="Add stack" onKeyUp={handleOnTextPush} onBlur={handleOnTextBlur}/>
                     </div>
@@ -146,8 +152,12 @@ export default function () {
                         </div>
                     </div>
                 </div>
-                <ButtonPrimary label="Post" isDisable={status === "loading" || !isValid} isLoading={status === "loading"} onClick={onPostExperience}/>
-            </div>
+                <ButtonPrimary
+                    label="Post"
+                    type="submit"
+                    isDisable={status === "loading" || !isValid}
+                    isLoading={status === "loading"} />
+            </form>
         </div>
     )
 }

@@ -46,6 +46,7 @@ export default function Home({feed, intro, habit, profile, morePagination, onSel
                     title={habit.title}
                     items={habit.data}
                     description={habit.description}
+                    isLoading={feed.status === "loading"}
                     innerRef={handleBoxJumper("habit")}
                     onNextClick={onJumpToBox("feed")}/>
                 <Feed

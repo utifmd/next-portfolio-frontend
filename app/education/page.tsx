@@ -24,7 +24,7 @@ export default function() {
         isSubmitted, image} = useAppSelector(({education}) => education)
     const dispatch = useAppDispatch()
     const router = useRouter()
-    const reference = useRef<Record<string, any>>({})
+    const reference = useRef<any>({})
     const onFormSubmitted = () => {
         if (!isSubmitted || status !== "idle") return () => void
 
@@ -32,7 +32,7 @@ export default function() {
         router.back()
     }
     useEffect(onFormSubmitted, [isSubmitted])
-    const onPostEducation = (e: MouseEvent) => {
+    const onPostEducation = (e: any) => {
         e.preventDefault()
         dispatch(addEducation())
     }
@@ -52,13 +52,13 @@ export default function() {
     const handleOnTextChange = (e: any) => {
         e.preventDefault()
         const {id, value} = e.currentTarget
-        dispatch(onInputChange([id, value]))
+        dispatch(onInputChange([id, value.trim()]))
     }
     const handleOnFileChange = (e: Record<string, any>) => {
         e.preventDefault()
         const {id} = e.currentTarget
-        const files: [] = e.target.files
-        if (typeof files === "undefined") return
+        const files = e.target.files
+        if (!files.length) return
 
         for (const file of files) {
             dispatch(onInputChange([id, file]))
@@ -74,7 +74,7 @@ export default function() {
     }
     return (
         <div className="flex min-h-screen justify-center items-center">
-            <div className="w-full sm:w-[50%] p-6 text-center space-y-7">
+            <form className="w-full sm:w-[50%] p-6 text-center space-y-7" onSubmit={onPostEducation}>
                 <p className="font-bold text-3xl uppercase text-gray-900 dark:text-gray-100">Education Entry</p>
                 <div className="flex justify-center">
                     <div className="h-0.5 w-24 bg-gray-900 dark:bg-gray-100"/>
@@ -99,8 +99,12 @@ export default function() {
                         <Input id="desc" type="text" placeholder="Enter description" value={value.desc} onChange={handleOnTextChange} onBlur={handleOnTextBlur} />
                     </div>
                 </div>
-                <ButtonPrimary label="Post" isDisable={status === "loading" || !isValid} isLoading={status === "loading"} onClick={onPostEducation}/>
-            </div>
+                <ButtonPrimary
+                    label="Post"
+                    type="submit"
+                    isDisable={status === "loading" || !isValid}
+                    isLoading={status === "loading"} />
+            </form>
         </div>
     )
 }

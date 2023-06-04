@@ -45,7 +45,7 @@ export const onImageAppended = (file: any) =>
 export const onRemoveImageAppended = (index: number) =>
     (dispatch: AppDispatch): IAppAction => {
         const action: TAnyAction = {
-            type: ExperienceAction.DELETE_IMAGES_APPENDED, payload: index
+            type: ExperienceAction.IMAGES_APPENDED_DESTROY, payload: index
         }
         return dispatch(action)
     }
@@ -74,7 +74,14 @@ export const onInputChange = (idValue: [string, any]) =>
 export const onAddStack = (stack: string) =>
     (dispatch: AppDispatch): IAppAction => {
     const action: TAnyAction = {
-        type: ExperienceAction.INPUT_ADD_STACK, payload: stack
+        type: ExperienceAction.INPUT_STACK_CREATE, payload: stack
+    }
+    return dispatch(action)
+}
+export const onRemoveStack = (index: number) =>
+    (dispatch: AppDispatch): IAppAction => {
+    const action: TAnyAction = {
+        type: ExperienceAction.INPUT_STACK_DELETE, payload: index
     }
     return dispatch(action)
 }
@@ -101,12 +108,13 @@ export enum ExperiencePlatform {
 export enum ExperienceAction {
     INPUT_CHANGED = "@@EXPERIENCE_INPUT_CHANGED",
     INPUT_UNFOCUSED = "@@EXPERIENCE_INPUT_UNFOCUSED",
-    INPUT_ADD_STACK = "@@EXPERIENCE_INPUT_ADD_STACK",
+    INPUT_STACK_CREATE = "@@EXPERIENCE_INPUT_STACK_CREATE",
+    INPUT_STACK_DELETE = "@@EXPERIENCE_INPUT_STACK_DELETE",
 
     IMAGES_APPENDED_REQUEST = "@@EXPERIENCE_IMAGES_APPENDED_REQUEST",
     IMAGES_APPENDED_FAILED = "@@EXPERIENCE_IMAGES_APPENDED_FAILED",
     IMAGES_APPENDED_SUCCESS = "@@EXPERIENCE_IMAGES_APPENDED_SUCCESS",
-    DELETE_IMAGES_APPENDED = "@@EXPERIENCE_DELETE_IMAGES_APPENDED",
+    IMAGES_APPENDED_DESTROY = "@@EXPERIENCE_IMAGES_APPENDED_DESTROY",
 
     ICON_APPENDED_REQUEST = "@@EXPERIENCE_ICON_APPENDED_REQUEST",
     ICON_APPENDED_FAILED = "@@EXPERIENCE_ICON_APPENDED_FAILED",

@@ -58,3 +58,10 @@ export function camelize(str: string) {
 export function capitalize(str: string) {
    return str.replace(str[0], str[0].toUpperCase())
 }
+export function censorEmail(email: string){
+    let out = ""
+    for (let i = 0; i < email.length; i++){
+        out += i >= email.indexOf("@") ? email[i] : "*"
+    }
+    return out
+}

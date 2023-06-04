@@ -21,10 +21,11 @@ const initialState: IExperienceState = {
 }
 const reducer: Reducer<IExperienceState> =
     (state: IExperienceState = initialState, action): IExperienceState => {
+
     const isValid = state.icon && state.images.length > 0 &&
-        Object.values(state.value)
-            .filter(mValue => typeof mValue === "string" || Array.isArray(mValue))
-            .every(mValue => mValue.length >= 3)
+        Object.entries(state.value)
+            .filter(([mKey, mValue]) => typeof mValue === "string" && mKey !== "iconUrl")
+            .every(([_, mValue]) => mValue.length > 0)
 
     switch (action.type) {
         case HomeAction.UPDATE_FEED_EXPERIENCE_PREPARATION:
@@ -34,8 +35,15 @@ const reducer: Reducer<IExperienceState> =
             const [id, value] = action.payload as [string, any]
             return {...state, isValid, value: {...state.value, [id]: value}}
         }
-        case ExperienceAction.INPUT_ADD_STACK: {
+        case ExperienceAction.INPUT_STACK_CREATE: {
             const stack = [...state.value.stack, action.payload as string]
+            return {...state, value: {...state.value, stack}}
+        }
+        case ExperienceAction.INPUT_STACK_DELETE: {
+            const index = action.payload as number
+            const stack = state.value.stack.filter(
+                (_, i) => i !== index
+            )
             return {...state, value: {...state.value, stack}}
         }
         case ExperienceAction.INPUT_UNFOCUSED:
@@ -59,7 +67,7 @@ const reducer: Reducer<IExperienceState> =
         case ExperienceAction.IMAGES_APPENDED_SUCCESS:
             return {...state, status: "idle", images: [...state.images, action.payload]}
 
-        case ExperienceAction.DELETE_IMAGES_APPENDED: {
+        case ExperienceAction.IMAGES_APPENDED_DESTROY: {
             const index = action.payload as number
             if (index === -1) return {...state, icon: null}
 

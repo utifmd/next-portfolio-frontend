@@ -14,6 +14,7 @@ interface IAppAction {
     [key: string]: ISchema | ISchema[] | IHttpRequestAction | IAPIAction
 }
 interface IAppState {
+    authentication: IAuthenticationState,
     education: IEducationState,
     experience: IExperienceState,
     home: IHomeState

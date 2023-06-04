@@ -2,11 +2,11 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowDown, faArrowUp, faSpinner} from "@fortawesome/free-solid-svg-icons";
 
 export const ButtonPrimary = (
-    {label, onClick, onBlur, isDisable, isLoading}: TBoxProps & {
-        label: string, onClick?: (e: any) => void, onBlur?: (e: any) => void }) =>
+    {label, type, onClick, onBlur, isDisable, isLoading}: TBoxProps & {
+        label: string, onClick?: (e: any) => void, onBlur?: (e: any) => void, type?: "submit" | "reset" | "button"}) =>
     <button
         className={`w-[75%] sm:w-[50%] py-4 uppercase font-bold ease-linear transition-all duration-350 ${!isDisable ? 'bg-green-600 text-white hover:bg-green-700 focus:outline-none' : 'bg-gray-300 dark:bg-gray-700 text-gray'}`}
-        disabled={isDisable} onClick={onClick} onBlur={onBlur}>
+        type={type} disabled={isDisable} onClick={onClick} onBlur={onBlur}>
         <div className="flex justify-center items-center space-x-3">
             {isLoading && <FontAwesomeIcon color="gray" icon={faSpinner} spin={true} />}
             <div>{label || "Button"}</div>

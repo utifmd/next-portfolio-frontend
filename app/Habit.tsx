@@ -5,8 +5,8 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 type Props = TTileProps & TBoxProps & {
     items: {icon: IconDefinition, label: string}[]
 }
-const Habit = ({innerRef, title, description, items, onNextClick}: Props) =>
-    <Box innerRef={innerRef} title={title} onNextClick={onNextClick}>
+const Habit = ({innerRef, title, description, items, onNextClick, isLoading}: Props) =>
+    <Box innerRef={innerRef} title={title} onNextClick={onNextClick} isLoading={isLoading}>
         <p className="font-base px-0 sm:px-6">{description}</p>
         <div className="grid grid-cols-2 mx-0">
             {items.length && items.map((habit, index) =>

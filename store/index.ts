@@ -16,7 +16,6 @@ mStore.dispatch(pagedFeed())
 
 export type AppDispatch = typeof mStore.dispatch
 export type AppState = ReturnType<typeof mStore.getState>
-// export type TAppAction = (dispatch: AppDispatch, getState?: () => IAppState) => AnyAction
 export type TAnyAction = AnyAction & {payload?: any}
 
 export const educationsData: IEducation[] = [
