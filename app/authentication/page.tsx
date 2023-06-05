@@ -12,6 +12,7 @@ export default function () {
     const {
         value,
         status,
+        token,
         isSubmitted,
         isValid} = useAppSelector((state) => state.authentication)
     const dispatch = useAppDispatch()
@@ -36,6 +37,8 @@ export default function () {
     }
     const handleOnSubmit = (e: any) => {
         e.preventDefault()
+        if (!isValid) return
+
         console.log("handleOnSubmit")
         dispatch(onSignIn())
     }
@@ -46,23 +49,24 @@ export default function () {
                 <div className="flex justify-center">
                     <div className="h-0.5 w-24 bg-gray-900 dark:bg-gray-100"/>
                 </div>
-                <div className="grid gap-4 md:grid-cols-2 mb-4">
-                    <div className="md:col-span-2">
-                        <Input id="email" disabled={true} type="text" placeholder="Enter email" value={censorEmail(value.email)} onChange={handleOnTextChange} />
+                    <div className="grid gap-4 md:grid-cols-2 mb-4">
+                        <div className="md:col-span-2">
+                            <Input id="email" disabled={true} type="text" placeholder="Enter email" value={censorEmail(value.email)} onChange={handleOnTextChange} />
+                        </div>
+                        <div className="md:col-span-2">
+                            <Input
+                                id="password"
+                                type="password"
+                                placeholder="Enter password"
+                                disabled={typeof token !== "undefined"}
+                                value={value.password}
+                                onBlur={handleOnTextBlur}
+                                onChange={handleOnTextChange}/>
+                        </div>
                     </div>
-                    <div className="md:col-span-2">
-                        <Input
-                            id="password"
-                            type="password"
-                            placeholder="Enter password"
-                            value={value.password}
-                            onBlur={handleOnTextBlur}
-                            onChange={handleOnTextChange}/>
-                    </div>
-                </div>
                 <ButtonPrimary
                     label="Login"
-                    isDisable={status === "loading" || !isValid}
+                    isDisable={status === "loading" || !isValid || typeof token !== "undefined"}
                     isLoading={status === "loading"}
                     type="submit"/>
             </form>

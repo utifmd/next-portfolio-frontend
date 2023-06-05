@@ -2,7 +2,7 @@ import {AppDispatch, TAnyAction} from "@/store";
 import {CALL_API} from "@/middlewares";
 
 export const onSignIn = () => (dispatch: AppDispatch, getState: () => IAppState) => {
-    const auth = getState().authentication.value
+    const authentication = getState().authentication.value
     const action: IAppAction = {
         [CALL_API]: {
             method: "POST",
@@ -12,7 +12,7 @@ export const onSignIn = () => (dispatch: AppDispatch, getState: () => IAppState)
                 AuthenticationAction.SIGN_IN_FAILED,
                 AuthenticationAction.SIGN_IN_SUCCESS
             ],
-            body: auth
+            body: authentication
         }
     }
     return dispatch(action)

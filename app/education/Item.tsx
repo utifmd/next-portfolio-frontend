@@ -3,6 +3,7 @@ import {Box} from "../../components/sections";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faExternalLink, faEdit} from '@fortawesome/free-solid-svg-icons'
 import Link from "next/link";
+import {Authenticated} from "@/app/authentication";
 
 type Props = TBoxProps & {
     education: IEducation,
@@ -23,9 +24,11 @@ export default function(
                 <Link href={education.fileUrl} className="cursor-pointer">
                     <FontAwesomeIcon color={"#059669"} icon={faExternalLink} />
                 </Link>
-                <div className="cursor-pointer" onClick={onEditIconClick} >
-                    <FontAwesomeIcon color={"#059669"} icon={faEdit}/>
-                </div>
+                <Authenticated>
+                    <div className="cursor-pointer" onClick={onEditIconClick} >
+                        <FontAwesomeIcon color={"#059669"} icon={faEdit}/>
+                    </div>
+                </Authenticated>
             </div>
         </Box>
     )

@@ -3,11 +3,11 @@
 import Habit from "./Habit";
 import Introduction from "./Introduction";
 import Profile from "./Profile";
-import Footer from "./Footer";
 import Feed from "./Feed";
 import React, {useEffect, useRef} from "react";
-import {StickyNavbar, Surface} from "../components/sections";
+import {StickyNavbar, Surface} from "@/components/sections";
 import {ButtonPrimary} from "@/components/Button";
+import {Authenticated} from "./authentication"
 
 type Props = IHomeState & {
     morePagination: any, onSelectToUpdate: any
@@ -35,7 +35,9 @@ export default function Home({feed, intro, habit, profile, morePagination, onSel
                     <ButtonPrimary label="Begin" onClick={onJumpToBox("intro")}/>
                 </Surface>
             </div>
-            <StickyNavbar onLogoutClick={onJumpToBox("profile")}/>
+            <Authenticated>
+                <StickyNavbar onLogoutClick={onJumpToBox("profile")}/>
+            </Authenticated>
             <Surface>
                 <Introduction
                     title={intro.title}

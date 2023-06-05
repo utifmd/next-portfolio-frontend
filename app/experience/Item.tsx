@@ -4,6 +4,7 @@ import {attachmentKeys} from "@/utils";
 import {Box} from "../../components/sections";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEdit, faExternalLink} from "@fortawesome/free-solid-svg-icons";
+import {Authenticated} from "@/app/authentication";
 type Props = TBoxProps & {
     experience: IExperience,
     onEditIconClick: (e: any) => void
@@ -78,11 +79,13 @@ export default function(
                     </dl>
                 </div>
             </div>
-            <div className="flex justify-center space-x-4">
-                <div className="cursor-pointer" onClick={onEditIconClick} >
-                    <FontAwesomeIcon color={"#059669"} icon={faEdit}/>
+            <Authenticated>
+                <div className="flex justify-center space-x-4">
+                    <div className="cursor-pointer" onClick={onEditIconClick} >
+                        <FontAwesomeIcon color={"#059669"} icon={faEdit}/>
+                    </div>
                 </div>
-            </div>
+            </Authenticated>
         </Box>
     )
 }

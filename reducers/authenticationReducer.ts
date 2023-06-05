@@ -11,7 +11,7 @@ const initialState: IAuthenticationState = {
     status: "idle"
 }
 const reducer: Reducer<IAuthenticationState> =
-    (state: IAuthenticationState = initialState, action: TAnyAction) => {
+    (state: IAuthenticationState = initialState, action: TAnyAction)=> {
     const isValid: boolean = state.value.password.length >= 8
 
     switch (action.type) {
@@ -31,9 +31,10 @@ const reducer: Reducer<IAuthenticationState> =
         case AuthenticationAction.SIGN_IN_FAILED:
             return {...state, status: "error", message: action.payload as string}
 
-        case AuthenticationAction.SIGN_IN_SUCCESS:
-            return {...state, status: "idle", isSubmitted: true, token: action.payload}
-
+        case AuthenticationAction.SIGN_IN_SUCCESS: {
+            const token = new Date().getTime().toString()
+            return {...state, status: "idle", value: action.payload, isSubmitted: true, token}
+        }
         default:
             return state
     }
