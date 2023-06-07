@@ -2,19 +2,20 @@
 
 import {useEffect} from "react";
 import {useRouter} from "next/navigation";
-import {ButtonPrimary} from "@/components/Button";
-import {Input} from "@/components";
-import {useAppDispatch, useAppSelector} from "@/app/hooks";
-import {censorEmail} from "@/utils";
-import {onInputChange, onInputUnfocused, onResetSubmission, onSignIn} from "@/actions/authenticationAction";
+import {ButtonPrimary} from "../../components/Button";
+import Input from "../../components/Input";
+import {useAppDispatch, useAppSelector} from "../../app/hooks";
+import {censorEmail} from "../../utils";
+import {onInputChange, onInputUnfocused, onResetSubmission, onSignIn} from "../../actions/authenticationAction";
+import {UnAuthenticated} from "../../app/authentication";
 
-export default function () {
+export default function() {
     const {
         value,
         status,
         token,
         isSubmitted,
-        isValid} = useAppSelector((state) => state.authentication)
+        isValid, message} = useAppSelector((state) => state.authentication)
     const dispatch = useAppDispatch()
     const router = useRouter()
 
@@ -64,11 +65,14 @@ export default function () {
                                 onChange={handleOnTextChange}/>
                         </div>
                     </div>
-                <ButtonPrimary
-                    label="Login"
-                    isDisable={status === "loading" || !isValid || typeof token !== "undefined"}
-                    isLoading={status === "loading"}
-                    type="submit"/>
+                {message && <p className="text-red-500">{message}</p>}
+                <UnAuthenticated fallback={<ButtonPrimary label="Authenticated" isDisable={true}/>}>
+                    <ButtonPrimary
+                        label="Login"
+                        isDisable={status === "loading" || !isValid}
+                        isLoading={status === "loading"}
+                        type="submit"/>
+                </UnAuthenticated>
             </form>
         </div>
     )

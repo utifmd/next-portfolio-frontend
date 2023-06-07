@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import {ChangeEvent, useEffect, useRef} from "react";
-import {Input} from "../../components";
-import {RoundedButton, ButtonPrimary} from "@/components/Button";
-import {AppDispatch} from "@/store";
+import Input from "../../components/Input";
+import {RoundedButton, ButtonPrimary} from "../../components/Button";
+import {AppDispatch} from "../../store";
 import {
     ExperiencePlatform, ExperienceType,
     addExperience,
@@ -20,6 +20,7 @@ import HoverIconBox from "@/components/sections/HoverIconBox";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {onResetSubmission} from "@/actions/educationAction";
 import {useRouter} from "next/navigation";
+import {Authenticated} from "@/app/authentication";
 
 export default function () {
     const {
@@ -27,7 +28,8 @@ export default function () {
         images,
         isValid,
         status,
-        isSubmitted, icon} = useAppSelector<IExperienceState>((state) => state.experience)
+        isSubmitted, icon,
+        message} = useAppSelector<IExperienceState>((state) => state.experience)
     const dispatch: AppDispatch = useAppDispatch()
     const router = useRouter()
     const reference = useRef<any>({})
@@ -70,7 +72,7 @@ export default function () {
     const handleOnTextChange = (e: ChangeEvent<HTMLInputElement>) => {
         e.preventDefault()
         const {id, value} = e.currentTarget
-        dispatch(onInputChange([id, value.trim()]))
+        dispatch(onInputChange([id, value]))
     }
     const handleOnFileChange = (action: any) => (e: Record<string, any>) => {
         e.preventDefault()
@@ -152,11 +154,15 @@ export default function () {
                         </div>
                     </div>
                 </div>
-                <ButtonPrimary
-                    label="Post"
-                    type="submit"
-                    isDisable={status === "loading" || !isValid}
-                    isLoading={status === "loading"} />
+                {message && <p className="text-red-500">{message}</p>}
+                <Authenticated fallback={
+                    <ButtonPrimary label="Unauthenticated" isDisable={true}/>}>
+                    <ButtonPrimary
+                        label="Post"
+                        type="submit"
+                        isDisable={status === "loading" || !isValid}
+                        isLoading={status === "loading"} />
+                </Authenticated>
             </form>
         </div>
     )

@@ -40,6 +40,7 @@ interface IFeedState {
 }
 type TBoxProps = {
     innerRef?: any,
+    index?: number,
     isLoading?: boolean,
     isDisable?: boolean,
     onNextClick?: (e: any) => void
@@ -48,4 +49,7 @@ type TBoxProps = {
 type TTileProps = {
     title: string,
     description?: string
+}
+type TImageLightBox = {
+    src: string, alt: string
 }

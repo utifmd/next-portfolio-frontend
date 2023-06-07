@@ -4,7 +4,7 @@ import {ExperienceItem} from "./index";
 type Props = {
     state: IExperienceState, getAllExperience: () => AppDispatch
 }
-const Experiences = ({state}: Props) => {
+const Experiences = (/*{state}: Props*/) => {
     /*useEffect(() => {
         getAllExperience()
 

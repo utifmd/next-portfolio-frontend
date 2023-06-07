@@ -1,7 +1,7 @@
 import {Middleware} from "redux";
-import {TAnyAction} from "../store";
+import {TAnyAction} from "@/store";
 
-export const BROWSER_API = "BROWSER_API"
+export const BROWSER_API: string = "BROWSER_API"
 
 const browserApiMiddleware: Middleware<IAppState> = () => (next: any) => (action: IAppAction) => {
     const callApi = action[BROWSER_API]

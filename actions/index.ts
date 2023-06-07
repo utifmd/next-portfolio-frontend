@@ -1,5 +1,5 @@
 import {AppDispatch, TAnyAction} from "@/store";
-import {CALL_API} from "@/middlewares";
+import {CALL_API} from "../constants"
 
 const PAGINATION_SIZE: number = 3
 const pagedFeed = () =>
@@ -30,13 +30,26 @@ const onSelectToUpdate = (index: number) =>
 
     const selectedFeedItem = getState().home.feed.value[index]
     if("content" in selectedFeedItem){
-        const payload = <IEducationState>{value: selectedFeedItem, isSubmitted: false, isValid: false, status: "idle"}
+        const payload = <IEducationState>{
+            value: selectedFeedItem,
+            isSubmitted: false,
+            isValid: false,
+            isUpdateTurn: true,
+            status: "idle"
+        }
         const action: TAnyAction = {
             payload, type: HomeAction.UPDATE_FEED_EDUCATION_PREPARATION
         }
         return dispatch(action)
     }
-    const payload = <IExperienceState>{value: selectedFeedItem as IExperience, isSubmitted: false, isValid: false, images: [], status: "idle"}
+    const payload = <IExperienceState>{
+        value: selectedFeedItem as IExperience,
+        isSubmitted: false,
+        isValid: false,
+        isUpdateTurn: true,
+        images: [],
+        status: "idle"
+    }
     const action: TAnyAction = {
         payload, type: HomeAction.UPDATE_FEED_EXPERIENCE_PREPARATION
     }

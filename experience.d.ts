@@ -8,7 +8,7 @@ interface IExperience extends ISchema {
     imageUrls: string[],
     iconUrl: string,
     releasedUrl: string,
-    demoUrl: string,
+    demoUrl?: string,
     createdAt?: any
 }
 interface IExperienceState {

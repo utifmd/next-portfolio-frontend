@@ -12,6 +12,7 @@ interface IEducationState {
     message?: string,
     isValid: boolean,
     isSubmitted: boolean,
+    isUpdateTurn?: boolean,
     image?: any,
     value: IEducation
 }

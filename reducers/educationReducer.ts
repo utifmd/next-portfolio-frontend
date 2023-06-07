@@ -18,10 +18,12 @@ const initialState: IEducationState = {
 const reducer: Reducer<IEducationState> =
     (state: IEducationState = initialState, action: TAnyAction): IEducationState => {
 
-        const isValid = state.image &&
-            Object.entries(state.value)
-                .filter(([mKey, mValue]) => typeof mValue === "string" && mKey !== "imageUrl")
-                .every(([_, mValue]) => mValue.length > 0)
+        const isTextsValid = Object
+            .entries(state.value)
+            .filter(([mKey, mValue]) => typeof mValue === "string" && mKey !== "imageUrl")
+            .every(([_, mValue]) => mValue.length > 0)
+
+        const isValid: boolean = state.isUpdateTurn ? isTextsValid : isTextsValid && state.image
 
         switch (action.type) {
             case HomeAction.UPDATE_FEED_EDUCATION_PREPARATION:

@@ -1,2 +1,2 @@
-import {Loading} from "../../components";
+import Loading from "../../components/sections/Loading";
 export default Loading

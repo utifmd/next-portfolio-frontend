@@ -32,6 +32,7 @@ export default function Feed(
             const isTheLastOne = (i + 1) >= feedLength
             let component = <EducationItem
                 key={i}
+                index={i}
                 innerRef={handleBoxJumper(i)}
                 education={item as IEducation}
                 isLoading={isLoading && isTheLastOne}
@@ -40,6 +41,7 @@ export default function Feed(
 
             if(!("content" in item)) component = <ExperienceItem
                 key={i}
+                index={i}
                 innerRef={handleBoxJumper(i)}
                 experience={item as IExperience}
                 isLoading={isLoading && isTheLastOne}

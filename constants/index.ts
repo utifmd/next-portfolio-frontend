@@ -1,0 +1,1 @@
+export const CALL_API: string = "CALL_API"

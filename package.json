@@ -20,6 +20,7 @@
     "@types/react-dom": "18.2.1",
     "autoprefixer": "10.4.14",
     "axios": "^1.4.0",
+    "lightbox.js-react": "^0.6.4",
     "next": "13.3.2",
     "postcss": "8.4.23",
     "react": "18.2.0",

@@ -4,8 +4,9 @@ import {useEffect, useRef} from "react";
 import {useRouter} from "next/navigation";
 import Image from "next/image";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
-import {Input, HoverIconBox} from "@/components";
-import {ButtonPrimary, RoundedButton} from "@/components/Button";
+import Input from "../../components/Input";
+import HoverIconBox from "../../components/sections/HoverIconBox";
+import {ButtonPrimary, RoundedButton} from "../../components/Button";
 import {
     onInputChange,
     onInputUnfocused,
@@ -14,14 +15,17 @@ import {
     onResetImageAppended,
     onResetSubmission
 } from "@/actions/educationAction"
-import {useAppDispatch, useAppSelector} from "../hooks"
+import {useAppDispatch, useAppSelector} from "@/app/hooks"
+import {Authenticated} from "@/app/authentication";
 
 export default function() {
     const {
         value,
         status,
         isValid,
-        isSubmitted, image} = useAppSelector(({education}) => education)
+        isSubmitted,
+        image,
+        message} = useAppSelector(({education}) => education)
     const dispatch = useAppDispatch()
     const router = useRouter()
     const reference = useRef<any>({})
@@ -52,7 +56,7 @@ export default function() {
     const handleOnTextChange = (e: any) => {
         e.preventDefault()
         const {id, value} = e.currentTarget
-        dispatch(onInputChange([id, value.trim()]))
+        dispatch(onInputChange([id, value]))
     }
     const handleOnFileChange = (e: Record<string, any>) => {
         e.preventDefault()
@@ -99,11 +103,15 @@ export default function() {
                         <Input id="desc" type="text" placeholder="Enter description" value={value.desc} onChange={handleOnTextChange} onBlur={handleOnTextBlur} />
                     </div>
                 </div>
-                <ButtonPrimary
-                    label="Post"
-                    type="submit"
-                    isDisable={status === "loading" || !isValid}
-                    isLoading={status === "loading"} />
+                {message && <p className="text-red-500">{message}</p>}
+                <Authenticated fallback={
+                    <ButtonPrimary label="Unauthenticated" isDisable={true}/>}>
+                    <ButtonPrimary
+                        label="Post"
+                        type="submit"
+                        isDisable={status === "loading" || !isValid}
+                        isLoading={status === "loading"} />
+                </Authenticated>
             </form>
         </div>
     )

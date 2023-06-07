@@ -1,5 +1,5 @@
 import {AppDispatch, TAnyAction} from "@/store";
-import {CALL_API} from "@/middlewares";
+import {CALL_API} from "../constants"
 
 export const onSignIn = () => (dispatch: AppDispatch, getState: () => IAppState) => {
     const authentication = getState().authentication.value

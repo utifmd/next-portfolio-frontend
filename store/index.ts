@@ -1,7 +1,8 @@
 import {configureStore, Store} from "@reduxjs/toolkit";
 import {AnyAction} from "redux";
 import thunk from "redux-thunk"
-import {restApiMiddleware, browserApiMiddleware} from "../middlewares";
+import browserApiMiddleware from "../middlewares/browserApi";
+import restApiMiddleware from "../middlewares/restApi";
 import reducer from "../reducers"
 import {pagedFeed} from "@/actions";
 
@@ -91,7 +92,7 @@ export const experiencesData: IExperience[] = [
         description: "Hati mana jatuh",
         iconUrl: "https://via.placeholder.com/150",
         id: "Hati mana jatuh",
-        imageUrls: ["manusia"],
+        imageUrls: ["https://via.placeholder.com/150"],
         platform: "Hati mana jatuh",
         releasedUrl: "Hati mana jatuh",
         stack: ["manusia"],
@@ -115,7 +116,7 @@ export const experiencesData: IExperience[] = [
         description: "Hati mana jatuh",
         iconUrl: "https://via.placeholder.com/150",
         id: "Hati mana jatuh",
-        imageUrls: ["manusia"],
+        imageUrls: ["https://via.placeholder.com/150"],
         platform: "Hati mana jatuh",
         releasedUrl: "Hati mana jatuh",
         stack: ["manusia"],
@@ -127,7 +128,7 @@ export const experiencesData: IExperience[] = [
         description: "Hati mana jatuh",
         iconUrl: "https://via.placeholder.com/150",
         id: "Hati mana jatuh",
-        imageUrls: ["manusia"],
+        imageUrls: ["https://via.placeholder.com/150"],
         platform: "Hati mana jatuh",
         releasedUrl: "Hati mana jatuh",
         stack: ["manusia"],
@@ -139,7 +140,7 @@ export const experiencesData: IExperience[] = [
         description: "Hati mana jatuh",
         iconUrl: "https://via.placeholder.com/150",
         id: "Hati mana jatuh",
-        imageUrls: ["manusia"],
+        imageUrls: ["https://via.placeholder.com/150"],
         platform: "Hati mana jatuh",
         releasedUrl: "Hati mana jatuh",
         stack: ["manusia"],
@@ -151,7 +152,7 @@ export const experiencesData: IExperience[] = [
         description: "Hati mana jatuh",
         iconUrl: "https://via.placeholder.com/150",
         id: "Hati mana jatuh",
-        imageUrls: ["manusia"],
+        imageUrls: ["https://via.placeholder.com/150"],
         platform: "Hati mana jatuh",
         releasedUrl: "Hati mana jatuh",
         stack: ["manusia"],
@@ -163,7 +164,7 @@ export const experiencesData: IExperience[] = [
         description: "Hati mana jatuh",
         iconUrl: "https://via.placeholder.com/150",
         id: "Hati mana jatuh",
-        imageUrls: ["manusia"],
+        imageUrls: ["https://via.placeholder.com/150"],
         platform: "Hati mana jatuh",
         releasedUrl: "Hati mana jatuh",
         stack: ["manusia"],
