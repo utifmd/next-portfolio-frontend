@@ -14,7 +14,7 @@ export default function({label, type, onClick, onBlur, isDisable, isLoading}: Pr
             type={type} disabled={isDisable} onClick={onClick} onBlur={onBlur}>
             <div className="flex justify-center items-center space-x-3">
                 {isLoading && <FontAwesomeIcon color="gray" icon={faSpinner} spin={true} />}
-                <div>{label || "Button"}</div>
+                <div className="px-3 truncate">{label || "Button"}</div>
             </div>
         </button>
     )

@@ -5,10 +5,11 @@ import {CALL_API, BROWSER_API} from "@/constants"
 export const addEducation = () =>
     (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
     const {value/*, image*/} = getState().education
+    const createdAt = new Date()
     const education: IEducation /*& {image: any}*/ = {
         ...value, //image,
-        id: "EDU-101",
-        createdAt: new Date(),
+        id: `EDU-101-${createdAt.getTime()}`,
+        createdAt,
     }
     const action: IAppAction = {
         [CALL_API]: {

@@ -24,8 +24,7 @@ export default function() {
         status,
         isValid,
         isSubmitted,
-        image,
-        message} = useAppSelector(({education}) => education)
+        image, message} = useAppSelector(({education}) => education)
     const dispatch = useAppDispatch()
     const router = useRouter()
     const reference = useRef<any>({})
@@ -40,8 +39,10 @@ export default function() {
         e.preventDefault()
         dispatch(addEducation())
     }
-    const handleOnFileClick = (valueImageUrl: string) => (e: any) => {
+    const handleOnFileRemove = (valueImageUrl: string) => (e: any) => {
         e.preventDefault()
+        reference.current["image"].value = null
+
         if (valueImageUrl.length > 0) {
             console.log(`delete image ${valueImageUrl} on the server`)
             // dispatch(onRemoveImage(valueImageUrl))
@@ -60,9 +61,9 @@ export default function() {
     }
     const handleOnFileChange = (e: Record<string, any>) => {
         e.preventDefault()
-        const {id} = e.currentTarget
-        const files = e.target.files
-        if (!files.length) return
+        const {id, files} = e.currentTarget
+        console.log(`files len: ${files.length}`)
+        if (files.length <= 0) return
 
         for (const file of files) {
             dispatch(onInputChange([id, file]))
@@ -73,7 +74,7 @@ export default function() {
         e.preventDefault()
         reference.current["image"]?.click()
     }
-    const handleOnInputFileClick = (e: any) => {
+    const handleInputFileRef = (e: any) => {
         reference.current["image"] = e
     }
     return (
@@ -91,11 +92,15 @@ export default function() {
                         <Input id="fileUrl" type="text" placeholder="Enter file url" value={value.fileUrl} onChange={handleOnTextChange} onBlur={handleOnTextBlur}/>
                     </div>
                     <div className="flex justify-center items-center">
-                        <input ref={handleOnInputFileClick} className={"hidden"} id="image" type="file" accept="image/*" multiple={false} onChange={handleOnFileChange} onBlur={handleOnTextBlur} /> {image || value.imageUrl.length > 0
-                        ? <HoverIconBox icon={faTrash} onClick={handleOnFileClick(value.imageUrl)} onBlur={handleOnTextBlur}>{image
-                            ? <Image className="absolute inset-0 object-cover" fill={true} src={image} alt={"image appendable"}/>: value.imageUrl.length > 0
-                                ? <Image className="absolute inset-0 object-cover" fill={true} src={value.imageUrl} loader={() => value.imageUrl} alt={"image appendable"}/>: null}</HoverIconBox>
-                        : <ButtonRounded label="select image" onClick={onInputFileClick} />}
+                        <input className="hidden" id="image" type="file" accept="image/*"
+                            multiple={false}
+                            ref={handleInputFileRef}
+                            onChange={handleOnFileChange}
+                            onBlur={handleOnTextBlur} /> {image || value.imageUrl.length > 0 ?
+                        <HoverIconBox icon={faTrash} onClick={handleOnFileRemove(value.imageUrl)} onBlur={handleOnTextBlur}> {image ?
+                            <Image className="absolute inset-0 object-cover" fill={true} src={image} alt={"image appendable"}/>: value.imageUrl.length > 0 ?
+                                <Image className="absolute inset-0 object-cover" fill={true} src={value.imageUrl} loader={() => value.imageUrl} alt={"image appendable"}/>: null}</HoverIconBox> :
+                        <ButtonRounded label="select image" onClick={onInputFileClick} />}
                     </div>
                     <div className="h-full w-full space-y-4 text-left">
                         <textarea className="appearance-none block w-full bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 py-4 px-4 focus:outline-none focus:ring-1 focus:ring-green-600 focus:border-green-600"

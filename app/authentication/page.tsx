@@ -42,7 +42,6 @@ export default function() {
         e.preventDefault()
         if (!isValid) return
 
-        console.log("handleOnSubmit")
         dispatch(onSignIn())
     }
     return (
