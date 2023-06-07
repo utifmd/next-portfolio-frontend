@@ -1,11 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
+import {Authenticated} from "@/app/authentication";
+import {Box} from "@/components/sections";
+import {SlideshowLightbox} from "lightbox.js-react";
 import {attachmentKeys} from "@/utils";
-import {Box} from "../../components/sections";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEdit, faExternalLink, faVideo} from "@fortawesome/free-solid-svg-icons";
-import {Authenticated} from "@/app/authentication";
-import {SlideshowLightbox} from "lightbox.js-react";
 
 type Props = TBoxProps & {
     experience: IExperience,

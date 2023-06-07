@@ -1,13 +1,15 @@
 "use client"
 
-import {useEffect} from "react";
 import {useRouter} from "next/navigation";
-import {ButtonPrimary} from "../../components/Button";
-import Input from "../../components/Input";
-import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {censorEmail} from "../../utils";
-import {onInputChange, onInputUnfocused, onResetSubmission, onSignIn} from "../../actions/authenticationAction";
-import {UnAuthenticated} from "../../app/authentication";
+import {useEffect} from "react";
+import {Input} from "@/components";
+import {ButtonPrimary} from "@/components/buttons";
+import {UnAuthenticated} from "@/app/authentication";
+import {
+    onInputChange, onInputUnfocused, onResetSubmission, onSignIn
+} from "@/actions/authenticationAction";
+import {censorEmail} from "@/utils";
+import {useAppDispatch, useAppSelector} from "@/app/hooks";
 
 export default function() {
     const {

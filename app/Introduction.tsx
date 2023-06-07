@@ -1,4 +1,4 @@
-import {Box} from "../components/sections";
+import {Box} from "@/components/sections";
 import React from "react";
 
 const Introduction = (

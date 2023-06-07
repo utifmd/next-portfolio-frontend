@@ -1,5 +1,5 @@
 import {AppDispatch, TAnyAction} from "@/store";
-import {CALL_API} from "../constants"
+import {CALL_API} from "@/constants"
 
 const PAGINATION_SIZE: number = 3
 const pagedFeed = () =>

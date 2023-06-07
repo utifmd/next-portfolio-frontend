@@ -1,6 +1,5 @@
 import Image from "next/image";
-import {SlideshowLightbox, initLightboxJS} from "lightbox.js-react"
-import {useEffect} from "react";
+import {SlideshowLightbox} from "lightbox.js-react"
 
 export default function FigurePreview() {
     /*const assignLightBox = () => {

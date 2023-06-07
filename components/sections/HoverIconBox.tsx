@@ -1,5 +1,4 @@
-import {faTrash, IconDefinition} from "@fortawesome/free-solid-svg-icons";
-import Image from "next/image";
+import {IconDefinition} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 type Props = {

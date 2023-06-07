@@ -2,7 +2,7 @@ import '@fortawesome/fontawesome-svg-core/styles.css';
 import 'lightbox.js-react/dist/index.css';
 import './globals.css';
 import React from "react";
-import StateProvider from "../store/StateProvider";
+import StateProvider from "@/store/StateProvider";
 
 export const metadata = {
     title: 'Create Next App',

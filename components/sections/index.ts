@@ -1,7 +1,8 @@
 import Surface from "./Surface";
 import Box from "./Box";
 import StickyNavbar from "./StickyNavbar";
+import HoverIconBox from "@/components/sections/HoverIconBox";
 
 export {
-    Box, Surface, StickyNavbar
+    HoverIconBox, Box, Surface, StickyNavbar
 }

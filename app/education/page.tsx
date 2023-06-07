@@ -1,12 +1,12 @@
 "use client"
 
-import {useEffect, useRef} from "react";
-import {useRouter} from "next/navigation";
 import Image from "next/image";
-import {faTrash} from "@fortawesome/free-solid-svg-icons";
-import Input from "../../components/Input";
-import HoverIconBox from "../../components/sections/HoverIconBox";
-import {ButtonPrimary, RoundedButton} from "../../components/Button";
+import {useRouter} from "next/navigation";
+import {useEffect, useRef} from "react";
+import {Input} from "@/components";
+import {HoverIconBox} from "@/components/sections";
+import {ButtonPrimary, ButtonRounded} from "@/components/buttons";
+import {Authenticated} from "@/app/authentication";
 import {
     onInputChange,
     onInputUnfocused,
@@ -16,7 +16,7 @@ import {
     onResetSubmission
 } from "@/actions/educationAction"
 import {useAppDispatch, useAppSelector} from "@/app/hooks"
-import {Authenticated} from "@/app/authentication";
+import {faTrash} from "@fortawesome/free-solid-svg-icons";
 
 export default function() {
     const {
@@ -95,7 +95,7 @@ export default function() {
                         ? <HoverIconBox icon={faTrash} onClick={handleOnFileClick(value.imageUrl)} onBlur={handleOnTextBlur}>{image
                             ? <Image className="absolute inset-0 object-cover" fill={true} src={image} alt={"image appendable"}/>: value.imageUrl.length > 0
                                 ? <Image className="absolute inset-0 object-cover" fill={true} src={value.imageUrl} loader={() => value.imageUrl} alt={"image appendable"}/>: null}</HoverIconBox>
-                        : <RoundedButton label="select image" onClick={onInputFileClick} />}
+                        : <ButtonRounded label="select image" onClick={onInputFileClick} />}
                     </div>
                     <div className="h-full w-full space-y-4 text-left">
                         <textarea className="appearance-none block w-full bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 py-4 px-4 focus:outline-none focus:ring-1 focus:ring-green-600 focus:border-green-600"

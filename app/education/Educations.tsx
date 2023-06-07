@@ -1,6 +1,5 @@
 import React from "react";
 import {AppDispatch} from "@/store";
-import {EducationItem} from "./index";
 
 type Props = {
     state: IEducationState, getMorelEducations: () => AppDispatch

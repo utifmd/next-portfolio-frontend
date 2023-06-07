@@ -1,4 +1,4 @@
-import {ButtonNext} from "../Button";
+import {ButtonNext} from "@/components/buttons";
 
 type Props = TTileProps & TBoxProps & {
     children: React.ReactNode

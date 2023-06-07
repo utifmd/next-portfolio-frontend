@@ -1,7 +1,6 @@
 import {AppDispatch, TAnyAction} from "@/store";
 import {readFileAsImgSrcAsync} from "@/utils";
-import {BROWSER_API} from "@/middlewares/browserApi";
-import {CALL_API} from "../constants"
+import {CALL_API, BROWSER_API} from "@/constants"
 
 export const addEducation = () =>
     (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {

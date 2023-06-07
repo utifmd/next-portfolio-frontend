@@ -1,26 +1,29 @@
 "use client"
 
 import Image from "next/image";
+import {useRouter} from "next/navigation";
 import {ChangeEvent, useEffect, useRef} from "react";
-import Input from "../../components/Input";
-import {RoundedButton, ButtonPrimary} from "../../components/Button";
-import {AppDispatch} from "../../store";
+import {Select, Input} from "@/components";
+import {HoverIconBox} from "@/components/sections";
+import {ButtonPrimary, ButtonRounded} from "@/components/buttons";
+import {Authenticated} from "@/app/authentication";
+import {AppDispatch} from "@/store";
+import {onResetSubmission} from "@/actions/educationAction";
+import {useAppDispatch, useAppSelector} from "@/app/hooks";
 import {
-    ExperiencePlatform, ExperienceType,
+    ExperiencePlatform,
+    ExperienceType,
     addExperience,
     onIconAppended,
     onImageAppended,
     onInputChange,
-    onInputUnfocused, onAddStack, onRemoveImageAppended, onRemoveStack
+    onInputUnfocused,
+    onAddStack,
+    onRemoveImageAppended,
+    onRemoveStack
 } from "@/actions/experienceAction";
-import {useAppDispatch, useAppSelector} from "../hooks";
-import Select from "../../components/Select";
 import {camelize} from "@/utils";
-import HoverIconBox from "@/components/sections/HoverIconBox";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
-import {onResetSubmission} from "@/actions/educationAction";
-import {useRouter} from "next/navigation";
-import {Authenticated} from "@/app/authentication";
 
 export default function () {
     const {
@@ -137,7 +140,7 @@ export default function () {
                         ? <HoverIconBox icon={faTrash} onClick={handleOnFileClick(-1)(value.iconUrl)} onBlur={handleOnTextBlur}>{ icon
                             ? <Image className="absolute inset-0 object-cover" src={icon} alt={"icon appendable"} fill={true}/> : value.iconUrl
                                 ? <Image className="absolute inset-0 object-cover" src={value.iconUrl} loader={() => value.iconUrl} alt={"icon appendable"} fill={true}/> : null}</HoverIconBox>
-                        : <RoundedButton label="select icon" onClick={onInputFileClick("icon")}/>}
+                        : <ButtonRounded label="select icon" onClick={onInputFileClick("icon")}/>}
                     </div>
                     <div>
                         <input id="images" className="hidden" ref={handleOnInputFileClick("image")} type="file" accept="image/*" multiple={true} onChange={handleOnFileChange(onImageAppended)} onBlur={handleOnTextBlur}/>
@@ -150,7 +153,7 @@ export default function () {
                                 <HoverIconBox key={i} icon={faTrash} onClick={handleOnFileClick(i)("")} onBlur={handleOnTextBlur}>
                                     <Image className="object-cover" fill={true} src={image} alt={"image appendable"}/>
                                 </HoverIconBox>)}
-                            <RoundedButton label="add images" onClick={onInputFileClick("image")}/>
+                            <ButtonRounded label="add images" onClick={onInputFileClick("image")}/>
                         </div>
                     </div>
                 </div>

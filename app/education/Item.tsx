@@ -1,9 +1,9 @@
 import Image from "next/image";
-import {Box} from "../../components/sections";
+import Link from "next/link";
+import {Box} from "@/components/sections";
+import {Authenticated} from "@/app/authentication";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faExternalLink, faEdit} from '@fortawesome/free-solid-svg-icons'
-import Link from "next/link";
-import {Authenticated} from "@/app/authentication";
 import {SlideshowLightbox} from "lightbox.js-react";
 
 type Props = TBoxProps & {

@@ -1,13 +1,13 @@
 "use client"
 
+import React, {useEffect, useRef} from "react";
+import {StickyNavbar, Surface} from "@/components/sections";
+import {ButtonPrimary} from "@/components/buttons";
+import {Authenticated} from "./authentication"
 import Habit from "./Habit";
 import Introduction from "./Introduction";
 import Profile from "./Profile";
 import Feed from "./Feed";
-import React, {useEffect, useRef} from "react";
-import {StickyNavbar, Surface} from "@/components/sections";
-import {ButtonPrimary} from "@/components/Button";
-import {Authenticated} from "./authentication"
 
 type Props = IHomeState & {
     morePagination: any, onSelectToUpdate: any

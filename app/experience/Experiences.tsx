@@ -1,5 +1,4 @@
 import {AppDispatch} from "@/store";
-import {ExperienceItem} from "./index";
 
 type Props = {
     state: IExperienceState, getAllExperience: () => AppDispatch

@@ -1,9 +1,8 @@
-import {AppDispatch, TAnyAction} from "@/store";
 import {AnyAction} from "redux";
+import {AppDispatch, TAnyAction} from "@/store";
 import {readFileAsImgSrcAsync} from "@/utils";
-import {BROWSER_API} from "@/middlewares/browserApi";
-import {CALL_API} from "../constants"
 import {EducationAction} from "./educationAction";
+import {CALL_API, BROWSER_API} from "@/constants"
 
 export const addExperience = () =>
     (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {

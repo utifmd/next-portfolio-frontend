@@ -3,8 +3,7 @@ import {Middleware} from "redux";
 import {TAnyAction, educationsData, experiencesData} from "@/store";
 import {paginateListOf} from "@/utils";
 import {PAGINATION_SIZE} from "@/actions";
-import {CALL_API} from "../constants"
-// export const CALL_API: string = "CALL_API"
+import {CALL_API} from "@/constants"
 
 const httpRequest = ({header, body}: IHttpRequestAction) =>
     new Promise<any>((resolve, reject) => {

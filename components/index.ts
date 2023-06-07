@@ -1,7 +1,5 @@
-/*
 import Input from "./Input";
-import Loading from "./sections/Loading";
-import HoverIconBox from "./sections/HoverIconBox";
+import Select from "./Select";
 export {
-    Input, Loading, HoverIconBox
-}*/
+    Input, Select
+}
