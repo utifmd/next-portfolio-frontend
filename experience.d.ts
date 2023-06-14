@@ -18,6 +18,7 @@ interface IExperienceState {
     images: any[],
     value: IExperience,
     isValid: boolean,
-    isSubmitted: boolean
+    isSubmitted: boolean,
+    isSelected?: boolean
 }
 // type TDispatchExperience = (state: IExperienceState) => IExperienceState

@@ -1,6 +1,6 @@
 import {Reducer} from "redux";
 import {ExperienceAction} from "@/actions/experienceAction";
-import {HomeAction} from "@/actions";
+import {HomeAction} from "@/actions/homeAction";
 
 const initialState: IExperienceState = {
     status: "idle",
@@ -22,14 +22,21 @@ const initialState: IExperienceState = {
 const reducer: Reducer<IExperienceState> =
     (state: IExperienceState = initialState, action): IExperienceState => {
 
-    const isValid = state.icon && state.images.length > 0 &&
-        Object.entries(state.value)
+    const isTextsValid = Object.entries(state.value)
             .filter(([mKey, mValue]) => typeof mValue === "string" && mKey !== "iconUrl")
             .every(([_, mValue]) => mValue.length > 0)
 
+    const isValid: boolean = state.isSelected ? isTextsValid : isTextsValid && state.icon && state.images.length > 0
+
     switch (action.type) {
-        case HomeAction.UPDATE_FEED_EXPERIENCE_PREPARATION:
+        case HomeAction.SELECT_FEED_EXPERIENCE:
             return action.payload as IExperienceState
+
+        case ExperienceAction.DELETE_REQUEST:
+            return {...state, status: "loading"}
+
+        case ExperienceAction.DELETE_FAILED:
+            return {...state, status: "error", message: action.payload}
 
         case ExperienceAction.INPUT_CHANGED: {
             const [id, value] = action.payload as [string, any]
@@ -83,6 +90,7 @@ const reducer: Reducer<IExperienceState> =
             return {...state, status: "error", message: action.payload}
 
         case ExperienceAction.CREATE_SUCCESS:
+        case ExperienceAction.DELETE_SUCCESS:
             return {...initialState, isSubmitted: true}
 
         case ExperienceAction.RESET_SUBMISSION:

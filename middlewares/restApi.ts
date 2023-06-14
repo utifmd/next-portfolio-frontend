@@ -2,7 +2,7 @@ import {setTimeout} from "timers";
 import {Middleware} from "redux";
 import {TAnyAction, educationsData, experiencesData} from "@/store";
 import {paginateListOf} from "@/utils";
-import {PAGINATION_SIZE} from "@/actions";
+import {PAGINATION_SIZE} from "@/actions/homeAction";
 import {CALL_API} from "@/constants"
 
 const httpRequest = ({header, body}: IHttpRequestAction) =>

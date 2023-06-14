@@ -1,7 +1,8 @@
 import {Reducer} from "redux";
 import {EducationAction} from "@/actions/educationAction";
 import {TAnyAction} from "@/store";
-import {HomeAction} from "@/actions";
+import {HomeAction} from "@/actions/homeAction";
+import {ExperienceAction} from "@/actions/experienceAction";
 
 const initialState: IEducationState = {
     status: "idle",
@@ -23,11 +24,17 @@ const reducer: Reducer<IEducationState> =
             .filter(([mKey, mValue]) => typeof mValue === "string" && mKey !== "imageUrl")
             .every(([_, mValue]) => mValue.length > 0)
 
-        const isValid: boolean = state.isUpdateTurn ? isTextsValid : isTextsValid && state.image
+        const isValid: boolean = state.isSelected ? isTextsValid : isTextsValid && state.image
 
         switch (action.type) {
-            case HomeAction.UPDATE_FEED_EDUCATION_PREPARATION:
+            case HomeAction.SELECT_FEED_EDUCATION:
                 return action.payload as IEducationState
+
+            case EducationAction.DELETE_REQUEST:
+                return {...state, status: "loading"}
+
+            case EducationAction.DELETE_FAILED:
+                return {...state, status: "error", message: action.payload}
 
             case EducationAction.INPUT_CHANGED: {
                 const [id, value] = action.payload as [string, any]
@@ -55,6 +62,7 @@ const reducer: Reducer<IEducationState> =
                 return {...state, status: "error", message: action.payload}
 
             case EducationAction.CREATE_SUCCESS:
+            case EducationAction.DELETE_SUCCESS:
                 return {...initialState, isSubmitted: true}
 
             case EducationAction.RESET_SUBMISSION:

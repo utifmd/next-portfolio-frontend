@@ -3,15 +3,15 @@ import Link from "next/link";
 import {Box} from "@/components/sections";
 import {Authenticated} from "@/app/authentication";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faExternalLink, faEdit} from '@fortawesome/free-solid-svg-icons'
+import {faExternalLink, faCrosshairs} from '@fortawesome/free-solid-svg-icons'
 import {SlideshowLightbox} from "lightbox.js-react";
 
 type Props = TBoxProps & {
     education: IEducation,
-    onEditIconClick: (e: any) => void
+    onTargetIconClick: (e: any) => void
 }
 export default function(
-    {education, index, isLoading, onNextClick, onEditIconClick, innerRef}: Props) {
+    {education, index, isLoading, onNextClick, onTargetIconClick, innerRef}: Props) {
     const images: TImageLightBox[] = [{alt: education.title, src: education.imageUrl}]
     return(
         <Box innerRef={innerRef}
@@ -35,8 +35,8 @@ export default function(
                     <FontAwesomeIcon color={"#059669"} icon={faExternalLink} />
                 </Link>
                 <Authenticated>
-                    <div className="cursor-pointer" onClick={onEditIconClick} >
-                        <FontAwesomeIcon color={"#059669"} icon={faEdit}/>
+                    <div className="cursor-pointer" onClick={onTargetIconClick} >
+                        <FontAwesomeIcon color={"#059669"} icon={faCrosshairs}/>
                     </div>
                 </Authenticated>
             </div>

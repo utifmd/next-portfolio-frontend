@@ -11,16 +11,16 @@ type Props = {
     innerRef?: any,
     onFeedNextClicked: (length: number, i: number) => any,
     handleBoxJumper: (key: number | string) => (e: any) => any,
-    onSelectToUpdate: (i: number) => any
+    onSelectItem: (i: number) => any
 }
 export default function Feed(
-    {feedValues, innerRef, isLoading, isDone, onJumpToBox, onFeedNextClicked, handleBoxJumper, onSelectToUpdate}: Props) {
+    {feedValues, innerRef, isLoading, isDone, onJumpToBox, onFeedNextClicked, handleBoxJumper, onSelectItem}: Props) {
     const router = useRouter()
     const feedLength = feedValues.length
-    const handleOnSelectToUpdate =
+    const handleOnSelectItem =
         (i: number, isEducation: boolean) => (e: any) => {
         e.preventDefault()
-        onSelectToUpdate(i)
+        onSelectItem(i)
         if(isEducation) {
             router.push("/education")
             return
@@ -36,7 +36,7 @@ export default function Feed(
                 innerRef={handleBoxJumper(i)}
                 education={item as IEducation}
                 isLoading={isLoading && isTheLastOne}
-                onEditIconClick={handleOnSelectToUpdate(i, true)}
+                onTargetIconClick={handleOnSelectItem(i, true)}
                 onNextClick={onFeedNextClicked(feedLength, i)}/>
 
             if(!("content" in item)) component = <ExperienceItem
@@ -46,7 +46,7 @@ export default function Feed(
                 experience={item as IExperience}
                 isLoading={isLoading && isTheLastOne}
                 onNextClick={onFeedNextClicked(feedLength, i)}
-                onEditIconClick={handleOnSelectToUpdate(i, false)}
+                onTargetIconClick={handleOnSelectItem(i, false)}
                 onBottomClick={isDone && isTheLastOne && onJumpToBox("base")}/>
 
             return component})}

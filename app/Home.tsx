@@ -10,9 +10,9 @@ import Profile from "./Profile";
 import Feed from "./Feed";
 
 type Props = IHomeState & {
-    morePagination: any, onSelectToUpdate: any
+    morePagination: any, onSelectFeedItem: any
 }
-export default function Home({feed, intro, habit, profile, morePagination, onSelectToUpdate}: Props) {
+export default function Home({feed, intro, habit, profile, morePagination, onSelectFeedItem}: Props) {
     const reference = useRef<Record<string, any>>({})
     const onFeedNextClicked = (feedLength: number, i: number) => (e: MouseEvent) => {
         e.preventDefault()
@@ -57,7 +57,7 @@ export default function Home({feed, intro, habit, profile, morePagination, onSel
                     isDone={feed.isDone}
                     onJumpToBox={onJumpToBox}
                     onFeedNextClicked={onFeedNextClicked}
-                    onSelectToUpdate={onSelectToUpdate}
+                    onSelectItem={onSelectFeedItem}
                     handleBoxJumper={handleBoxJumper}
                     innerRef={handleBoxJumper("feed")}/>
             </Surface>

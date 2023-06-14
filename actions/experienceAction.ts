@@ -27,7 +27,23 @@ export const addExperience = () =>
     }
     return dispatch(action)
 }
-
+export const removeExperience = () =>
+    (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
+        const experience = getState().experience.value
+        const action: IAppAction = {
+            [CALL_API]: {
+                method: "DELETE",
+                header: "/experiences",
+                types: [
+                    ExperienceAction.DELETE_REQUEST,
+                    ExperienceAction.DELETE_FAILED,
+                    ExperienceAction.DELETE_SUCCESS
+                ],
+                body: experience
+            }
+        }
+        return dispatch(action)
+    }
 export const onImageAppended = (file: any) =>
     (dispatch: AppDispatch): IAppAction => {
     const action: IAppAction = {
@@ -129,7 +145,10 @@ export enum ExperienceAction {
     READ_ALL_SUCCESS = "@@EXPERIENCE_READ_ALL_SUCCESS",
 
     UPDATE = "@@EXPERIENCE_UPDATE",
-    DELETE = "@@EXPERIENCE_DELETE",
+
+    DELETE_REQUEST = "@@EXPERIENCE_DELETE_REQUEST",
+    DELETE_FAILED = "@@EXPERIENCE_DELETE_FAILED",
+    DELETE_SUCCESS = "@@EXPERIENCE_DELETE_SUCCESS",
 
     RESET_SUBMISSION = "@@EXPERIENCE_RESET_SUBMISSION",
 }

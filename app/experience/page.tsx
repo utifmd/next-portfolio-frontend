@@ -14,6 +14,7 @@ import {
     ExperiencePlatform,
     ExperienceType,
     addExperience,
+    removeExperience,
     onIconAppended,
     onImageAppended,
     onInputChange,
@@ -24,6 +25,7 @@ import {
 } from "@/actions/experienceAction";
 import {camelize} from "@/utils";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 export default function () {
     const {
@@ -32,7 +34,7 @@ export default function () {
         isValid,
         status,
         isSubmitted, icon,
-        message} = useAppSelector<IExperienceState>((state) => state.experience)
+        isSelected, message} = useAppSelector<IExperienceState>((state) => state.experience)
     const dispatch: AppDispatch = useAppDispatch()
     const router = useRouter()
     const reference = useRef<any>({})
@@ -44,6 +46,11 @@ export default function () {
         router.back()
     }
     useEffect(onFormSubmitted, [isSubmitted])
+
+    const onRemoveExperience = (e: any) => {
+        e.preventDefault()
+        dispatch(removeExperience())
+    }
 
     const onPostExperience = (e: any) => {
         e.preventDefault()
@@ -157,11 +164,18 @@ export default function () {
                 {message && <p className="text-red-500">{message}</p>}
                 <Authenticated fallback={
                     <ButtonPrimary label="Unauthenticated" isDisable={true}/>}>
-                    <ButtonPrimary
-                        label="Post"
-                        type="submit"
-                        isDisable={status === "loading" || !isValid}
-                        isLoading={status === "loading"} />
+                    <div className="flex justify-center items-center space-x-1.5">
+                        <ButtonPrimary
+                            label={isSelected ? "Update" : "Post"}
+                            type="submit"
+                            isDisable={status === "loading" || !isValid}
+                            isLoading={status === "loading"} />
+                        { isSelected &&
+                            <div className="cursor-pointer p-3" onClick={onRemoveExperience}>
+                                <FontAwesomeIcon color={"#059669"} icon={faTrash}/>
+                            </div>
+                        }
+                    </div>
                 </Authenticated>
             </form>
         </div>

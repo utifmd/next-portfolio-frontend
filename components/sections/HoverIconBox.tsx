@@ -11,8 +11,7 @@ export default function ({icon, children, onClick, onBlur}: Props) {
     return (
         <div className="relative block group w-20 h-20 overflow-clip cursor-pointer" onClick={onClick} onBlur={onBlur}>
             {children}
-            <FontAwesomeIcon className="relative mt-2 opacity-0 group-hover:opacity-100 bg-green-600 p-1 rounded-md"
-                icon={icon} size="lg" color="#F2F2F2"/>
+            <FontAwesomeIcon className="relative mt-2 opacity-0 group-hover:opacity-100 bg-green-600 p-1 rounded-md" icon={icon} color="#F2F2F2"/>
         </div>
     )
 }

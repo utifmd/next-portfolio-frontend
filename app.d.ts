@@ -1,4 +1,4 @@
-interface ISchema {}
+interface ISchema {id?: string}
 
 interface IHttpRequestAction {
     method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",

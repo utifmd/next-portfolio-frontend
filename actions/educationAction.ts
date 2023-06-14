@@ -25,6 +25,23 @@ export const addEducation = () =>
     }
     return dispatch(action)
 }
+export const removeEducation = () =>
+    (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
+    const education = getState().education.value
+    const action: IAppAction = {
+        [CALL_API]: {
+            method: "DELETE",
+            header: "/educations",
+            types: [
+                EducationAction.DELETE_REQUEST,
+                EducationAction.DELETE_FAILED,
+                EducationAction.DELETE_SUCCESS
+            ],
+            body: education
+        }
+    }
+    return dispatch(action)
+}
 export const onInputChange = (idValue: [string, any]) =>
     (dispatch: AppDispatch): IAppAction => {
     const action: TAnyAction = {
@@ -85,5 +102,7 @@ export enum EducationAction {
     RESET_SUBMISSION = "@@EDUCATION_RESET_SUBMISSION",
     UPDATE = "@@EDUCATION_UPDATE",
 
-    DELETE = "@@EDUCATION_DELETE",
+    DELETE_REQUEST = "@@EDUCATION_DELETE_REQUEST",
+    DELETE_FAILED = "@@EDUCATION_DELETE_FAILED",
+    DELETE_SUCCESS = "@@EDUCATION_DELETE_SUCCESS",
 }

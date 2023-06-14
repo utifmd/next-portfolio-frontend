@@ -8,15 +8,17 @@ import {HoverIconBox} from "@/components/sections";
 import {ButtonPrimary, ButtonRounded} from "@/components/buttons";
 import {Authenticated} from "@/app/authentication";
 import {
+    addEducation,
+    removeEducation,
     onInputChange,
     onInputUnfocused,
-    addEducation,
     onImageAppended,
     onResetImageAppended,
     onResetSubmission
 } from "@/actions/educationAction"
 import {useAppDispatch, useAppSelector} from "@/app/hooks"
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 export default function() {
     const {
@@ -24,7 +26,7 @@ export default function() {
         status,
         isValid,
         isSubmitted,
-        image, message} = useAppSelector(({education}) => education)
+        isSelected, image, message} = useAppSelector(({education}) => education)
     const dispatch = useAppDispatch()
     const router = useRouter()
     const reference = useRef<any>({})
@@ -38,6 +40,10 @@ export default function() {
     const onPostEducation = (e: any) => {
         e.preventDefault()
         dispatch(addEducation())
+    }
+    const onRemoveEducation = (e: any) => {
+        e.preventDefault()
+        dispatch(removeEducation())
     }
     const handleOnFileRemove = (valueImageUrl: string) => (e: any) => {
         e.preventDefault()
@@ -109,13 +115,21 @@ export default function() {
                     </div>
                 </div>
                 {message && <p className="text-red-500">{message}</p>}
+
                 <Authenticated fallback={
                     <ButtonPrimary label="Unauthenticated" isDisable={true}/>}>
-                    <ButtonPrimary
-                        label="Post"
-                        type="submit"
-                        isDisable={status === "loading" || !isValid}
-                        isLoading={status === "loading"} />
+                    <div className="flex justify-center items-center space-x-1.5">
+                        <ButtonPrimary
+                            label={isSelected ? "Update" : "Post"}
+                            type="submit"
+                            isDisable={status === "loading" || !isValid}
+                            isLoading={status === "loading"} />
+                        { isSelected &&
+                            <div className="cursor-pointer p-3" onClick={onRemoveEducation}>
+                                <FontAwesomeIcon color={"#059669"} icon={faTrash}/>
+                            </div>
+                        }
+                    </div>
                 </Authenticated>
             </form>
         </div>

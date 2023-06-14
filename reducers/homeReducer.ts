@@ -1,6 +1,6 @@
 import {Reducer} from "redux";
 import {TAnyAction} from "@/store";
-import {HomeAction, PAGINATION_SIZE} from "@/actions";
+import {HomeAction, PAGINATION_SIZE} from "@/actions/homeAction";
 import {EducationAction} from "@/actions/educationAction";
 import {ExperienceAction} from "@/actions/experienceAction";
 import {groupingListByPropKey} from "@/utils";
@@ -69,6 +69,13 @@ const homeReducer: Reducer<IHomeState> =
 
                 groupingListByPropKey(value, "content")
                 return {...state, feed: {...state.feed, value, scrollTo}}
+            }
+
+            case EducationAction.DELETE_SUCCESS:
+            case ExperienceAction.DELETE_SUCCESS: {
+                const {id} = action.payload as ISchema
+                const value = state.feed.value.filter(mValue => mValue.id !== id)
+                return {...state, feed: {...state.feed, value}}
             }
 
             default:

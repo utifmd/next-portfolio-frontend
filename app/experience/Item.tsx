@@ -5,14 +5,14 @@ import {Box} from "@/components/sections";
 import {SlideshowLightbox} from "lightbox.js-react";
 import {attachmentKeys} from "@/utils";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faEdit, faExternalLink, faVideo} from "@fortawesome/free-solid-svg-icons";
+import {faCrosshairs, faExternalLink, faVideo} from "@fortawesome/free-solid-svg-icons";
 
 type Props = TBoxProps & {
     experience: IExperience,
-    onEditIconClick: (e: any) => void
+    onTargetIconClick: (e: any) => void
 }
 export default function (
-    {experience, index, isLoading, onBottomClick, onNextClick, onEditIconClick, innerRef}: Props) {
+    {experience, index, isLoading, onBottomClick, onNextClick, onTargetIconClick, innerRef}: Props) {
     const screenshots: TImageLightBox[] = experience.imageUrls
         .map<TImageLightBox>(url => ({alt: url, src: url}))
 
@@ -100,8 +100,8 @@ export default function (
             </div>
             <Authenticated>
                 <div className="flex justify-center space-x-4">
-                    <div className="cursor-pointer" onClick={onEditIconClick}>
-                        <FontAwesomeIcon color={"#059669"} icon={faEdit}/>
+                    <div className="cursor-pointer" onClick={onTargetIconClick}>
+                        <FontAwesomeIcon color={"#059669"} icon={faCrosshairs}/>
                     </div>
                 </div>
             </Authenticated>
