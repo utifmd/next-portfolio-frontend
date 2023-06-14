@@ -22,7 +22,7 @@ export default function() {
     const router = useRouter()
 
     const onFormSubmitted = () => {
-        if (!isSubmitted || status !== "idle") return () => void
+        if (!isSubmitted || status !== "idle") return () => {}
 
         dispatch(onResetSubmission())
         router.back()

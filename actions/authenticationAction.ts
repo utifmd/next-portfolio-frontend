@@ -5,7 +5,7 @@ export const onSignIn = () => (dispatch: AppDispatch, getState: () => IAppState)
     const authentication = getState().authentication.value
     const action: IAppAction = {
         [CALL_API]: {
-            method: "post",
+            method: "POST",
             header: "/authentication",
             types: [
                 AuthenticationAction.SIGN_IN_REQUEST,

@@ -8,6 +8,7 @@ const initialState: IAuthenticationState = {
     },
     isSubmitted: false,
     isValid: false,
+    token: "test",
     status: "idle"
 }
 const reducer: Reducer<IAuthenticationState> =

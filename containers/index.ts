@@ -8,7 +8,7 @@ const mapStateToProps = ({home}: IAppState) => ({
     feed: home.feed, intro: home.intro, habit: home.habit, profile: home.profile
 })
 const mapReducerToProps = ({
-    morePagination: pagedFeed, onSelectFeedItem, onFeedStartedFalse
+    pagedFeed, onSelectFeedItem, onFeedStartedFalse
 })
 const HomeContainer = connect(mapStateToProps, mapReducerToProps)(Home)
 

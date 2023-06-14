@@ -8,7 +8,6 @@ import {HoverIconBox} from "@/components/sections";
 import {ButtonPrimary, ButtonRounded} from "@/components/buttons";
 import {Authenticated} from "@/app/authentication";
 import {AppDispatch} from "@/store";
-import {onResetSubmission} from "@/actions/educationAction";
 import {useAppDispatch, useAppSelector} from "@/app/hooks";
 import {
     ExperiencePlatform,
@@ -21,7 +20,8 @@ import {
     onInputUnfocused,
     onAddStack,
     onRemoveImageAppended,
-    onRemoveStack
+    onRemoveStack,
+    onResetSubmission
 } from "@/actions/experienceAction";
 import {camelize} from "@/utils";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
@@ -40,7 +40,7 @@ export default function () {
     const reference = useRef<any>({})
 
     const onFormSubmitted = () => {
-        if (!isSubmitted || status !== "idle") return () => void
+        if (!isSubmitted || status !== "idle") return () => {}
 
             dispatch(onResetSubmission())
         router.back()

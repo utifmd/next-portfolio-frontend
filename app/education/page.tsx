@@ -31,7 +31,7 @@ export default function() {
     const router = useRouter()
     const reference = useRef<any>({})
     const onFormSubmitted = () => {
-        if (!isSubmitted || status !== "idle") return () => void
+        if (!isSubmitted || status !== "idle") return () => {}
 
         dispatch(onResetSubmission())
         router.back()
@@ -97,8 +97,9 @@ export default function() {
                     <div className="md:col-span-2">
                         <Input id="fileUrl" type="text" placeholder="Enter file url" value={value.fileUrl} onChange={handleOnTextChange} onBlur={handleOnTextBlur}/>
                     </div>
+                    {/*TODO upload test with capable id with value binary*/}
                     <div className="flex justify-center items-center">
-                        <input className="hidden" id="image" type="file" accept="image/*"
+                        <input className="hidden" id="image-upload" type="file" accept="image/*"
                             multiple={false}
                             ref={handleInputFileRef}
                             onChange={handleOnFileChange}

@@ -4,20 +4,44 @@ import {TAnyAction} from "@/store";
 import {PAGINATION_SIZE} from "@/actions/homeAction";
 import {CALL_API} from "@/constants"
 
-const httpRequest = ({method, header, body}: IHttpRequestAction) =>
-    new Promise<any>(async (resolve, reject) => {
-    if (typeof header === "string") {
-        body ? resolve(body) : reject("undefined body")
-        return
-    }
-    if (!("page" in header)) {
-        reject("request with no pagination.")
-        return
-    }
+const httpRequest = ({method, header, body}: IHttpRequestAction) => new Promise<any>(
+    async (resolve, reject) => {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || ""
+    const apiKey = process.env.NEXT_PUBLIC_API_KEY || ""
     try {
-        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
-        // const headers = {'cache': 'no-store'}
-        const params = {page: header.page, size: header.size}
+        /*
+        * REGULAR REQUEST
+        * */
+        if (typeof header === "string") {
+            const url = baseUrl + header
+            const headers = {
+                'Content-Type': 'multipart/form-data',
+                'token': apiKey // 'cache': 'no-store'
+            }
+            if (typeof body === "undefined") {
+                reject("body undefined")
+                return
+            }
+            const response: AxiosResponse = await axios({method, url, headers, data: body})
+            if (response.status != 200) {
+                reject(response.statusText)
+                return
+            }
+            console.log(response.data)
+            resolve(response.data)
+            return
+        }
+
+        /*
+        * PAGINATION REQUEST
+        * */
+        if (!("page" in header)) {
+            reject("request with no pagination.")
+            return
+        }
+        const params = {
+            page: header.page, size: header.size
+        }
         if (header.isExpTurn) {
             const url = baseUrl + header.endpoints[1]
             const response: AxiosResponse = await axios({method, url, params})
@@ -48,8 +72,9 @@ const httpRequest = ({method, header, body}: IHttpRequestAction) =>
         }
         resolve(educations)
 
-    } catch (e) {
-        reject(e)
+    } catch (error) {
+
+        reject(error)
     }
 })
 const restApiMiddleware: Middleware<IAppState> = () => (next: any) => (action: IAppAction) => {

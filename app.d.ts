@@ -1,7 +1,7 @@
 interface ISchema {id?: string}
 
 interface IHttpRequestAction {
-    method: "get" | "post" | "put" | "patch" | "delete",
+    method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
     types: [string, string, string],
     header: string | {page: number, size: number, isExpTurn: boolean, endpoints: string[]},
     body?: ISchema | ISchema[]

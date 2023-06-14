@@ -1,26 +1,19 @@
 import {AnyAction} from "redux";
 import {AppDispatch, TAnyAction} from "@/store";
 import {readFileAsImgSrcAsync} from "@/utils";
-import {EducationAction} from "./educationAction";
 import {CALL_API, BROWSER_API} from "@/constants"
 
 export const addExperience = () =>
     (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
-    const {value} = getState().experience
-    const date = new Date()
-    const experience: IExperience = {
-        ...value,
-        id: `EXP-${date.getTime()}`,
-        createdAt: date
-    }
+    const experience = getState().experience.value
     const action: IAppAction = {
         [CALL_API]: {
-            method: "post",
+            method: "POST",
             header: "/experiences",
             types: [
                 ExperienceAction.CREATE_REQUEST,
                 ExperienceAction.CREATE_FAILED,
-                EducationAction.CREATE_SUCCESS
+                ExperienceAction.CREATE_SUCCESS
             ],
             body: experience
         }
@@ -32,7 +25,7 @@ export const removeExperience = () =>
         const experience = getState().experience.value
         const action: IAppAction = {
             [CALL_API]: {
-                method: "delete",
+                method: "DELETE",
                 header: "/experiences",
                 types: [
                     ExperienceAction.DELETE_REQUEST,
@@ -101,6 +94,10 @@ export const onRemoveStack = (index: number) =>
     }
     return dispatch(action)
 }
+export const onResetSubmission = () =>
+    (dispatch: AppDispatch): IAppAction => dispatch(
+        <TAnyAction>{type: ExperienceAction.RESET_SUBMISSION}
+    )
 export const onInputUnfocused = () =>
     (dispatch: AppDispatch): IAppAction => {
     const action: TAnyAction = {

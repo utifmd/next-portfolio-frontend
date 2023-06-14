@@ -7,7 +7,7 @@ export const addEducation = () =>
     const education = getState().education.value
     const action: IAppAction = {
         [CALL_API]: {
-            method: "post",
+            method: "POST",
             header: "/educations",
             types: [
                 EducationAction.CREATE_REQUEST,
@@ -24,7 +24,7 @@ export const removeEducation = () =>
     const education = getState().education.value
     const action: IAppAction = {
         [CALL_API]: {
-            method: "delete",
+            method: "DELETE",
             header: "/educations",
             types: [
                 EducationAction.DELETE_REQUEST,

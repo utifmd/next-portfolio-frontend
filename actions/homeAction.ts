@@ -5,10 +5,9 @@ const PAGINATION_SIZE: number = 3
 const pagedFeed = () =>
     (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
     const {feed} = getState().home
-    console.log("pagedFeed triggered")
     const action: IAppAction = {
         [CALL_API]: {
-            method: "get",
+            method: "GET",
             header: {
                 page: feed.page,
                 isExpTurn: feed.isExpTurn,
