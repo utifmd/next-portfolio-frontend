@@ -1,45 +1,56 @@
-import {setTimeout} from "timers";
+import axios, {AxiosResponse} from "axios"
 import {Middleware} from "redux";
-import {TAnyAction, educationsData, experiencesData} from "@/store";
-import {paginateListOf} from "@/utils";
+import {TAnyAction} from "@/store";
 import {PAGINATION_SIZE} from "@/actions/homeAction";
 import {CALL_API} from "@/constants"
 
-const httpRequest = ({header, body}: IHttpRequestAction) =>
-    new Promise<any>((resolve, reject) => {
-    setTimeout(() => {
-        if (typeof header === "string") {
-            body ? resolve(body) : reject("undefined body")
-            return
-        }
-        if (!("page" in header)) {
-            reject("request with no pagination.")
-            return
-        }
-        if (header.isExpTurn){
-            const response = paginateListOf(experiencesData, header.page, header.size)
-            const isDone = response.length <= 0 || response.length < PAGINATION_SIZE
+const httpRequest = ({method, header, body}: IHttpRequestAction) =>
+    new Promise<any>(async (resolve, reject) => {
+    if (typeof header === "string") {
+        body ? resolve(body) : reject("undefined body")
+        return
+    }
+    if (!("page" in header)) {
+        reject("request with no pagination.")
+        return
+    }
+    try {
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+        // const headers = {'cache': 'no-store'}
+        const params = {page: header.page, size: header.size}
+        if (header.isExpTurn) {
+            const url = baseUrl + header.endpoints[1]
+            const response: AxiosResponse = await axios({method, url, params})
+            const isDone = response.data.length <= 0 || response.data.length < PAGINATION_SIZE
             const experience = <IFeedState>{
                 isDone,
                 status: "idle",
                 isExpTurn: true,
-                page: header.page +1,
-                value: response
+                page: header.page + 1,
+                value: response.data
             }
             resolve(experience)
             return
         }
-        const response = paginateListOf(educationsData, header.page, header.size)
-        const isExpTurn = response.length <= 0 || response.length < PAGINATION_SIZE
-        const educations = <IFeedState>{
+        const url = baseUrl + header.endpoints[0]
+        const response: AxiosResponse = await axios({method, url, params})
+        if (response.status != 200) {
+            reject(response.statusText)
+            return
+        }
+        const isExpTurn = response.data.length <= 0 || response.data.length < PAGINATION_SIZE
+        const educations = <IFeedState> {
             isDone: false,
             status: "idle",
             isExpTurn,
             page: isExpTurn ? 1 : header.page +1,
-            value: response
+            value: response.data
         }
         resolve(educations)
-    }, 1500)
+
+    } catch (e) {
+        reject(e)
+    }
 })
 const restApiMiddleware: Middleware<IAppState> = () => (next: any) => (action: IAppAction) => {
     const callApi = action[CALL_API]

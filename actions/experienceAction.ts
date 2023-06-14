@@ -15,7 +15,7 @@ export const addExperience = () =>
     }
     const action: IAppAction = {
         [CALL_API]: {
-            method: "POST",
+            method: "post",
             header: "/experiences",
             types: [
                 ExperienceAction.CREATE_REQUEST,
@@ -32,7 +32,7 @@ export const removeExperience = () =>
         const experience = getState().experience.value
         const action: IAppAction = {
             [CALL_API]: {
-                method: "DELETE",
+                method: "delete",
                 header: "/experiences",
                 types: [
                     ExperienceAction.DELETE_REQUEST,

@@ -4,16 +4,10 @@ import {CALL_API, BROWSER_API} from "@/constants"
 
 export const addEducation = () =>
     (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
-    const {value/*, image*/} = getState().education
-    const createdAt = new Date()
-    const education: IEducation /*& {image: any}*/ = {
-        ...value, //image,
-        id: `EDU-101-${createdAt.getTime()}`,
-        createdAt,
-    }
+    const education = getState().education.value
     const action: IAppAction = {
         [CALL_API]: {
-            method: "POST",
+            method: "post",
             header: "/educations",
             types: [
                 EducationAction.CREATE_REQUEST,
@@ -30,7 +24,7 @@ export const removeEducation = () =>
     const education = getState().education.value
     const action: IAppAction = {
         [CALL_API]: {
-            method: "DELETE",
+            method: "delete",
             header: "/educations",
             types: [
                 EducationAction.DELETE_REQUEST,

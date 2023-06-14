@@ -1,9 +1,9 @@
 interface ISchema {id?: string}
 
 interface IHttpRequestAction {
-    method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
+    method: "get" | "post" | "put" | "patch" | "delete",
     types: [string, string, string],
-    header: string | {page: number, size: number, isExpTurn: boolean, endpoints?: string[]},
+    header: string | {page: number, size: number, isExpTurn: boolean, endpoints: string[]},
     body?: ISchema | ISchema[]
 }
 interface IAPIAction {
@@ -32,11 +32,15 @@ interface IHomeState {
 interface IFeedState {
     status: "idle" | "loading" | "error",
     message?: string,
+    isStarted: boolean,
     isExpTurn: boolean,
     isDone: boolean,
     scrollTo?: number,
     page: number,
     value: ISchema[]
+}
+interface IEnvLocal {
+    NEXT_PUBLIC_BASE_URL: string
 }
 type TBoxProps = {
     innerRef?: any,

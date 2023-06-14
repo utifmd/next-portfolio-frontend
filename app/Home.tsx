@@ -10,10 +10,18 @@ import Profile from "./Profile";
 import Feed from "./Feed";
 
 type Props = IHomeState & {
-    morePagination: any, onSelectFeedItem: any
+    morePagination: any, onSelectFeedItem: any, onFeedStartedFalse: any
 }
-export default function Home({feed, intro, habit, profile, morePagination, onSelectFeedItem}: Props) {
-    const reference = useRef<Record<string, any>>({})
+export default function Home(
+    {feed, intro, habit, profile, morePagination, onSelectFeedItem, onFeedStartedFalse}: Props) {
+    const reference = useRef<any>({})
+    const onRendered = () => {
+        if(feed.isStarted) {
+            morePagination()
+            onFeedStartedFalse()
+        }
+    }
+    useEffect(onRendered, [])
     const onFeedNextClicked = (feedLength: number, i: number) => (e: MouseEvent) => {
         e.preventDefault()
         if ((i + 1) >= feedLength) morePagination()

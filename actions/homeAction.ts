@@ -5,15 +5,15 @@ const PAGINATION_SIZE: number = 3
 const pagedFeed = () =>
     (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
     const {feed} = getState().home
-
+    console.log("pagedFeed triggered")
     const action: IAppAction = {
         [CALL_API]: {
-            method: "GET",
+            method: "get",
             header: {
                 page: feed.page,
                 isExpTurn: feed.isExpTurn,
                 size: PAGINATION_SIZE,
-                endpoints: ["/educations", "/experiences"]
+                endpoints: [`/educations`, "/experiences"]
             },
             types: [
                 HomeAction.PAGED_FEED_REQUEST,
@@ -54,6 +54,9 @@ const onSelectFeedItem = (index: number) =>
     }
     return dispatch(action)
 }
+export const onFeedStartedFalse = () => (dispatch: AppDispatch) => {
+    return dispatch(<TAnyAction>{type: HomeAction.SET_IS_FEED_STARTED_FALSE})
+}
 enum HomeAction {
     CREATE_FEED_REQUEST = "@@CREATE_FEED_REQUEST",
     CREATE_FEED_FAILED = "@@CREATE_FEED_FAILED",
@@ -67,8 +70,10 @@ enum HomeAction {
     PAGED_FEED_FAILED = "@@PAGED_FEED_FAILED",
     PAGED_FEED_SUCCESS = "@@PAGED_FEED_SUCCESS",
 
-    SELECT_FEED_EDUCATION = "@SELECT_FEED_EDUCATION",
-    SELECT_FEED_EXPERIENCE = "@SELECT_FEED_EXPERIENCE",
+    SELECT_FEED_EDUCATION = "@@SELECT_FEED_EDUCATION",
+    SELECT_FEED_EXPERIENCE = "@@SELECT_FEED_EXPERIENCE",
+
+    SET_IS_FEED_STARTED_FALSE = "@@SET_IS_FEED_STARTED_FALSE"
 }
 export {
     PAGINATION_SIZE, pagedFeed, onSelectFeedItem, HomeAction

@@ -22,7 +22,12 @@ const initialState: IHomeState = {
         ]
     },
     feed: {
-        status: "idle", isExpTurn: false, isDone: false, page: 1, value: []
+        status: "idle",
+        isExpTurn: false,
+        isStarted: true,
+        isDone: false,
+        page: 0,
+        value: []
     },
     profile: {
         bio: "seorang pemuda tua ophiucus",
@@ -44,6 +49,9 @@ const initialState: IHomeState = {
 const homeReducer: Reducer<IHomeState> =
     (state: IHomeState = initialState, action: TAnyAction): IHomeState => {
         switch (action.type) {
+            case HomeAction.SET_IS_FEED_STARTED_FALSE:
+                return {...state, feed:{...state.feed, isStarted: false}}
+
             case HomeAction.PAGED_FEED_REQUEST:
                 return {...state, feed: {...state.feed, status: "loading"}}
 
