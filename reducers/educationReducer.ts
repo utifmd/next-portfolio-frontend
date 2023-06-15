@@ -2,7 +2,6 @@ import {Reducer} from "redux";
 import {EducationAction} from "@/actions/educationAction";
 import {TAnyAction} from "@/store";
 import {HomeAction} from "@/actions/homeAction";
-import {ExperienceAction} from "@/actions/experienceAction";
 
 const initialState: IEducationState = {
     status: "idle",

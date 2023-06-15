@@ -26,6 +26,7 @@ import {
 import {camelize} from "@/utils";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {FileUploadField} from "@/constants";
 
 export default function () {
     const {
@@ -59,7 +60,8 @@ export default function () {
     const handleOnFileClick = (index: number) => (url: string) => (e: any) => {
         e.preventDefault()
 
-        reference.current[index < 0 ? "icon" : "images"].value = null
+        let key = index < 0 ? FileUploadField.SINGLE : FileUploadField.MULTIPLE
+        reference.current[key].value = null
         if (url.length > 0) {
             console.log(`delete image ${url} on the server`)
             // dispatch(onRemoveImage(url))
@@ -139,25 +141,25 @@ export default function () {
                         <Input id="releasedUrl" type="text" placeholder="Enter released url" value={value.releasedUrl} onChange={handleOnTextChange} onBlur={handleOnTextBlur}/>
                     </div>
                     <div className="flex flex-wrap">{value.stack.map((mStack, i) =>
-                        <span onClick={handleOnItemStackClick(i)} className="text-base px-1 cursor-pointer hover:text-red-600 hover:dark:text-red-400 hover:line-through">#{mStack}</span>)}</div>
+                        <span key={i} onClick={handleOnItemStackClick(i)} className="text-base px-1 cursor-pointer hover:text-red-600 hover:dark:text-red-400 hover:line-through">#{mStack}</span>)}</div>
                     <div>
                         <Input id="stack" type="text" placeholder="Add stack" onKeyUp={handleOnTextPush} onBlur={handleOnTextBlur}/>
                     </div>
                     <div>
-                        <input id="icon" ref={handleInputFileRef("icon")} className={"hidden"} type="file" accept="image/*" multiple={false} onChange={handleOnFileChange(onIconAppended)} onBlur={handleOnTextBlur}/>{icon || value.iconUrl.length > 0 ?
+                        <input id={FileUploadField.SINGLE} ref={handleInputFileRef(FileUploadField.SINGLE)} className={"hidden"} type="file" accept="image/*" multiple={false} onChange={handleOnFileChange(onIconAppended)} onBlur={handleOnTextBlur}/>{icon || value.iconUrl.length > 0 ?
                         <HoverIconBox icon={faTrash} onClick={handleOnFileClick(-1)(value.iconUrl)} onBlur={handleOnTextBlur}>{icon ?
                             <Image className="absolute inset-0 object-cover" src={icon} alt={"icon appendable"} fill={true}/> : value.iconUrl ?
                                 <Image className="absolute inset-0 object-cover" src={value.iconUrl} loader={() => value.iconUrl} alt={"icon appendable"} fill={true}/> : null}</HoverIconBox>:
-                        <ButtonRounded label="select icon" onClick={onInputFileClick("icon")}/>}
+                        <ButtonRounded label="select icon" onClick={onInputFileClick(FileUploadField.SINGLE)}/>}
                     </div>
                     <div>
-                        <input id="images" className="hidden" ref={handleInputFileRef("images")} type="file" accept="image/*" multiple={true} onChange={handleOnFileChange(onImageAppended)} onBlur={handleOnTextBlur}/>
+                        <input id={FileUploadField.MULTIPLE} className="hidden" ref={handleInputFileRef(FileUploadField.MULTIPLE)} type="file" accept="image/*" multiple={true} onChange={handleOnFileChange(onImageAppended)} onBlur={handleOnTextBlur}/>
                         <div className="grid grid-cols-3 gap-1 w-full">{value.imageUrls.length > 0 && value.imageUrls.map((url, i) =>
                             <HoverIconBox key={i} icon={faTrash} onClick={handleOnFileClick(i)(url)} onBlur={handleOnTextBlur}>
                                 <Image className="object-cover" fill={true} src={url} loader={() => url} alt={"image appendable"}/></HoverIconBox>)}{images.length > 0 && images.map((image, i) =>
                             <HoverIconBox key={i} icon={faTrash} onClick={handleOnFileClick(i)("")} onBlur={handleOnTextBlur}>
                                 <Image className="object-cover" fill={true} src={image} alt={"image appendable"}/></HoverIconBox>)}
-                            <ButtonRounded label="add images" onClick={onInputFileClick("images")}/>
+                            <ButtonRounded label="add images" onClick={onInputFileClick(FileUploadField.MULTIPLE)}/>
                         </div>
                     </div>
                 </div>

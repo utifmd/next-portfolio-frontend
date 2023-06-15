@@ -1,4 +1,4 @@
-import axios, {AxiosResponse} from "axios"
+import axios, {AxiosError, AxiosResponse} from "axios"
 import {Middleware} from "redux";
 import {TAnyAction} from "@/store";
 import {PAGINATION_SIZE} from "@/actions/homeAction";
@@ -15,20 +15,17 @@ const httpRequest = ({method, header, body}: IHttpRequestAction) => new Promise<
         if (typeof header === "string") {
             const url = baseUrl + header
             const headers = {
-                'Content-Type': 'multipart/form-data',
+                'content-type': 'multipart/form-data',
                 'token': apiKey // 'cache': 'no-store'
             }
             if (typeof body === "undefined") {
                 reject("body undefined")
                 return
             }
-            const response: AxiosResponse = await axios({method, url, headers, data: body})
-            if (response.status != 200) {
-                reject(response.statusText)
-                return
-            }
-            console.log(response.data)
-            resolve(response.data)
+            const {data}: AxiosResponse = await axios({
+                method, url, headers, data: body
+            })
+            resolve(data)
             return
         }
 
@@ -42,38 +39,31 @@ const httpRequest = ({method, header, body}: IHttpRequestAction) => new Promise<
         const params = {
             page: header.page, size: header.size
         }
-        if (header.isExpTurn) {
+        if (header.isExpTurn) { /*experiences*/
             const url = baseUrl + header.endpoints[1]
             const response: AxiosResponse = await axios({method, url, params})
             const isDone = response.data.length <= 0 || response.data.length < PAGINATION_SIZE
-            const experience = <IFeedState>{
-                isDone,
-                status: "idle",
-                isExpTurn: true,
-                page: header.page + 1,
-                value: response.data
+            const state = <IFeedState>{
+                isDone, status: "idle", isExpTurn: true, page: header.page + 1, value: response.data
             }
-            resolve(experience)
+            resolve(state)
             return
-        }
+        }/*educations*/
         const url = baseUrl + header.endpoints[0]
         const response: AxiosResponse = await axios({method, url, params})
-        if (response.status != 200) {
-            reject(response.statusText)
-            return
-        }
         const isExpTurn = response.data.length <= 0 || response.data.length < PAGINATION_SIZE
-        const educations = <IFeedState> {
-            isDone: false,
-            status: "idle",
-            isExpTurn,
-            page: isExpTurn ? 1 : header.page +1,
-            value: response.data
+        const state = <IFeedState> {
+            isDone: false, status: "idle", isExpTurn, page: isExpTurn ? 0 : header.page +1, value: response.data
         }
-        resolve(educations)
+        resolve(state)
 
     } catch (error) {
-
+        if (error instanceof AxiosError) {
+            const message = error.response?.data?.message || error.message || JSON.stringify(error)
+            console.log(message)
+            reject(<TMessageResponse>{message})
+            return
+        }
         reject(error)
     }
 })

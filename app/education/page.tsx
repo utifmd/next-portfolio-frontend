@@ -19,14 +19,19 @@ import {
 import {useAppDispatch, useAppSelector} from "@/app/hooks"
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {FileUploadField} from "@/constants";
 
-export default function() {
+export default function(){
     const {
         value,
         status,
         isValid,
         isSubmitted,
-        isSelected, image, message} = useAppSelector(({education}) => education)
+        isSelected,
+        image,
+        message} = useAppSelector(
+            state=> state.education
+    )
     const dispatch = useAppDispatch()
     const router = useRouter()
     const reference = useRef<any>({})
@@ -44,10 +49,11 @@ export default function() {
     const onRemoveEducation = (e: any) => {
         e.preventDefault()
         dispatch(removeEducation())
+        // dispatch(removeFiles())
     }
     const handleOnFileRemove = (valueImageUrl: string) => (e: any) => {
         e.preventDefault()
-        reference.current["image"].value = null
+        reference.current[FileUploadField.SINGLE].value = null
 
         if (valueImageUrl.length > 0) {
             console.log(`delete image ${valueImageUrl} on the server`)
@@ -78,10 +84,10 @@ export default function() {
     }
     const onInputFileClick = (e: any) => {
         e.preventDefault()
-        reference.current["image"]?.click()
+        reference.current[FileUploadField.SINGLE]?.click()
     }
     const handleInputFileRef = (e: any) => {
-        reference.current["image"] = e
+        reference.current[FileUploadField.SINGLE] = e
     }
     return (
         <div className="flex min-h-screen justify-center items-center">
@@ -97,9 +103,8 @@ export default function() {
                     <div className="md:col-span-2">
                         <Input id="fileUrl" type="text" placeholder="Enter file url" value={value.fileUrl} onChange={handleOnTextChange} onBlur={handleOnTextBlur}/>
                     </div>
-                    {/*TODO upload test with capable id with value binary*/}
                     <div className="flex justify-center items-center">
-                        <input className="hidden" id="image-upload" type="file" accept="image/*"
+                        <input className="hidden" id={FileUploadField.SINGLE} type="file" accept="image/*"
                             multiple={false}
                             ref={handleInputFileRef}
                             onChange={handleOnFileChange}

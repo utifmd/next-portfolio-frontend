@@ -57,3 +57,6 @@ type TTileProps = {
 type TImageLightBox = {
     src: string, alt: string
 }
+type TMessageResponse = {
+    message: string
+}
