@@ -48,7 +48,7 @@ const httpRequest = ({method, header, body}: IHttpRequestAction) => new Promise<
             }
             resolve(state)
             return
-        }/*educations*/
+        } /*educations*/
         const url = baseUrl + header.endpoints[0]
         const response: AxiosResponse = await axios({method, url, params})
         const isExpTurn = response.data.length <= 0 || response.data.length < PAGINATION_SIZE

@@ -71,12 +71,12 @@ export default function(){
         const {id, value} = e.currentTarget
         dispatch(onInputChange([id, value]))
     }
-    const handleOnFileChange = (e: Record<string, any>) => {
+    const handleOnFileChange = (e: any) => {
         e.preventDefault()
         const {id, files} = e.currentTarget
         console.log(`files len: ${files.length}`)
         if (files.length <= 0) return
-
+        // const mFiles = Array.from(files).map((file: any) => file)
         for (const file of files) {
             dispatch(onInputChange([id, file]))
             dispatch(onImageAppended(file))
@@ -104,7 +104,11 @@ export default function(){
                         <Input id="fileUrl" type="text" placeholder="Enter file url" value={value.fileUrl} onChange={handleOnTextChange} onBlur={handleOnTextBlur}/>
                     </div>
                     <div className="flex justify-center items-center">
-                        <input className="hidden" id={FileUploadField.SINGLE} type="file" accept="image/*"
+                        <input
+                            className="hidden"
+                            id={FileUploadField.SINGLE}
+                            type="file"
+                            accept="image/*"
                             multiple={false}
                             ref={handleInputFileRef}
                             onChange={handleOnFileChange}

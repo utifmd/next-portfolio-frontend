@@ -1,11 +1,26 @@
 import {AnyAction} from "redux";
 import {AppDispatch, TAnyAction} from "@/store";
 import {readFileAsImgSrcAsync} from "@/utils";
-import {CALL_API, BROWSER_API} from "@/constants"
+import {CALL_API, BROWSER_API, FileUploadField} from "@/constants"
 
 export const addExperience = () =>
-    (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
-    const experience = getState().experience.value
+    (dispatch: AppDispatch, getState: () => IAppState): IAppAction => { //
+    const body = new FormData()
+    const experience: IExperience & {[key: string]: any} = getState().experience.value
+    const multipleFiles = experience[FileUploadField.MULTIPLE]
+    const singleFiles = experience[FileUploadField.SINGLE]
+
+    for (const [key, value] of Object.entries(experience))
+        if (typeof value === "string" && value.length > 0) body.append(key, value)
+
+    body.append(FileUploadField.SINGLE, singleFiles, singleFiles.name)
+
+    for (const file of multipleFiles)
+        body.append(FileUploadField.MULTIPLE, file, file.name)
+
+    for (const item of experience.stack)
+        body.append("stack", item)
+
     const action: IAppAction = {
         [CALL_API]: {
             method: "POST",
@@ -15,7 +30,7 @@ export const addExperience = () =>
                 ExperienceAction.CREATE_FAILED,
                 ExperienceAction.CREATE_SUCCESS
             ],
-            body: experience
+            body
         }
     }
     return dispatch(action)
@@ -113,7 +128,7 @@ export const getAllExperience = () => (dispatch: AppDispatch) => {
     return dispatch(action)
 }
 export enum ExperienceType {
-    FRONTEND = "FRONTEND", BACKEND = "BACKEND", MOBILE = "MOBILE"
+    "FRONT-END" = "FRONT-END", "BACK-END" = "BACK-END", MOBILE = "MOBILE"
 }
 export enum ExperiencePlatform {
     ANDROID = "ANDROID", IOS = "IOS", WEB = "WEB"

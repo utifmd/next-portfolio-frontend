@@ -61,10 +61,8 @@ const homeReducer: Reducer<IHomeState> =
             case HomeAction.PAGED_FEED_SUCCESS: {
                 const response = action.payload as IFeedState
                 const value = [...state.feed.value, ...response.value]
-                const mState: IFeedState = {...response,
-                    value, scrollTo: value.length >= PAGINATION_SIZE ? value.length : undefined
-                }
-                return {...state, feed: {...mState, status: "idle", }}
+                const scrollTo = value.length >= PAGINATION_SIZE ? state.feed.value.length : undefined
+                return {...state, feed: {...response, value, scrollTo, status: "idle"}}
             }
             case HomeAction.CREATE_FEED_SUCCESS:
             case EducationAction.CREATE_SUCCESS:

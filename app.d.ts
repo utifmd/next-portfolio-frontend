@@ -4,7 +4,7 @@ interface IHttpRequestAction {
     method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
     types: [string, string, string],
     header: string | {page: number, size: number, isExpTurn: boolean, endpoints: string[]},
-    body?: ISchema | ISchema[]
+    body?: ISchema | ISchema[] | FormData
 }
 interface IAPIAction {
     api: Promise<any>,

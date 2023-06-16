@@ -35,7 +35,9 @@ export default function () {
         isValid,
         status,
         isSubmitted, icon,
-        isSelected, message} = useAppSelector<IExperienceState>((state) => state.experience)
+        isSelected,
+        message
+    } = useAppSelector<IExperienceState>((state) => state.experience)
     const dispatch: AppDispatch = useAppDispatch()
     const router = useRouter()
     const reference = useRef<any>({})
@@ -87,17 +89,16 @@ export default function () {
         const {id, value} = e.currentTarget
         dispatch(onInputChange([id, value]))
     }
-    const handleOnFileChange = (action: any) => (e: Record<string, any>) => {
+    const handleOnFileChange = (action: any) => (e: any) => {
         e.preventDefault()
         const {id, files} = e.currentTarget
-
         console.log(`files len: ${files.length}`)
-        if (files.length <= 0) return
 
-        for (const file of files) {
-            dispatch(onInputChange([id, file]))
-            dispatch(action(file))
-        }
+        if (files.length <= 0) return
+        const value = id === FileUploadField.MULTIPLE ? files : files[0]
+
+        dispatch(onInputChange([id, value]))
+        for (const file of files) dispatch(action(file))
     }
     const handleOnItemStackClick = (i: number) => (e: any) => {
         e.preventDefault()
@@ -146,14 +147,30 @@ export default function () {
                         <Input id="stack" type="text" placeholder="Add stack" onKeyUp={handleOnTextPush} onBlur={handleOnTextBlur}/>
                     </div>
                     <div>
-                        <input id={FileUploadField.SINGLE} ref={handleInputFileRef(FileUploadField.SINGLE)} className={"hidden"} type="file" accept="image/*" multiple={false} onChange={handleOnFileChange(onIconAppended)} onBlur={handleOnTextBlur}/>{icon || value.iconUrl.length > 0 ?
+                        <input
+                            className="hidden"
+                            id={FileUploadField.SINGLE}
+                            type="file"
+                            accept="image/*"
+                            multiple={false}
+                            ref={handleInputFileRef(FileUploadField.SINGLE)}
+                            onChange={handleOnFileChange(onIconAppended)}
+                            onBlur={handleOnTextBlur}/>{icon || value.iconUrl.length > 0 ?
                         <HoverIconBox icon={faTrash} onClick={handleOnFileClick(-1)(value.iconUrl)} onBlur={handleOnTextBlur}>{icon ?
                             <Image className="absolute inset-0 object-cover" src={icon} alt={"icon appendable"} fill={true}/> : value.iconUrl ?
                                 <Image className="absolute inset-0 object-cover" src={value.iconUrl} loader={() => value.iconUrl} alt={"icon appendable"} fill={true}/> : null}</HoverIconBox>:
                         <ButtonRounded label="select icon" onClick={onInputFileClick(FileUploadField.SINGLE)}/>}
                     </div>
                     <div>
-                        <input id={FileUploadField.MULTIPLE} className="hidden" ref={handleInputFileRef(FileUploadField.MULTIPLE)} type="file" accept="image/*" multiple={true} onChange={handleOnFileChange(onImageAppended)} onBlur={handleOnTextBlur}/>
+                        <input
+                            className="hidden"
+                            id={FileUploadField.MULTIPLE}
+                            type="file"
+                            accept="image/*"
+                            multiple={true}
+                            ref={handleInputFileRef(FileUploadField.MULTIPLE)}
+                            onChange={handleOnFileChange(onImageAppended)}
+                            onBlur={handleOnTextBlur}/>
                         <div className="grid grid-cols-3 gap-1 w-full">{value.imageUrls.length > 0 && value.imageUrls.map((url, i) =>
                             <HoverIconBox key={i} icon={faTrash} onClick={handleOnFileClick(i)(url)} onBlur={handleOnTextBlur}>
                                 <Image className="object-cover" fill={true} src={url} loader={() => url} alt={"image appendable"}/></HoverIconBox>)}{images.length > 0 && images.map((image, i) =>

@@ -1,7 +1,7 @@
 import {AppDispatch, TAnyAction} from "@/store";
 import {CALL_API} from "@/constants"
 
-const PAGINATION_SIZE: number = 1
+const PAGINATION_SIZE: number = 2
 const pagedFeed = () =>
     (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
     const {feed} = getState().home
