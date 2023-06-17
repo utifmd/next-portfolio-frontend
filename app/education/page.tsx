@@ -14,13 +14,13 @@ import {
     onInputUnfocused,
     onImageAppended,
     onResetImageAppended,
-    onResetSubmission, addRemovableFileIds
+    onResetSubmission, addRemovableFileIds, updateEducation
 } from "@/actions/educationAction"
 import {useAppDispatch, useAppSelector} from "@/app/hooks"
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {FileUploadField, mapUrlToId} from "../../helpers";
-import {FileAction, removeFile} from "@/actions/fileAction";
+import {FileUploadField, mapUrlToId} from "@/helpers";
+import {removeFile} from "@/actions/fileAction";
 
 export default function(){
     const {
@@ -29,8 +29,8 @@ export default function(){
         isValid,
         isSubmitted,
         isSelected,
-        image,
-        message} = useAppSelector(
+        removableImageIds,
+        image, message} = useAppSelector(
             state=> state.education
     )
     const dispatch = useAppDispatch()
@@ -43,16 +43,27 @@ export default function(){
         router.back()
     }
     useEffect(onFormSubmitted, [isSubmitted])
-    const onPostEducation = (e: any) => {
+    const onSubmitEducation = (e: any) => {
         e.preventDefault()
-        dispatch(addEducation())
+
+        if (!isSelected) {
+            dispatch(addEducation())
+            return
+        }
+        dispatch(updateEducation())
+        if (typeof removableImageIds === "undefined") return
+
+        for (const i in removableImageIds)
+            dispatch(removeFile(removableImageIds[i]))
     }
     const onRemoveEducation = (e: any) => {
         e.preventDefault()
-        dispatch(removeEducation())
 
-        if (value.imageUrl.length <= 0) return
-        dispatch(removeFile(mapUrlToId(value.imageUrl)))
+        dispatch(removeEducation())
+        if (typeof removableImageIds === "undefined") return
+
+        for (const i in removableImageIds)
+            dispatch(removeFile(removableImageIds[i]))
     }
     const handleOnFileRemove = (url: string) => (e: any) => {
         e.preventDefault()
@@ -95,7 +106,7 @@ export default function(){
     }
     return (
         <div className="flex min-h-screen justify-center items-center">
-            <form className="w-full sm:w-[50%] p-6 text-center space-y-7" onSubmit={onPostEducation}>
+            <form className="w-full sm:w-[50%] p-6 text-center space-y-7" onSubmit={onSubmitEducation}>
                 <p className="font-bold text-3xl uppercase text-gray-900 dark:text-gray-100">Education Entry</p>
                 <div className="flex justify-center">
                     <div className="h-0.5 w-24 bg-gray-900 dark:bg-gray-100"/>

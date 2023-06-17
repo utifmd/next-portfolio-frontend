@@ -35,12 +35,14 @@ const reducer: Reducer<IEducationState> =
             case EducationAction.IMAGE_APPENDED_REQUEST:
             case EducationAction.CREATE_REQUEST:
             case EducationAction.DELETE_REQUEST:
+            case EducationAction.UPDATE_REQUEST:
                 return {...state, status: "loading"}
 
             case FileAction.DELETE_FAILED:
             case EducationAction.IMAGE_APPENDED_FAILED:
             case EducationAction.CREATE_FAILED:
             case EducationAction.DELETE_FAILED:
+            case EducationAction.UPDATE_FAILED:
                 return {...state, status: "error", message: action.payload}
 
             case EducationAction.INPUT_CHANGED: {
@@ -58,10 +60,11 @@ const reducer: Reducer<IEducationState> =
 
             case EducationAction.CREATE_SUCCESS:
             case EducationAction.DELETE_SUCCESS:
+            case EducationAction.UPDATE_SUCCESS:
                 return {...initialState, isSubmitted: true}
 
             case FileAction.DELETE_SUCCESS:
-                return {...state, status: "idle", value: {...state.value}}
+                return {...state, status: "idle"}
 
             case EducationAction.ADD_REMOVABLE_FILE_IDS: {
                 const id = action.payload as string

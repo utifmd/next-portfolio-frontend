@@ -1,6 +1,7 @@
 import {AppDispatch, TAnyAction} from "@/store";
 import {readFileAsImgSrcAsync} from "@/utils";
 import {CALL_API, BROWSER_API} from "@/helpers"
+import {randomUUID} from "crypto";
 
 export const addEducation = () =>
     (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
@@ -22,12 +23,12 @@ export const addEducation = () =>
 }
 export const removeEducation = () =>
     (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
-    const education = getState().education.value
+    const id = getState().education.value.id || randomUUID()
     const action: IAppAction = {
         [CALL_API]: {
             method: "DELETE",
             header: "/educations",
-            params: {id: education.id || ""},
+            params: {id},
             types: [
                 EducationAction.DELETE_REQUEST,
                 EducationAction.DELETE_FAILED,
@@ -84,6 +85,25 @@ export const onImageAppended = (file: any) =>
     }
     return dispatch(action)
 }
+export const updateEducation = () => (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
+    const education = getState().education.value
+    const id = education.id || randomUUID()
+    const action: IAppAction = {
+        [CALL_API]: {
+            method: "PUT",
+            header: "/educations",
+            params: {id},
+            contentType: "multipart/form-data",
+            types: [
+                EducationAction.UPDATE_REQUEST,
+                EducationAction.UPDATE_FAILED,
+                EducationAction.UPDATE_SUCCESS,
+            ],
+            body: education
+        }
+    }
+    return dispatch(action)
+}
 export enum EducationAction {
     INPUT_CHANGED = "@@EDUCATION_INPUT_CHANGED",
     INPUT_UNFOCUSED = "@@EDUCATION_INPUT_UNFOCUSED",
@@ -107,7 +127,9 @@ export enum EducationAction {
     *  1. update education with removable file ids
     *  2. update experience with removable file ids
     * */
-    UPDATE = "@@EDUCATION_UPDATE",
+    UPDATE_REQUEST = "@@EDUCATION_UPDATE_REQUEST",
+    UPDATE_FAILED = "@@EDUCATION_UPDATE_FAILED",
+    UPDATE_SUCCESS = "@@EDUCATION_UPDATE_SUCCESS",
 
     DELETE_REQUEST = "@@EDUCATION_DELETE_REQUEST",
     DELETE_FAILED = "@@EDUCATION_DELETE_FAILED",

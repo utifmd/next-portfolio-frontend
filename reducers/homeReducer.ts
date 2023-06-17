@@ -5,7 +5,6 @@ import {EducationAction} from "@/actions/educationAction";
 import {ExperienceAction} from "@/actions/experienceAction";
 import {groupingListByPropKey} from "@/utils";
 import {faLayerGroup, faMobilePhone, faServer, faLaptop} from "@fortawesome/free-solid-svg-icons";
-import {FileAction} from "@/actions/fileAction";
 
 const initialState: IHomeState = {
     intro: {
@@ -81,6 +80,18 @@ const homeReducer: Reducer<IHomeState> =
             case ExperienceAction.DELETE_SUCCESS: {
                 const id = action.payload as string
                 const value = state.feed.value.filter(mValue => mValue.id !== id)
+                return {...state, feed: {...state.feed, value}}
+            }
+            case EducationAction.UPDATE_SUCCESS: {
+                const feedItem = action.payload as ISchema
+                console.log("case EducationAction.UPDATE_SUCCESS", feedItem)
+                const value = state.feed.value.map(item => {
+                    let data = item
+                    if (data.id === feedItem.id) {
+                        data = feedItem
+                    }
+                    return data
+                })
                 return {...state, feed: {...state.feed, value}}
             }
             default:

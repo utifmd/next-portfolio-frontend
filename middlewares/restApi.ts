@@ -17,14 +17,20 @@ const httpRequest = ({method, params, header, body, contentType}: IHttpRequestAc
         if (typeof header === "string") {
             const url = baseUrl + header
 
-            const headers = {
+            const headers: Record<string, any> = {
                 'content-type': contentType,
                 'token': token // 'cache': 'no-store'
             }
             const {data}: AxiosResponse = await axios({
                 method, url, params, headers, data: body
             })
-            params?.id ? resolve(params.id) : resolve(data)
+            if(method === "PUT" ||
+                typeof params?.id === "undefined") {
+                console.log("restApi", data)
+                resolve(data)
+                return
+            }
+            resolve(params.id)
             return
         }
 
