@@ -1,6 +1,7 @@
 import {Reducer} from "redux";
 import {ExperienceAction} from "@/actions/experienceAction";
 import {HomeAction} from "@/actions/homeAction";
+import {FileAction} from "@/actions/fileAction";
 
 const initialState: IExperienceState = {
     status: "idle",
@@ -29,14 +30,23 @@ const reducer: Reducer<IExperienceState> =
     const isValid: boolean = state.isSelected ? isTextsValid : isTextsValid && state.icon && state.images.length > 0
 
     switch (action.type) {
-        case HomeAction.SELECT_FEED_EXPERIENCE:
-            return action.payload as IExperienceState
 
+        case ExperienceAction.IMAGES_APPENDED_REQUEST:
+        case ExperienceAction.ICON_APPENDED_REQUEST:
+        case ExperienceAction.CREATE_REQUEST:
         case ExperienceAction.DELETE_REQUEST:
+        case FileAction.DELETE_REQUEST:
             return {...state, status: "loading"}
 
+        case ExperienceAction.IMAGES_APPENDED_FAILED:
+        case ExperienceAction.ICON_APPENDED_FAILED:
+        case ExperienceAction.CREATE_FAILED:
         case ExperienceAction.DELETE_FAILED:
+        case FileAction.DELETE_FAILED:
             return {...state, status: "error", message: action.payload}
+
+        case HomeAction.SELECT_FEED_EXPERIENCE:
+            return action.payload as IExperienceState
 
         case ExperienceAction.INPUT_CHANGED: {
             const [id, value] = action.payload as [string, any]
@@ -56,25 +66,16 @@ const reducer: Reducer<IExperienceState> =
         case ExperienceAction.INPUT_UNFOCUSED:
             return {...state, isValid}
 
-        case ExperienceAction.ICON_APPENDED_REQUEST:
-            return {...state, status: "loading"}
-
-        case ExperienceAction.ICON_APPENDED_FAILED:
-            return {...state, status: "error", message: action.payload}
-
         case ExperienceAction.ICON_APPENDED_SUCCESS:
             return {...state, status: "idle", icon: action.payload}
-
-        case ExperienceAction.IMAGES_APPENDED_REQUEST:
-            return {...state, status: "loading"}
-
-        case ExperienceAction.IMAGES_APPENDED_FAILED:
-            return {...state, status: "error", message: action.payload}
 
         case ExperienceAction.IMAGES_APPENDED_SUCCESS:
             return {...state, status: "idle", images: [...state.images, action.payload]}
 
-        case ExperienceAction.IMAGES_APPENDED_DESTROY: {
+        case FileAction.DELETE_SUCCESS:
+            return {...state, status: "idle"}
+
+        case ExperienceAction.IMAGES_APPENDED_RESET: {
             const index = action.payload as number
             if (index === -1) return {...state, icon: null}
 
@@ -83,11 +84,6 @@ const reducer: Reducer<IExperienceState> =
             )
             return {...state, images}
         }
-        case ExperienceAction.CREATE_REQUEST:
-            return {...state, status: "loading"}
-
-        case ExperienceAction.CREATE_FAILED:
-            return {...state, status: "error", message: action.payload}
 
         case ExperienceAction.CREATE_SUCCESS:
         case ExperienceAction.DELETE_SUCCESS:

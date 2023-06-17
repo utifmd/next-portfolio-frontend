@@ -14,12 +14,13 @@ import {
     onInputUnfocused,
     onImageAppended,
     onResetImageAppended,
-    onResetSubmission
+    onResetSubmission, addRemovableFileIds
 } from "@/actions/educationAction"
 import {useAppDispatch, useAppSelector} from "@/app/hooks"
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {FileUploadField} from "@/constants";
+import {FileUploadField, mapUrlToId} from "../../helpers";
+import {FileAction, removeFile} from "@/actions/fileAction";
 
 export default function(){
     const {
@@ -49,15 +50,17 @@ export default function(){
     const onRemoveEducation = (e: any) => {
         e.preventDefault()
         dispatch(removeEducation())
-        // dispatch(removeFiles())
+
+        if (value.imageUrl.length <= 0) return
+        dispatch(removeFile(mapUrlToId(value.imageUrl)))
     }
-    const handleOnFileRemove = (valueImageUrl: string) => (e: any) => {
+    const handleOnFileRemove = (url: string) => (e: any) => {
         e.preventDefault()
         reference.current[FileUploadField.SINGLE].value = null
 
-        if (valueImageUrl.length > 0) {
-            console.log(`delete image ${valueImageUrl} on the server`)
-            // dispatch(onRemoveImage(valueImageUrl))
+        if (url.length > 0) {
+            const fileId = mapUrlToId(url)
+            dispatch(addRemovableFileIds(fileId))
             return
         }
         dispatch(onResetImageAppended())
@@ -73,10 +76,11 @@ export default function(){
     }
     const handleOnFileChange = (e: any) => {
         e.preventDefault()
+
         const {id, files} = e.currentTarget
         console.log(`files len: ${files.length}`)
+
         if (files.length <= 0) return
-        // const mFiles = Array.from(files).map((file: any) => file)
         for (const file of files) {
             dispatch(onInputChange([id, file]))
             dispatch(onImageAppended(file))
@@ -112,11 +116,20 @@ export default function(){
                             multiple={false}
                             ref={handleInputFileRef}
                             onChange={handleOnFileChange}
-                            onBlur={handleOnTextBlur} /> {image || value.imageUrl.length > 0 ?
-                        <HoverIconBox icon={faTrash} onClick={handleOnFileRemove(value.imageUrl)} onBlur={handleOnTextBlur}> {image ?
-                            <Image className="absolute inset-0 object-cover" fill={true} src={image} alt={"image appendable"}/>: value.imageUrl.length > 0 ?
-                                <Image className="absolute inset-0 object-cover" fill={true} src={value.imageUrl} loader={() => value.imageUrl} alt={"image appendable"}/>: null}</HoverIconBox> :
-                        <ButtonRounded label="select image" onClick={onInputFileClick} />}
+                            onBlur={handleOnTextBlur} />
+                        {image || value.imageUrl.length > 0
+                            ? <HoverIconBox
+                                icon={faTrash}
+                                disabled={status === "loading"}
+                                onClick={handleOnFileRemove(value.imageUrl)}
+                                onBlur={handleOnTextBlur}>
+                                {image
+                                    ? <Image className="absolute inset-0 object-cover" fill={true} src={image} alt={"image appendable"}/>
+                                    : value.imageUrl.length > 0
+                                        ? <Image className="absolute inset-0 object-cover" fill={true} src={value.imageUrl} loader={() => value.imageUrl} alt={"image appendable"}/>
+                                        : null
+                                } </HoverIconBox>
+                            : <ButtonRounded label="select image" onClick={onInputFileClick} />}
                     </div>
                     <div className="h-full w-full space-y-4 text-left">
                         <textarea className="appearance-none block w-full bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 py-4 px-4 focus:outline-none focus:ring-1 focus:ring-green-600 focus:border-green-600"

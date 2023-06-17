@@ -1,36 +1,40 @@
 import {AnyAction} from "redux";
 import {AppDispatch, TAnyAction} from "@/store";
 import {readFileAsImgSrcAsync} from "@/utils";
-import {CALL_API, BROWSER_API, FileUploadField} from "@/constants"
+import {CALL_API, BROWSER_API, FileUploadField} from "../helpers"
 
 export const addExperience = () =>
-    (dispatch: AppDispatch, getState: () => IAppState): IAppAction => { //
-    const body = new FormData()
-    const experience: IExperience & {[key: string]: any} = getState().experience.value
-    const multipleFiles = experience[FileUploadField.MULTIPLE]
-    const singleFiles = experience[FileUploadField.SINGLE]
+    (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
+    const experience: IExperience & Record<string, any> = getState().experience.value
+    const mapStateToFormData = (): FormData => {
+        const multipleFiles = experience[FileUploadField.MULTIPLE]
+        const singleFiles = experience[FileUploadField.SINGLE]
+        const formData = new FormData()
 
-    for (const [key, value] of Object.entries(experience))
-        if (typeof value === "string" && value.length > 0) body.append(key, value)
+        for (const [key, value] of Object.entries(experience))
+            if (typeof value === "string" && value.length > 0) formData.append(key, value)
 
-    body.append(FileUploadField.SINGLE, singleFiles, singleFiles.name)
+        formData.append(FileUploadField.SINGLE, singleFiles, singleFiles.name)
 
-    for (const file of multipleFiles)
-        body.append(FileUploadField.MULTIPLE, file, file.name)
+        for (const file of multipleFiles)
+            formData.append(FileUploadField.MULTIPLE, file, file.name)
 
-    for (const item of experience.stack)
-        body.append("stack", item)
+        for (const item of experience.stack)
+            formData.append("stack", item)
 
+        return formData
+    }
     const action: IAppAction = {
         [CALL_API]: {
             method: "POST",
             header: "/experiences",
+            contentType: "multipart/form-data",
             types: [
                 ExperienceAction.CREATE_REQUEST,
                 ExperienceAction.CREATE_FAILED,
                 ExperienceAction.CREATE_SUCCESS
             ],
-            body
+            body: mapStateToFormData()
         }
     }
     return dispatch(action)
@@ -69,7 +73,7 @@ export const onImageAppended = (file: any) =>
 export const onRemoveImageAppended = (index: number) =>
     (dispatch: AppDispatch): IAppAction => {
         const action: TAnyAction = {
-            type: ExperienceAction.IMAGES_APPENDED_DESTROY, payload: index
+            type: ExperienceAction.IMAGES_APPENDED_RESET, payload: index
         }
         return dispatch(action)
     }
@@ -142,7 +146,7 @@ export enum ExperienceAction {
     IMAGES_APPENDED_REQUEST = "@@EXPERIENCE_IMAGES_APPENDED_REQUEST",
     IMAGES_APPENDED_FAILED = "@@EXPERIENCE_IMAGES_APPENDED_FAILED",
     IMAGES_APPENDED_SUCCESS = "@@EXPERIENCE_IMAGES_APPENDED_SUCCESS",
-    IMAGES_APPENDED_DESTROY = "@@EXPERIENCE_IMAGES_APPENDED_DESTROY",
+    IMAGES_APPENDED_RESET = "@@EXPERIENCE_IMAGES_APPENDED_RESET",
 
     ICON_APPENDED_REQUEST = "@@EXPERIENCE_ICON_APPENDED_REQUEST",
     ICON_APPENDED_FAILED = "@@EXPERIENCE_ICON_APPENDED_FAILED",

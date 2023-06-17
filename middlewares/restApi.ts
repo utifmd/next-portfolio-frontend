@@ -2,46 +2,45 @@ import axios, {AxiosError, AxiosResponse} from "axios"
 import {Middleware} from "redux";
 import {TAnyAction} from "@/store";
 import {PAGINATION_SIZE} from "@/actions/homeAction";
-import {CALL_API} from "@/constants"
+import {CALL_API} from "@/helpers"
 
-const httpRequest = ({method, header, body}: IHttpRequestAction) => new Promise<any>(
+const httpRequest = ({method, params, header, body, contentType}: IHttpRequestAction) => new Promise<any>(
     async (resolve, reject) => {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || ""
-    const apiKey = process.env.NEXT_PUBLIC_API_KEY || ""
-    try {
+    const token = localStorage.getItem("NEXT_PUBLIC_TOKEN") ||
+        process.env.NEXT_PUBLIC_TOKEN || ""
+
+        try {
         /*
         * REGULAR REQUEST
         * */
         if (typeof header === "string") {
             const url = baseUrl + header
+
             const headers = {
-                'content-type': 'multipart/form-data',
-                'token': apiKey // 'cache': 'no-store'
-            }
-            if (typeof body === "undefined") {
-                reject("body undefined")
-                return
+                'content-type': contentType,
+                'token': token // 'cache': 'no-store'
             }
             const {data}: AxiosResponse = await axios({
-                method, url, headers, data: body
+                method, url, params, headers, data: body
             })
-            resolve(data)
+            params?.id ? resolve(params.id) : resolve(data)
             return
         }
 
         /*
         * PAGINATION REQUEST
         * */
+        const queryParams = {
+            page: header.page, size: header.size
+        }
         if (!("page" in header)) {
             reject("request with no pagination.")
             return
         }
-        const params = {
-            page: header.page, size: header.size
-        }
         if (header.isExpTurn) { /*experiences*/
             const url = baseUrl + header.endpoints[1]
-            const response: AxiosResponse = await axios({method, url, params})
+            const response: AxiosResponse = await axios({method, url, params: queryParams})
             const isDone = response.data.length <= 0 || response.data.length < PAGINATION_SIZE
             const state = <IFeedState>{
                 isDone, status: "idle", isExpTurn: true, page: header.page + 1, value: response.data
@@ -50,7 +49,7 @@ const httpRequest = ({method, header, body}: IHttpRequestAction) => new Promise<
             return
         } /*educations*/
         const url = baseUrl + header.endpoints[0]
-        const response: AxiosResponse = await axios({method, url, params})
+        const response: AxiosResponse = await axios({method, url, params: queryParams})
         const isExpTurn = response.data.length <= 0 || response.data.length < PAGINATION_SIZE
         const state = <IFeedState> {
             isDone: false, status: "idle", isExpTurn, page: isExpTurn ? 0 : header.page +1, value: response.data
@@ -64,7 +63,7 @@ const httpRequest = ({method, header, body}: IHttpRequestAction) => new Promise<
             reject(<TMessageResponse>{message})
             return
         }
-        reject(error)
+        reject(<TMessageResponse>{message: JSON.stringify(error)})
     }
 })
 const restApiMiddleware: Middleware<IAppState> = () => (next: any) => (action: IAppAction) => {
@@ -84,8 +83,8 @@ const restApiMiddleware: Middleware<IAppState> = () => (next: any) => (action: I
     return httpRequest(requestAction).then(
         response => next(actionWith(<TAnyAction>{type: successType, payload: response})),
         error => {
-            const message = ("message" in error) ? (error as Error).message : JSON.stringify(error)
-            next(actionWith(<TAnyAction>{type: failedType, payload: message}))
+            const payload = (error as TMessageResponse).message || JSON.stringify(error)
+            next(actionWith(<TAnyAction>{type: failedType, payload}))
         }
     )
 }

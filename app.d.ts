@@ -2,6 +2,8 @@ interface ISchema {id?: string}
 
 interface IHttpRequestAction {
     method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
+    contentType?: 'multipart/form-data' | 'application/json'
+    params?: {[key: string]: string},
     types: [string, string, string],
     header: string | {page: number, size: number, isExpTurn: boolean, endpoints: string[]},
     body?: ISchema | ISchema[] | FormData

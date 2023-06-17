@@ -5,6 +5,7 @@ import {EducationAction} from "@/actions/educationAction";
 import {ExperienceAction} from "@/actions/experienceAction";
 import {groupingListByPropKey} from "@/utils";
 import {faLayerGroup, faMobilePhone, faServer, faLaptop} from "@fortawesome/free-solid-svg-icons";
+import {FileAction} from "@/actions/fileAction";
 
 const initialState: IHomeState = {
     intro: {
@@ -78,11 +79,10 @@ const homeReducer: Reducer<IHomeState> =
 
             case EducationAction.DELETE_SUCCESS:
             case ExperienceAction.DELETE_SUCCESS: {
-                const {id} = action.payload as ISchema
+                const id = action.payload as string
                 const value = state.feed.value.filter(mValue => mValue.id !== id)
                 return {...state, feed: {...state.feed, value}}
             }
-
             default:
                 return state
         }

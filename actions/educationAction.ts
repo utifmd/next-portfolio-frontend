@@ -1,6 +1,6 @@
 import {AppDispatch, TAnyAction} from "@/store";
 import {readFileAsImgSrcAsync} from "@/utils";
-import {CALL_API, BROWSER_API} from "@/constants"
+import {CALL_API, BROWSER_API} from "@/helpers"
 
 export const addEducation = () =>
     (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
@@ -9,6 +9,7 @@ export const addEducation = () =>
         [CALL_API]: {
             method: "POST",
             header: "/educations",
+            contentType: "multipart/form-data",
             types: [
                 EducationAction.CREATE_REQUEST,
                 EducationAction.CREATE_FAILED,
@@ -26,12 +27,12 @@ export const removeEducation = () =>
         [CALL_API]: {
             method: "DELETE",
             header: "/educations",
+            params: {id: education.id || ""},
             types: [
                 EducationAction.DELETE_REQUEST,
                 EducationAction.DELETE_FAILED,
                 EducationAction.DELETE_SUCCESS
-            ],
-            body: education
+            ]
         }
     }
     return dispatch(action)
@@ -53,7 +54,14 @@ export const onInputUnfocused = () =>
 export const onResetImageAppended = () =>
     (dispatch: AppDispatch): IAppAction => {
     const action: TAnyAction = {
-        type: EducationAction.DELETE_IMAGE_APPENDED
+        type: EducationAction.IMAGE_APPENDED_RESET
+    }
+    return dispatch(action)
+}
+export const addRemovableFileIds = (id: string) =>
+    (dispatch: AppDispatch) => {
+    const action: TAnyAction = {
+        type: EducationAction.ADD_REMOVABLE_FILE_IDS, payload: id
     }
     return dispatch(action)
 }
@@ -83,7 +91,7 @@ export enum EducationAction {
     IMAGE_APPENDED_REQUEST = "@@EDUCATION_IMAGE_APPENDED_REQUEST",
     IMAGE_APPENDED_FAILED = "@@EDUCATION_IMAGE_APPENDED_FAILED",
     IMAGE_APPENDED_SUCCESS = "@@EDUCATION_IMAGE_APPENDED_SUCCESS",
-    DELETE_IMAGE_APPENDED = "@@EDUCATION_DELETE_IMAGE_APPENDED",
+    IMAGE_APPENDED_RESET = "@@EDUCATION_IMAGE_APPENDED_RESET",
 
     CREATE_REQUEST = "@@EDUCATION_CREATE_REQUEST",
     CREATE_FAILED = "@@EDUCATION_CREATE_FAILED",
@@ -94,9 +102,16 @@ export enum EducationAction {
     READ_ALL_SUCCESS = "@@EDUCATION_READ_ALL_SUCCESS",
 
     RESET_SUBMISSION = "@@EDUCATION_RESET_SUBMISSION",
+    /*
+    * TODO
+    *  1. update education with removable file ids
+    *  2. update experience with removable file ids
+    * */
     UPDATE = "@@EDUCATION_UPDATE",
 
     DELETE_REQUEST = "@@EDUCATION_DELETE_REQUEST",
     DELETE_FAILED = "@@EDUCATION_DELETE_FAILED",
     DELETE_SUCCESS = "@@EDUCATION_DELETE_SUCCESS",
+
+    ADD_REMOVABLE_FILE_IDS = "@@EDUCATION_ADD_REMOVABLE_FILE_IDS"
 }

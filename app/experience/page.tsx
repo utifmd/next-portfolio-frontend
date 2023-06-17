@@ -23,10 +23,11 @@ import {
     onRemoveStack,
     onResetSubmission
 } from "@/actions/experienceAction";
+import {removeFile} from "@/actions/fileAction";
 import {camelize} from "@/utils";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {FileUploadField} from "@/constants";
+import {FileUploadField, mapUrlToId} from "@/helpers";
 
 export default function () {
     const {
@@ -36,8 +37,9 @@ export default function () {
         status,
         isSubmitted, icon,
         isSelected,
-        message
-    } = useAppSelector<IExperienceState>((state) => state.experience)
+        message} = useAppSelector<IExperienceState>(
+        state => state.experience
+    )
     const dispatch: AppDispatch = useAppDispatch()
     const router = useRouter()
     const reference = useRef<any>({})
@@ -45,7 +47,7 @@ export default function () {
     const onFormSubmitted = () => {
         if (!isSubmitted || status !== "idle") return () => {}
 
-            dispatch(onResetSubmission())
+        dispatch(onResetSubmission())
         router.back()
     }
     useEffect(onFormSubmitted, [isSubmitted])
@@ -54,7 +56,6 @@ export default function () {
         e.preventDefault()
         dispatch(removeExperience())
     }
-
     const onPostExperience = (e: any) => {
         e.preventDefault()
         dispatch(addExperience())
@@ -64,9 +65,10 @@ export default function () {
 
         let key = index < 0 ? FileUploadField.SINGLE : FileUploadField.MULTIPLE
         reference.current[key].value = null
+
         if (url.length > 0) {
-            console.log(`delete image ${url} on the server`)
-            // dispatch(onRemoveImage(url))
+            const fileId = mapUrlToId(url)
+            dispatch(removeFile(fileId))
             return
         }
         dispatch(onRemoveImageAppended(index))
@@ -155,11 +157,20 @@ export default function () {
                             multiple={false}
                             ref={handleInputFileRef(FileUploadField.SINGLE)}
                             onChange={handleOnFileChange(onIconAppended)}
-                            onBlur={handleOnTextBlur}/>{icon || value.iconUrl.length > 0 ?
-                        <HoverIconBox icon={faTrash} onClick={handleOnFileClick(-1)(value.iconUrl)} onBlur={handleOnTextBlur}>{icon ?
-                            <Image className="absolute inset-0 object-cover" src={icon} alt={"icon appendable"} fill={true}/> : value.iconUrl ?
-                                <Image className="absolute inset-0 object-cover" src={value.iconUrl} loader={() => value.iconUrl} alt={"icon appendable"} fill={true}/> : null}</HoverIconBox>:
-                        <ButtonRounded label="select icon" onClick={onInputFileClick(FileUploadField.SINGLE)}/>}
+                            onBlur={handleOnTextBlur}/>
+                        {icon || value.iconUrl.length > 0
+                            ? <HoverIconBox
+                                icon={faTrash}
+                                disabled={status === "loading"}
+                                onClick={handleOnFileClick(-1)(value.iconUrl)}
+                                onBlur={handleOnTextBlur}>
+                                {icon
+                                    ? <Image className="absolute inset-0 object-cover" src={icon} alt={"icon appendable"} fill={true}/>
+                                    : value.iconUrl
+                                        ? <Image className="absolute inset-0 object-cover" src={value.iconUrl} loader={() => value.iconUrl} alt={"icon appendable"} fill={true}/>
+                                        : null
+                                } </HoverIconBox>
+                            : <ButtonRounded label="select icon" onClick={onInputFileClick(FileUploadField.SINGLE)}/>}
                     </div>
                     <div>
                         <input
@@ -171,11 +182,25 @@ export default function () {
                             ref={handleInputFileRef(FileUploadField.MULTIPLE)}
                             onChange={handleOnFileChange(onImageAppended)}
                             onBlur={handleOnTextBlur}/>
-                        <div className="grid grid-cols-3 gap-1 w-full">{value.imageUrls.length > 0 && value.imageUrls.map((url, i) =>
-                            <HoverIconBox key={i} icon={faTrash} onClick={handleOnFileClick(i)(url)} onBlur={handleOnTextBlur}>
-                                <Image className="object-cover" fill={true} src={url} loader={() => url} alt={"image appendable"}/></HoverIconBox>)}{images.length > 0 && images.map((image, i) =>
-                            <HoverIconBox key={i} icon={faTrash} onClick={handleOnFileClick(i)("")} onBlur={handleOnTextBlur}>
-                                <Image className="object-cover" fill={true} src={image} alt={"image appendable"}/></HoverIconBox>)}
+                        <div className="grid grid-cols-3 gap-1 w-full">
+                            {value.imageUrls.length > 0 && value.imageUrls.map((url, i) =>
+                                <HoverIconBox
+                                    key={i}
+                                    disabled={status === "loading"}
+                                    icon={faTrash}
+                                    onClick={handleOnFileClick(i)(url)}
+                                    onBlur={handleOnTextBlur}>
+                                    <Image className="object-cover" fill={true} src={url} loader={() => url} alt={"image appendable"}/>
+                                </HoverIconBox>)}
+                            {images.length > 0 && images.map((image, i) =>
+                                <HoverIconBox
+                                    key={i}
+                                    disabled={status === "loading"}
+                                    icon={faTrash}
+                                    onClick={handleOnFileClick(i)("")}
+                                    onBlur={handleOnTextBlur}>
+                                    <Image className="object-cover" fill={true} src={image} alt={"image appendable"}/>
+                                </HoverIconBox>)}
                             <ButtonRounded label="add images" onClick={onInputFileClick(FileUploadField.MULTIPLE)}/>
                         </div>
                     </div>
