@@ -75,16 +75,15 @@ const homeReducer: Reducer<IHomeState> =
                 groupingListByPropKey(value, "content")
                 return {...state, feed: {...state.feed, value, scrollTo}}
             }
-
             case EducationAction.DELETE_SUCCESS:
             case ExperienceAction.DELETE_SUCCESS: {
                 const id = action.payload as string
                 const value = state.feed.value.filter(mValue => mValue.id !== id)
                 return {...state, feed: {...state.feed, value}}
             }
-            case EducationAction.UPDATE_SUCCESS: {
+            case EducationAction.UPDATE_SUCCESS:
+            case ExperienceAction.UPDATE_SUCCESS: {
                 const feedItem = action.payload as ISchema
-                console.log("case EducationAction.UPDATE_SUCCESS", feedItem)
                 const value = state.feed.value.map(item => {
                     let data = item
                     if (data.id === feedItem.id) {

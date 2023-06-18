@@ -51,7 +51,8 @@ export default function(){
             return
         }
         dispatch(updateEducation())
-        if (typeof removableImageIds === "undefined") return
+        if (typeof removableImageIds === "undefined" ||
+            removableImageIds.length <= 0) return
 
         for (const i in removableImageIds)
             dispatch(removeFile(removableImageIds[i]))
@@ -60,7 +61,8 @@ export default function(){
         e.preventDefault()
 
         dispatch(removeEducation())
-        if (typeof removableImageIds === "undefined") return
+        if (typeof removableImageIds === "undefined" ||
+            removableImageIds.length <= 0) return
 
         for (const i in removableImageIds)
             dispatch(removeFile(removableImageIds[i]))

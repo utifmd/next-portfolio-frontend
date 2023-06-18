@@ -16,6 +16,7 @@ interface IExperienceState {
     message?: string,
     icon?: any,
     images: any[],
+    removableImageIds: string[],
     value: IExperience,
     isValid: boolean,
     isSubmitted: boolean,

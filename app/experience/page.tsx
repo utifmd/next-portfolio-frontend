@@ -21,7 +21,9 @@ import {
     onAddStack,
     onRemoveImageAppended,
     onRemoveStack,
-    onResetSubmission
+    onResetSubmission,
+    onAddRemovableImageIds,
+    updateExperience
 } from "@/actions/experienceAction";
 import {removeFile} from "@/actions/fileAction";
 import {camelize} from "@/utils";
@@ -37,13 +39,28 @@ export default function () {
         status,
         isSubmitted, icon,
         isSelected,
-        message} = useAppSelector<IExperienceState>(
+        removableImageIds,
+        message
+
+    } = useAppSelector<IExperienceState>(
         state => state.experience
     )
     const dispatch: AppDispatch = useAppDispatch()
     const router = useRouter()
     const reference = useRef<any>({})
+    const onSubmitExperience = (e: any) => {
+        e.preventDefault()
+        if (!isSelected) {
+            dispatch(addExperience())
+            return
+        }
+        dispatch(updateExperience())
+        if (typeof removableImageIds === "undefined" ||
+            removableImageIds.length <= 0) return
 
+        for (const i in removableImageIds)
+            dispatch(removeFile(removableImageIds[i]))
+    }
     const onFormSubmitted = () => {
         if (!isSubmitted || status !== "idle") return () => {}
 
@@ -55,10 +72,12 @@ export default function () {
     const onRemoveExperience = (e: any) => {
         e.preventDefault()
         dispatch(removeExperience())
-    }
-    const onPostExperience = (e: any) => {
-        e.preventDefault()
-        dispatch(addExperience())
+
+        if (typeof removableImageIds === "undefined" ||
+            removableImageIds.length <= 0) return
+
+        for (const i in removableImageIds)
+            dispatch(removeFile(removableImageIds[i]))
     }
     const handleOnFileClick = (index: number) => (url: string) => (e: any) => {
         e.preventDefault()
@@ -68,7 +87,7 @@ export default function () {
 
         if (url.length > 0) {
             const fileId = mapUrlToId(url)
-            dispatch(removeFile(fileId))
+            dispatch(onAddRemovableImageIds(fileId))
             return
         }
         dispatch(onRemoveImageAppended(index))
@@ -115,20 +134,34 @@ export default function () {
     }
     return (
         <div className="flex min-h-screen justify-center items-center">
-            <form className="w-full sm:w-[50%] p-6 text-center space-y-7" onSubmit={onPostExperience}>
+            <form className="w-full sm:w-[50%] p-6 text-center space-y-7" onSubmit={onSubmitExperience}>
                 <p className="font-bold text-3xl uppercase text-gray-900 dark:text-gray-100">Experience Entry</p>
                 <div className="flex justify-center">
                     <div className="h-0.5 w-24 bg-gray-900 dark:bg-gray-100"/>
                 </div>
                 <div className="grid gap-4 md:grid-cols-2 mb-4">
                     <div>
-                        <Select id="platform" label="platform" onChange={handleOnTextChange} onBlur={handleOnTextBlur}>{Object.keys(ExperiencePlatform).map((platform, i) =>
-                            <option key={i} value={platform} defaultValue={value.platform}>{platform}</option>)}
+                        <Select
+                            id="platform"
+                            label="platform"
+                            onChange={handleOnTextChange}
+                            onBlur={handleOnTextBlur}
+                            value={value.platform}>
+                            {Object.keys(ExperiencePlatform).map((platform, i) =>
+                                <option key={i} value={platform} defaultValue={value.platform}>{platform}</option>
+                            )}
                         </Select>
                     </div>
                     <div>
-                        <Select id="type" label="type" onChange={handleOnTextChange} onBlur={handleOnTextBlur}>{Object.keys(ExperienceType).map((type, i) =>
-                            <option key={i} value={type} defaultValue={value.type}>{type}</option>)}
+                        <Select
+                            id="type"
+                            label="type"
+                            onChange={handleOnTextChange}
+                            onBlur={handleOnTextBlur}
+                            value={value.type}>
+                            {Object.keys(ExperienceType).map((type, i) =>
+                                <option key={i} value={type} defaultValue={value.type}>{type}</option>
+                            )}
                         </Select>
                     </div>
                     <div>
@@ -148,7 +181,7 @@ export default function () {
                     <div>
                         <Input id="stack" type="text" placeholder="Add stack" onKeyUp={handleOnTextPush} onBlur={handleOnTextBlur}/>
                     </div>
-                    <div>
+                    <div className="flex justify-center items-center">
                         <input
                             className="hidden"
                             id={FileUploadField.SINGLE}
@@ -182,7 +215,7 @@ export default function () {
                             ref={handleInputFileRef(FileUploadField.MULTIPLE)}
                             onChange={handleOnFileChange(onImageAppended)}
                             onBlur={handleOnTextBlur}/>
-                        <div className="grid grid-cols-3 gap-1 w-full">
+                        <div className="flex flex-wrap justify-center items-center">
                             {value.imageUrls.length > 0 && value.imageUrls.map((url, i) =>
                                 <HoverIconBox
                                     key={i}

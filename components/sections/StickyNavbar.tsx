@@ -3,22 +3,22 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBriefcase, faUniversity, faSignOut} from "@fortawesome/free-solid-svg-icons";
 
 const StickyNavbar = ({onLogoutClick}: {onLogoutClick: (e: any) => void}) => {
-    return(<div className="relative sticky top-0 z-10 w-full shadow-lg sm:w-[50%]">
-        <div className="flex py-3 px-4 justify-between backdrop-blur-sm">{/* bg-white/50*/}
+    return(<div className="sticky top-0 z-10 w-full shadow-md sm:w-[50%]">
+        <div className="flex py-3 px-4 justify-between bg-white/40 dark:bg-black/40 text-black dark:text-white backdrop-blur-md">{ /* bg-gradient-to-b from-gray-200 to-gray-100 dark:from-gray-900 dark:to-gray-800*/}
             <div className="flex">
-                <Link href={"/experience"} className="px-1.5 cursor-pointer text-center group hover:opacity-70">
-                    <FontAwesomeIcon color={"#059669"} icon={faBriefcase} />
-                    <p className="text-green-600 drop-shadow-[0_1.2px_1.2px_rgb(255,255,255)] dark:drop-shadow-[0_1.2px_1.2px_rgb(0,0,0)]">Experience</p>
+                <Link href={"/experience"} className="px-1.5 text-green-700 dark:text-green-300 cursor-pointer text-center group hover:opacity-70">
+                    <FontAwesomeIcon className="drop-shadow-md" icon={faBriefcase} />
+                    <p className="drop-shadow-md">Experience</p>
                 </Link>
-                <Link href={"/education"} className="px-1.5 cursor-pointer text-center group hover:opacity-70">
-                    <FontAwesomeIcon color={"#059669"} icon={faUniversity} />
-                    <p className="text-green-600 drop-shadow-[0_1.2px_1.2px_rgb(255,255,255)] dark:drop-shadow-[0_1.2px_1.2px_rgb(0,0,0)]">Education</p>
+                <Link href={"/education"} className="px-1.5 text-green-700 dark:text-green-300 cursor-pointer text-center group hover:opacity-70">
+                    <FontAwesomeIcon className="drop-shadow-md" icon={faUniversity} />
+                    <p className="drop-shadow-md">Education</p>
                 </Link>
             </div>
             <div>
-                <button onClick={onLogoutClick} className="px-1.5 cursor-pointer text-center group hover:opacity-70">
-                    <FontAwesomeIcon color={"#059669"} icon={faSignOut} />
-                    <p className="text-green-600 drop-shadow-[0_1.2px_1.2px_rgb(255,255,255)] dark:drop-shadow-[0_1.2px_1.2px_rgb(0,0,0)]">Log out</p>
+                <button onClick={onLogoutClick} className="px-1.5 text-green-700 dark:text-green-300 cursor-pointer text-center group hover:opacity-70">
+                    <FontAwesomeIcon className="drop-shadow-md" icon={faSignOut} />
+                    <p className="drop-shadow-md">Log out</p>
                 </button>
             </div>
         </div>

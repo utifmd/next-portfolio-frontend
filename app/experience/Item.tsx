@@ -13,8 +13,8 @@ type Props = TBoxProps & {
 }
 export default function (
     {experience, index, isLoading, onBottomClick, onNextClick, onTargetIconClick, innerRef}: Props) {
-    const screenshots: TImageLightBox[] = experience.imageUrls
-        .map<TImageLightBox>(url => ({alt: url, src: url}))
+    const screenshots = typeof experience.imageUrls !== "undefined"
+        ? experience.imageUrls.map<TImageLightBox>(url => ({alt: url, src: url})) : []
 
     return (
         <Box title={experience.title}

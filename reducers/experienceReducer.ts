@@ -4,6 +4,7 @@ import {HomeAction} from "@/actions/homeAction";
 import {FileAction} from "@/actions/fileAction";
 
 const initialState: IExperienceState = {
+    removableImageIds: [],
     status: "idle",
     isValid: false,
     isSubmitted: false,
@@ -27,14 +28,16 @@ const reducer: Reducer<IExperienceState> =
             .filter(([mKey, mValue]) => typeof mValue === "string" && mKey !== "iconUrl")
             .every(([_, mValue]) => mValue.length > 0)
 
-    const isValid: boolean = state.isSelected ? isTextsValid : isTextsValid && state.icon && state.images.length > 0
+    const isValid: boolean = state.isSelected
+        ? isTextsValid && state.value.iconUrl.length > 0 && state.value.imageUrls.length > 0
+        : isTextsValid && state.icon && state.images.length > 0
 
     switch (action.type) {
-
         case ExperienceAction.IMAGES_APPENDED_REQUEST:
         case ExperienceAction.ICON_APPENDED_REQUEST:
         case ExperienceAction.CREATE_REQUEST:
         case ExperienceAction.DELETE_REQUEST:
+        case ExperienceAction.UPDATE_REQUEST:
         case FileAction.DELETE_REQUEST:
             return {...state, status: "loading"}
 
@@ -42,6 +45,7 @@ const reducer: Reducer<IExperienceState> =
         case ExperienceAction.ICON_APPENDED_FAILED:
         case ExperienceAction.CREATE_FAILED:
         case ExperienceAction.DELETE_FAILED:
+        case ExperienceAction.UPDATE_FAILED:
         case FileAction.DELETE_FAILED:
             return {...state, status: "error", message: action.payload}
 
@@ -72,9 +76,6 @@ const reducer: Reducer<IExperienceState> =
         case ExperienceAction.IMAGES_APPENDED_SUCCESS:
             return {...state, status: "idle", images: [...state.images, action.payload]}
 
-        case FileAction.DELETE_SUCCESS:
-            return {...state, status: "idle"}
-
         case ExperienceAction.IMAGES_APPENDED_RESET: {
             const index = action.payload as number
             if (index === -1) return {...state, icon: null}
@@ -84,13 +85,25 @@ const reducer: Reducer<IExperienceState> =
             )
             return {...state, images}
         }
+        case ExperienceAction.ADD_REMOVABLE_IMAGE_IDS: {
+            const id = action.payload as string
+            const iconUrl = !state.value.iconUrl.includes(id) ? state.value.iconUrl : ""
+            const imageUrls = state.value.imageUrls.filter(url=> !url.includes(id))
+            return {...state,
+                removableImageIds: state.removableImageIds?.concat(id) || [id],
+                value: {...state.value, imageUrls, iconUrl}
+            }
+        }
+        case ExperienceAction.RESET_SUBMISSION:
+            return {...state, isSubmitted: false}
 
         case ExperienceAction.CREATE_SUCCESS:
         case ExperienceAction.DELETE_SUCCESS:
+        case ExperienceAction.UPDATE_SUCCESS:
             return {...initialState, isSubmitted: true}
 
-        case ExperienceAction.RESET_SUBMISSION:
-            return {...state, isSubmitted: false}
+        case FileAction.DELETE_SUCCESS:
+            return {...state, status: "idle"}
 
         default:
             return state

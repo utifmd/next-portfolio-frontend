@@ -1,29 +1,11 @@
 import {AnyAction} from "redux";
 import {AppDispatch, TAnyAction} from "@/store";
 import {readFileAsImgSrcAsync} from "@/utils";
-import {CALL_API, BROWSER_API, FileUploadField} from "../helpers"
-
+import {CALL_API, BROWSER_API, mapExperienceToFormData} from "@/helpers"
+import {randomUUID} from "crypto";
 export const addExperience = () =>
     (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
-    const experience: IExperience & Record<string, any> = getState().experience.value
-    const mapStateToFormData = (): FormData => {
-        const multipleFiles = experience[FileUploadField.MULTIPLE]
-        const singleFiles = experience[FileUploadField.SINGLE]
-        const formData = new FormData()
-
-        for (const [key, value] of Object.entries(experience))
-            if (typeof value === "string" && value.length > 0) formData.append(key, value)
-
-        formData.append(FileUploadField.SINGLE, singleFiles, singleFiles.name)
-
-        for (const file of multipleFiles)
-            formData.append(FileUploadField.MULTIPLE, file, file.name)
-
-        for (const item of experience.stack)
-            formData.append("stack", item)
-
-        return formData
-    }
+    const experience: IExperience = getState().experience.value
     const action: IAppAction = {
         [CALL_API]: {
             method: "POST",
@@ -34,7 +16,7 @@ export const addExperience = () =>
                 ExperienceAction.CREATE_FAILED,
                 ExperienceAction.CREATE_SUCCESS
             ],
-            body: mapStateToFormData()
+            body: mapExperienceToFormData(experience)
         }
     }
     return dispatch(action)
@@ -42,10 +24,12 @@ export const addExperience = () =>
 export const removeExperience = () =>
     (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
         const experience = getState().experience.value
+        const id = experience.id || randomUUID()
         const action: IAppAction = {
             [CALL_API]: {
                 method: "DELETE",
                 header: "/experiences",
+                params: {id},
                 types: [
                     ExperienceAction.DELETE_REQUEST,
                     ExperienceAction.DELETE_FAILED,
@@ -56,6 +40,26 @@ export const removeExperience = () =>
         }
         return dispatch(action)
     }
+export const updateExperience = () =>
+    (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
+    const experience = getState().experience.value
+    const id = experience.id || randomUUID()
+    const action: IAppAction = {
+        [CALL_API]: {
+            method: "PUT",
+            header: "/experiences",
+            params: {id},
+            contentType: "multipart/form-data",
+            types: [
+                ExperienceAction.UPDATE_REQUEST,
+                ExperienceAction.UPDATE_FAILED,
+                ExperienceAction.UPDATE_SUCCESS
+            ],
+            body: mapExperienceToFormData(experience)
+        }
+    }
+    return dispatch(action)
+}
 export const onImageAppended = (file: any) =>
     (dispatch: AppDispatch): IAppAction => {
     const action: IAppAction = {
@@ -124,6 +128,12 @@ export const onInputUnfocused = () =>
     }
     return dispatch(action)
 }
+export const onAddRemovableImageIds = (id: string) => (dispatch: AppDispatch): IAppAction => {
+    const action: TAnyAction = {
+        type: ExperienceAction.ADD_REMOVABLE_IMAGE_IDS, payload: id
+    }
+    return dispatch(action)
+}
 export const getAllExperience = () => (dispatch: AppDispatch) => {
     const response: IExperience[] = []
     const action: AnyAction = {
@@ -152,6 +162,8 @@ export enum ExperienceAction {
     ICON_APPENDED_FAILED = "@@EXPERIENCE_ICON_APPENDED_FAILED",
     ICON_APPENDED_SUCCESS = "@@EXPERIENCE_ICON_APPENDED_SUCCESS",
 
+    ADD_REMOVABLE_IMAGE_IDS = "@@ADD_REMOVABLE_IMAGE_IDS",
+
     CREATE_REQUEST = "@@EXPERIENCE_CREATE_REQUEST",
     CREATE_FAILED = "@@EXPERIENCE_CREATE_FAILED",
     CREATE_SUCCESS = "@@EXPERIENCE_CREATE_SUCCESS",
@@ -160,7 +172,9 @@ export enum ExperienceAction {
     READ_ALL_FAILED = "@@EXPERIENCE_READ_ALL_FAILED",
     READ_ALL_SUCCESS = "@@EXPERIENCE_READ_ALL_SUCCESS",
 
-    UPDATE = "@@EXPERIENCE_UPDATE",
+    UPDATE_REQUEST = "@@EXPERIENCE_UPDATE_REQUEST",
+    UPDATE_FAILED = "@@EXPERIENCE_UPDATE_FAILED",
+    UPDATE_SUCCESS = "@@EXPERIENCE_UPDATE_SUCCESS",
 
     DELETE_REQUEST = "@@EXPERIENCE_DELETE_REQUEST",
     DELETE_FAILED = "@@EXPERIENCE_DELETE_FAILED",

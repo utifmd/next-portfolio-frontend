@@ -26,7 +26,6 @@ const httpRequest = ({method, params, header, body, contentType}: IHttpRequestAc
             })
             if(method === "PUT" ||
                 typeof params?.id === "undefined") {
-                console.log("restApi", data)
                 resolve(data)
                 return
             }

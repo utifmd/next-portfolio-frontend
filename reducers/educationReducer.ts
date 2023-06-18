@@ -25,12 +25,10 @@ const reducer: Reducer<IEducationState> =
             .every(([_, mValue]) => mValue.length > 0)
 
         const isValid: boolean = state.isSelected
-            ? isTextsValid : isTextsValid && state.image
+            ? isTextsValid && state.value.imageUrl.length > 0
+            : isTextsValid && state.image
 
         switch (action.type) {
-            case HomeAction.SELECT_FEED_EDUCATION:
-                return action.payload as IEducationState
-
             case FileAction.DELETE_REQUEST:
             case EducationAction.IMAGE_APPENDED_REQUEST:
             case EducationAction.CREATE_REQUEST:
@@ -45,6 +43,9 @@ const reducer: Reducer<IEducationState> =
             case EducationAction.UPDATE_FAILED:
                 return {...state, status: "error", message: action.payload}
 
+            case HomeAction.SELECT_FEED_EDUCATION:
+                return action.payload as IEducationState
+
             case EducationAction.INPUT_CHANGED: {
                 const [id, value] = action.payload as [string, any]
                 return {...state, value: {...state.value, [id]: value}, isValid}
@@ -58,14 +59,6 @@ const reducer: Reducer<IEducationState> =
             case EducationAction.IMAGE_APPENDED_RESET:
                 return {...state, image: null}
 
-            case EducationAction.CREATE_SUCCESS:
-            case EducationAction.DELETE_SUCCESS:
-            case EducationAction.UPDATE_SUCCESS:
-                return {...initialState, isSubmitted: true}
-
-            case FileAction.DELETE_SUCCESS:
-                return {...state, status: "idle"}
-
             case EducationAction.ADD_REMOVABLE_FILE_IDS: {
                 const id = action.payload as string
                 return {...state,
@@ -77,6 +70,14 @@ const reducer: Reducer<IEducationState> =
             }
             case EducationAction.RESET_SUBMISSION:
                 return {...state, isSubmitted: false}
+
+            case FileAction.DELETE_SUCCESS:
+                return {...state, status: "idle"}
+
+            case EducationAction.CREATE_SUCCESS:
+            case EducationAction.DELETE_SUCCESS:
+            case EducationAction.UPDATE_SUCCESS:
+                return {...initialState, isSubmitted: true}
 
             default:
                 return state

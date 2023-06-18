@@ -85,6 +85,11 @@ export const onImageAppended = (file: any) =>
     }
     return dispatch(action)
 }
+/*
+* TODO
+*  1. delete the experience
+*  2. update the experience
+* */
 export const updateEducation = () => (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
     const education = getState().education.value
     const id = education.id || randomUUID()
@@ -122,11 +127,6 @@ export enum EducationAction {
     READ_ALL_SUCCESS = "@@EDUCATION_READ_ALL_SUCCESS",
 
     RESET_SUBMISSION = "@@EDUCATION_RESET_SUBMISSION",
-    /*
-    * TODO
-    *  1. update education with removable file ids
-    *  2. update experience with removable file ids
-    * */
     UPDATE_REQUEST = "@@EDUCATION_UPDATE_REQUEST",
     UPDATE_FAILED = "@@EDUCATION_UPDATE_FAILED",
     UPDATE_SUCCESS = "@@EDUCATION_UPDATE_SUCCESS",
