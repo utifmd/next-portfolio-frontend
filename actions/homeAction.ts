@@ -29,10 +29,11 @@ const onSelectFeedItem = (index: number) =>
     const selectedFeedItem = getState().home.feed.value[index]
     if("content" in selectedFeedItem){
         const payload = <IEducationState>{
-            value: selectedFeedItem,
+            value: selectedFeedItem as IEducation,
             isSubmitted: false,
             isValid: false,
             isSelected: true,
+            removableImageIds: [],
             status: "idle"
         }
         const action: TAnyAction = {
@@ -46,6 +47,7 @@ const onSelectFeedItem = (index: number) =>
         isValid: false,
         isSelected: true,
         images: [],
+        removableImageIds: [],
         status: "idle"
     }
     const action: TAnyAction = {

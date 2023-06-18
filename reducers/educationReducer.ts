@@ -5,6 +5,7 @@ import {HomeAction} from "@/actions/homeAction";
 import {FileAction} from "@/actions/fileAction";
 
 const initialState: IEducationState = {
+    removableImageIds: [],
     status: "idle",
     isValid: false,
     isSubmitted: false,
@@ -62,7 +63,7 @@ const reducer: Reducer<IEducationState> =
             case EducationAction.ADD_REMOVABLE_FILE_IDS: {
                 const id = action.payload as string
                 return {...state,
-                    removableImageIds: state.removableImageIds?.concat(id) || [id],
+                    removableImageIds: [...state.removableImageIds, id],
                     value: {...state.value,
                         imageUrl: !state.value.imageUrl.includes(id) ? state.value.imageUrl : ""
                     }

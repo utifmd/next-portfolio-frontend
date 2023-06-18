@@ -1,12 +1,12 @@
 "use client"
 
 import {useRouter} from "next/navigation";
-import {useEffect} from "react";
+import React, {useEffect} from "react";
 import {Input} from "@/components";
 import {ButtonPrimary} from "@/components/buttons";
 import {UnAuthenticated} from "@/app/authentication";
 import {
-    onInputChange, onInputUnfocused, onResetSubmission, onSignIn
+    onInputChange, onInputUnfocused, onResetSubmission, signIn
 } from "@/actions/authenticationAction";
 import {censorEmail} from "@/utils";
 import {useAppDispatch, useAppSelector} from "@/app/hooks";
@@ -42,7 +42,7 @@ export default function() {
         e.preventDefault()
         if (!isValid) return
 
-        dispatch(onSignIn())
+        dispatch(signIn())
     }
     return (
         <div className="flex min-h-screen justify-center items-center">
@@ -66,7 +66,7 @@ export default function() {
                                 onChange={handleOnTextChange}/>
                         </div>
                     </div>
-                {message && <p className="text-red-500">{message}</p>}
+                {message && <p className="text-center text-red-500 text-sm italic">{message}</p>}
                 <UnAuthenticated fallback={<ButtonPrimary label="Authenticated" isDisable={true}/>}>
                     <ButtonPrimary
                         label="Login"

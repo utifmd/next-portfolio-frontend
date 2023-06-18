@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import {useRouter} from "next/navigation";
-import {useEffect, useRef} from "react";
+import React, {useEffect, useRef} from "react";
 import {Input} from "@/components";
 import {HoverIconBox} from "@/components/sections";
 import {ButtonPrimary, ButtonRounded} from "@/components/buttons";
@@ -51,8 +51,7 @@ export default function(){
             return
         }
         dispatch(updateEducation())
-        if (typeof removableImageIds === "undefined" ||
-            removableImageIds.length <= 0) return
+        if (removableImageIds.length <= 0) return
 
         for (const i in removableImageIds)
             dispatch(removeFile(removableImageIds[i]))
@@ -61,8 +60,7 @@ export default function(){
         e.preventDefault()
 
         dispatch(removeEducation())
-        if (typeof removableImageIds === "undefined" ||
-            removableImageIds.length <= 0) return
+        if (removableImageIds.length <= 0) return
 
         for (const i in removableImageIds)
             dispatch(removeFile(removableImageIds[i]))
@@ -150,8 +148,7 @@ export default function(){
                         <Input id="desc" type="text" placeholder="Enter description" value={value.desc} onChange={handleOnTextChange} onBlur={handleOnTextBlur} />
                     </div>
                 </div>
-                {message && <p className="text-red-500">{message}</p>}
-
+                {message && <p className="text-center text-red-500 text-sm italic">{message}</p>}
                 <Authenticated fallback={
                     <ButtonPrimary label="Unauthenticated" isDisable={true}/>}>
                     <div className="flex justify-center items-center space-x-1.5">

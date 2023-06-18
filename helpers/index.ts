@@ -3,6 +3,8 @@
 * */
 export const CALL_API: string = "CALL_API"
 export const BROWSER_API: string = "BROWSER_API"
+export const NEXT_PUBLIC_BASE_URL: string = "NEXT_PUBLIC_BASE_URL"
+export const NEXT_PUBLIC_TOKEN: string = "NEXT_PUBLIC_TOKEN"
 export enum FileUploadField {
     SINGLE = "image-upload", MULTIPLE = "images-upload"
 }

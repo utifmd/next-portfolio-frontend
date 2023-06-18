@@ -37,12 +37,13 @@ interface IFeedState {
     isStarted: boolean,
     isExpTurn: boolean,
     isDone: boolean,
-    scrollTo?: number,
+    scrollTo?: number | string,
     page: number,
     value: ISchema[]
 }
 interface IEnvLocal {
     NEXT_PUBLIC_BASE_URL: string
+    NEXT_PUBLIC_TOKEN: string
 }
 type TBoxProps = {
     innerRef?: any,

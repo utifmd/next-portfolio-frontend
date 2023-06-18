@@ -10,13 +10,14 @@ import Profile from "./Profile";
 import Feed from "./Feed";
 
 type Props = IHomeState & {
-    pagedFeed: any, onSelectFeedItem: any, onFeedStartedFalse: any
+    authenticate: any, signOut: any, pagedFeed: any, onSelectFeedItem: any, onFeedStartedFalse: any
 }
 export default function Home(
-    {feed, intro, habit, profile, pagedFeed, onSelectFeedItem, onFeedStartedFalse}: Props) {
+    {feed, intro, habit, profile, authenticate, pagedFeed, signOut, onSelectFeedItem, onFeedStartedFalse}: Props) {
     const reference = useRef<any>({})
     const onRendered = () => {
         if(!feed.isStarted) return () => {}
+        authenticate()
         pagedFeed()
         onFeedStartedFalse()
     }
@@ -35,6 +36,10 @@ export default function Home(
         if (typeof key === "undefined") return
         reference.current[key] = e
     }
+    const onLogoutClick = (e: any) => {
+        e.preventDefault()
+        signOut()
+    }
     return (
         <div className="flex flex-col justify-center items-center">
             <div className="relative w-full">
@@ -43,7 +48,7 @@ export default function Home(
                 </Surface>
             </div>
             <Authenticated>
-                <StickyNavbar onLogoutClick={onJumpToBox("profile")}/>
+                <StickyNavbar onLogoutClick={onLogoutClick}/>
             </Authenticated>
             <Surface>
                 <Introduction

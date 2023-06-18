@@ -1,6 +1,7 @@
 import {Reducer} from "redux";
 import {TAnyAction} from "@/store";
 import {AuthenticationAction} from "@/actions/authenticationAction";
+import {NEXT_PUBLIC_TOKEN} from "@/helpers";
 
 const initialState: IAuthenticationState = {
     value: {
@@ -8,7 +9,6 @@ const initialState: IAuthenticationState = {
     },
     isSubmitted: false,
     isValid: false,
-    token: "test",
     status: "idle"
 }
 const reducer: Reducer<IAuthenticationState> =
@@ -29,13 +29,30 @@ const reducer: Reducer<IAuthenticationState> =
         case AuthenticationAction.SIGN_IN_REQUEST:
             return {...state, status: "loading"}
 
-        case AuthenticationAction.SIGN_IN_FAILED:
-            return {...state, status: "error", message: action.payload as string}
-
-        case AuthenticationAction.SIGN_IN_SUCCESS: {
-            const token = new Date().getTime().toString()
-            return {...state, status: "idle", value: action.payload, isSubmitted: true, token}
+        case AuthenticationAction.AUTHENTICATE_REQUEST: {
+            const token = localStorage.getItem(NEXT_PUBLIC_TOKEN) || ""
+            return {...state, status: "loading", token}
         }
+        case AuthenticationAction.SIGN_IN_FAILED:
+        case AuthenticationAction.AUTHENTICATE_FAILED:
+            return {...state,
+                status: "error",
+                message: action.payload as string,
+                token: undefined
+            }
+        case AuthenticationAction.SIGN_IN_SUCCESS: {
+            const {token} = action.payload as {token: string}
+            localStorage.setItem(NEXT_PUBLIC_TOKEN, token)
+            return {...state, status: "idle", isSubmitted: true, message: undefined, token}
+        }
+        case AuthenticationAction.SIGN_OUT: {
+            localStorage.clear()
+            return {...state, token: undefined}
+        }
+
+        case AuthenticationAction.AUTHENTICATE_SUCCESS:
+            return {...state, status: "idle"}
+
         default:
             return state
     }

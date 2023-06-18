@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import {useRouter} from "next/navigation";
-import {ChangeEvent, useEffect, useRef} from "react";
+import React, {ChangeEvent, useEffect, useRef} from "react";
 import {Select, Input} from "@/components";
 import {HoverIconBox} from "@/components/sections";
 import {ButtonPrimary, ButtonRounded} from "@/components/buttons";
@@ -238,7 +238,7 @@ export default function () {
                         </div>
                     </div>
                 </div>
-                {message && <p className="text-red-500">{message}</p>}
+                {message && <p className="text-center text-red-500 text-sm italic">{message}</p>}
                 <Authenticated fallback={
                     <ButtonPrimary label="Unauthenticated" isDisable={true}/>}>
                     <div className="flex justify-center items-center space-x-1.5">

@@ -5,6 +5,7 @@ import {EducationAction} from "@/actions/educationAction";
 import {ExperienceAction} from "@/actions/experienceAction";
 import {groupingListByPropKey} from "@/utils";
 import {faLayerGroup, faMobilePhone, faServer, faLaptop} from "@fortawesome/free-solid-svg-icons";
+import {AuthenticationAction} from "@/actions/authenticationAction";
 
 const initialState: IHomeState = {
     intro: {
@@ -93,6 +94,10 @@ const homeReducer: Reducer<IHomeState> =
                 })
                 return {...state, feed: {...state.feed, value}}
             }
+            case AuthenticationAction.AUTHENTICATE_FAILED:
+            case AuthenticationAction.SIGN_OUT:
+                return {...state, feed: {...state.feed, scrollTo: "profile"}}
+
             default:
                 return state
         }
