@@ -33,6 +33,7 @@ const initialState: IHomeState = {
     profile: {
         bio: "seorang pemuda tua ophiucus",
         fullName: "utif milkedori",
+        imageUrl: "https://avatars.githubusercontent.com/u/16291551?v=4",
         jobTitle: "software engineer",
         links: {
             email: "mailto:utifmd@gmail.com",

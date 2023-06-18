@@ -11,6 +11,7 @@ interface IProfileLinks {
 interface IProfile {
     id?: string,
     fullName: string,
+    imageUrl: string,
     bio: string,
     role: string,
     jobTitle: string,

@@ -15,8 +15,7 @@ const Profile = ({innerRef, profile}: TBoxProps & {profile: IProfile}) => {
             <div className="w-full sm:w-[50%]">
                 <figure className="flex flex-col sm:flex-row items-center p-0 sm:p-8 ">
                     <div className="relative w-24 sm:w-[156px] h-24 sm:h-[112px]">
-                        <Image className="rounded-full object-cover sm:rounded-xl mx-auto" src="https://via.placeholder.com/150" alt="profile picture"
-                               fill={true} loader={() => "https://via.placeholder.com/150"} />
+                        <Image className="rounded-full object-cover sm:rounded-xl mx-auto" src={profile.imageUrl} alt="profile picture" fill={true} loader={() => profile.imageUrl} />
                     </div>
                     <div className="pt-6 md:p-8 text-center md:text-left space-y-4">
                         <blockquote>
