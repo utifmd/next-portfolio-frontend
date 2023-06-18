@@ -71,7 +71,7 @@ const homeReducer: Reducer<IHomeState> =
                 const response = action.payload as ISchema
                 const mState: ISchema[] = state.feed.value
                 const value = [...mState, response]
-                const scrollTo = "content" in response ? 0 : mState.length -1
+                const scrollTo = "content" in response ? 0 : mState.length
 
                 groupingListByPropKey(value, "content")
                 return {...state, feed: {...state.feed, value, scrollTo}}
