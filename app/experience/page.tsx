@@ -1,9 +1,8 @@
 "use client"
 
-import Image from "next/image";
 import {useRouter} from "next/navigation";
-import React, {ChangeEvent, useEffect, useRef} from "react";
-import {Select, Input} from "@/components";
+import React, {useEffect, useRef} from "react";
+import {TextArea, Select, Input, Image} from "@/components";
 import {HoverIconBox} from "@/components/sections";
 import {ButtonPrimary, ButtonRounded} from "@/components/buttons";
 import {Authenticated} from "@/app/authentication";
@@ -23,11 +22,11 @@ import {
     onRemoveStack,
     onResetSubmission,
     onAddRemovableImageIds,
-    updateExperience
+    updateExperience, onExcludeImageUrl
 } from "@/actions/experienceAction";
 import {removeFile} from "@/actions/fileAction";
 import {camelize} from "@/utils";
-import {faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faTrash, faClose} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {FileUploadField, mapUrlToId} from "@/helpers";
 
@@ -79,18 +78,23 @@ export default function () {
         for (const i in removableImageIds)
             dispatch(removeFile(removableImageIds[i]))
     }
-    const handleOnFileClick = (index: number) => (url: string) => (e: any) => {
+    const handleOnFileClick = (index: number) => (url?: string) => (e: any) => {
         e.preventDefault()
 
         let key = index < 0 ? FileUploadField.SINGLE : FileUploadField.MULTIPLE
         reference.current[key].value = null
 
-        if (url.length > 0) {
+        if (typeof url !== "undefined") {
             const fileId = mapUrlToId(url)
             dispatch(onAddRemovableImageIds(fileId))
             return
         }
         dispatch(onRemoveImageAppended(index))
+    }
+    const handleOnFileClose = (url?: string) => (e: any) => {
+        e.preventDefault()
+        if (typeof url === "undefined") return
+        dispatch(onExcludeImageUrl(url))
     }
     const handleOnTextBlur = (e: any) => {
         e.preventDefault()
@@ -105,7 +109,7 @@ export default function () {
         dispatch(onAddStack(camelize(elem.value)))
         elem.value = ""
     }
-    const handleOnTextChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleOnTextChange = (e: any) => {
         e.preventDefault()
         const {id, value} = e.currentTarget
         dispatch(onInputChange([id, value]))
@@ -168,10 +172,11 @@ export default function () {
                         <Input id="title" type="text" placeholder="Enter title" value={value.title} onChange={handleOnTextChange} onBlur={handleOnTextBlur}/>
                     </div>
                     <div>
-                        <Input id="description" type="text" placeholder="Enter description" value={value.description} onChange={handleOnTextChange} onBlur={handleOnTextBlur}/>
+                        <TextArea
+                            id="description" placeholder="Enter description" value={value.description} onChange={handleOnTextChange} onBlur={handleOnTextBlur}/>
                     </div>
                     <div className="md:col-span-2">
-                        <Input id="demoUrl" type="text" placeholder="Enter file url" value={value.demoUrl} onChange={handleOnTextChange} onBlur={handleOnTextBlur}/>
+                        <Input id="demoUrl" type="text" placeholder="Enter demo url (optional)" value={value.demoUrl} onChange={handleOnTextChange} onBlur={handleOnTextBlur}/>
                     </div>
                     <div className="md:col-span-2">
                         <Input id="releasedUrl" type="text" placeholder="Enter released url" value={value.releasedUrl} onChange={handleOnTextChange} onBlur={handleOnTextBlur}/>
@@ -191,16 +196,17 @@ export default function () {
                             ref={handleInputFileRef(FileUploadField.SINGLE)}
                             onChange={handleOnFileChange(onIconAppended)}
                             onBlur={handleOnTextBlur}/>
-                        {icon || value.iconUrl.length > 0
+                        {icon || typeof value.iconUrl !== "undefined"
                             ? <HoverIconBox
-                                icon={faTrash}
+                                icons={[faTrash, faClose]}
                                 disabled={status === "loading"}
-                                onClick={handleOnFileClick(-1)(value.iconUrl)}
+                                onTLClick={handleOnFileClick(-1)(value.iconUrl)}
+                                onTRClick={handleOnFileClose(value.iconUrl)}
                                 onBlur={handleOnTextBlur}>
                                 {icon
                                     ? <Image className="absolute inset-0 object-cover" src={icon} alt={"icon appendable"} fill={true}/>
                                     : value.iconUrl
-                                        ? <Image className="absolute inset-0 object-cover" src={value.iconUrl} loader={() => value.iconUrl} alt={"icon appendable"} fill={true}/>
+                                        ? <Image className="absolute inset-0 object-cover" src={value.iconUrl} loader={() => value.iconUrl} alt={"icon appendable"} fill={true} priority={false} unoptimized={true} sizes="100vw"/>
                                         : null
                                 } </HoverIconBox>
                             : <ButtonRounded label="select icon" onClick={onInputFileClick(FileUploadField.SINGLE)}/>}
@@ -216,25 +222,27 @@ export default function () {
                             onChange={handleOnFileChange(onImageAppended)}
                             onBlur={handleOnTextBlur}/>
                         <div className="flex flex-wrap justify-center items-center">
-                            {value.imageUrls.length > 0 && value.imageUrls.map((url, i) =>
+                            {value.imageUrls && value.imageUrls?.map((url, i) =>
                                 <HoverIconBox
                                     key={i}
                                     disabled={status === "loading"}
-                                    icon={faTrash}
-                                    onClick={handleOnFileClick(i)(url)}
+                                    icons={[faTrash, faClose]}
+                                    onTLClick={handleOnFileClick(i)(url)}
+                                    onTRClick={handleOnFileClose(url)}
                                     onBlur={handleOnTextBlur}>
-                                    <Image className="object-cover" fill={true} src={url} loader={() => url} alt={"image appendable"}/>
+                                    <Image className="object-cover" fill={true} priority={false} unoptimized={true} placeholder="blur" blurDataURL={process.env.NEXT_PUBLIC_BASE_URL+'/placeholder.png'} sizes="100vw" src={url} loader={() => url} alt={"image appendable"}/>
                                 </HoverIconBox>)}
                             {images.length > 0 && images.map((image, i) =>
                                 <HoverIconBox
                                     key={i}
                                     disabled={status === "loading"}
-                                    icon={faTrash}
-                                    onClick={handleOnFileClick(i)("")}
+                                    icons={[faTrash, faClose]}
+                                    onTLClick={handleOnFileClick(i)()}
+                                    onTRClick={handleOnFileClose()}
                                     onBlur={handleOnTextBlur}>
-                                    <Image className="object-cover" fill={true} src={image} alt={"image appendable"}/>
+                                    <Image className="object-cover" fill={true} src={image} placeholder="blur" blurDataURL={process.env.NEXT_PUBLIC_BASE_URL+'/placeholder.png'} alt={"image appendable"}/>
                                 </HoverIconBox>)}
-                            <ButtonRounded label="add images" onClick={onInputFileClick(FileUploadField.MULTIPLE)}/>
+                            <ButtonRounded label="images (optional)" onClick={onInputFileClick(FileUploadField.MULTIPLE)}/>
                         </div>
                     </div>
                 </div>

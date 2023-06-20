@@ -69,6 +69,11 @@ const reducer: Reducer<IEducationState> =
                     }
                 }
             }
+            case EducationAction.EXCLUDE_IMAGE_URL: {
+                const url = action.payload as string
+                const imageUrl = state.value.imageUrl !== url ? state.value.imageUrl : ""
+                return {...state, value: {...state.value, imageUrl}}
+            }
             case EducationAction.RESET_SUBMISSION:
                 return {...state, isSubmitted: false}
 

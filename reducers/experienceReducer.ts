@@ -14,23 +14,21 @@ const initialState: IExperienceState = {
         description: "",
         platform: "",
         type: "",
-        iconUrl: "",
-        demoUrl: "",
         releasedUrl: "",
-        imageUrls:[],
         stack: []
     }
 }
 const reducer: Reducer<IExperienceState> =
     (state: IExperienceState = initialState, action): IExperienceState => {
 
-    const isTextsValid = Object.entries(state.value)
-            .filter(([mKey, mValue]) => typeof mValue === "string" && mKey !== "iconUrl")
-            .every(([_, mValue]) => mValue.length > 0)
+    const isTextsValid = Object
+        .entries(state.value)
+        .filter(([mKey, mValue]) => typeof mValue === "string" || mKey === "stack")
+        .every(([_, mValue]) => mValue.length > 0)
 
     const isValid: boolean = state.isSelected
-        ? isTextsValid && state.value.iconUrl.length > 0 && state.value.imageUrls.length > 0
-        : isTextsValid && state.icon && state.images.length > 0
+        ? isTextsValid && (state.value.iconUrl || state.icon)
+        : isTextsValid && state.icon
 
     switch (action.type) {
         case ExperienceAction.IMAGES_APPENDED_REQUEST:
@@ -87,12 +85,18 @@ const reducer: Reducer<IExperienceState> =
         }
         case ExperienceAction.ADD_REMOVABLE_IMAGE_IDS: {
             const id = action.payload as string
-            const iconUrl = !state.value.iconUrl.includes(id) ? state.value.iconUrl : ""
-            const imageUrls = state.value.imageUrls.filter(url=> !url.includes(id))
+            const iconUrl = !state.value.iconUrl?.includes(id) ? state.value.iconUrl : undefined
+            const imageUrls = state.value.imageUrls?.filter(url=> !url.includes(id))
             return {...state,
                 removableImageIds: state.removableImageIds?.concat(id) || [id],
                 value: {...state.value, imageUrls, iconUrl}
             }
+        }
+        case ExperienceAction.EXCLUDE_IMAGE_URL: {
+            const url = action.payload as string
+            const iconUrl = state.value.iconUrl !== url ? state.value.iconUrl : undefined
+            const imageUrls = state.value.imageUrls?.filter(mUrl=> mUrl !== url)
+            return {...state, value: {...state.value, imageUrls, iconUrl}}
         }
         case ExperienceAction.RESET_SUBMISSION:
             return {...state, isSubmitted: false}
@@ -110,3 +114,9 @@ const reducer: Reducer<IExperienceState> =
     }
 }
 export default reducer
+
+/*
+* TODO: bugs
+*  1. image onError does not work
+*  2. 
+* */

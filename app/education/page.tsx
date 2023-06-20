@@ -1,9 +1,8 @@
 "use client"
 
-import Image from "next/image";
 import {useRouter} from "next/navigation";
 import React, {useEffect, useRef} from "react";
-import {Input} from "@/components";
+import {Input, TextArea, Image} from "@/components";
 import {HoverIconBox} from "@/components/sections";
 import {ButtonPrimary, ButtonRounded} from "@/components/buttons";
 import {Authenticated} from "@/app/authentication";
@@ -14,10 +13,12 @@ import {
     onInputUnfocused,
     onImageAppended,
     onResetImageAppended,
-    onResetSubmission, addRemovableFileIds, updateEducation
+    onResetSubmission,
+    addRemovableFileIds,
+    updateEducation, onExcludeImageUrl
 } from "@/actions/educationAction"
 import {useAppDispatch, useAppSelector} from "@/app/hooks"
-import {faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faClose, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {FileUploadField, mapUrlToId} from "@/helpers";
 import {removeFile} from "@/actions/fileAction";
@@ -64,6 +65,11 @@ export default function(){
 
         for (const i in removableImageIds)
             dispatch(removeFile(removableImageIds[i]))
+    }
+    const handleOnFileClose = (url?: string) => (e: any) => {
+        e.preventDefault()
+        if (typeof url === "undefined") return
+        dispatch(onExcludeImageUrl(url))
     }
     const handleOnFileRemove = (url: string) => (e: any) => {
         e.preventDefault()
@@ -130,22 +136,29 @@ export default function(){
                             onBlur={handleOnTextBlur} />
                         {image || value.imageUrl.length > 0
                             ? <HoverIconBox
-                                icon={faTrash}
+                                icons={[faTrash, faClose]}
                                 disabled={status === "loading"}
-                                onClick={handleOnFileRemove(value.imageUrl)}
+                                onTLClick={handleOnFileRemove(value.imageUrl)}
+                                onTRClick={handleOnFileClose(value.imageUrl)}
                                 onBlur={handleOnTextBlur}>
                                 {image
-                                    ? <Image className="absolute inset-0 object-cover" fill={true} src={image} alt={"image appendable"}/>
+                                    ? <Image
+                                        className="absolute inset-0 object-cover"
+                                        src={image}
+                                        alt={"image appendable"}/>
+
                                     : value.imageUrl.length > 0
-                                        ? <Image className="absolute inset-0 object-cover" fill={true} src={value.imageUrl} loader={() => value.imageUrl} alt={"image appendable"}/>
+                                        ? <Image
+                                            className="absolute inset-0 object-cover"
+                                            src={value.imageUrl}
+                                            alt={"image appendable"}/>
                                         : null
                                 } </HoverIconBox>
                             : <ButtonRounded label="select image" onClick={onInputFileClick} />}
                     </div>
                     <div className="h-full w-full space-y-4 text-left">
-                        <textarea className="appearance-none block w-full bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 py-4 px-4 focus:outline-none focus:ring-1 focus:ring-green-600 focus:border-green-600"
-                            id="content" placeholder="Enter content" value={value.content} onChange={handleOnTextChange} onBlur={handleOnTextBlur} />
-                        <Input id="desc" type="text" placeholder="Enter description" value={value.desc} onChange={handleOnTextChange} onBlur={handleOnTextBlur} />
+                        <TextArea id="content" placeholder="Enter content" value={value.content} onChange={handleOnTextChange} onBlur={handleOnTextBlur} />
+                        <TextArea id="desc" type="text" placeholder="Enter description" value={value.desc} onChange={handleOnTextChange} onBlur={handleOnTextBlur} />
                     </div>
                 </div>
                 {message && <p className="text-center text-red-500 text-sm italic">{message}</p>}

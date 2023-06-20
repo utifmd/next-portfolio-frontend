@@ -63,7 +63,9 @@ const homeReducer: Reducer<IHomeState> =
             case HomeAction.PAGED_FEED_SUCCESS: {
                 const response = action.payload as IFeedState
                 const value = [...state.feed.value, ...response.value]
-                const scrollTo = value.length >= PAGINATION_SIZE ? state.feed.value.length : undefined
+                const scrollTo = value.length >= PAGINATION_SIZE
+                    ? state.feed.value.length : undefined
+
                 return {...state, feed: {...response, value, scrollTo, status: "idle"}}
             }
             case HomeAction.CREATE_FEED_SUCCESS:
@@ -86,13 +88,9 @@ const homeReducer: Reducer<IHomeState> =
             case EducationAction.UPDATE_SUCCESS:
             case ExperienceAction.UPDATE_SUCCESS: {
                 const feedItem = action.payload as ISchema
-                const value = state.feed.value.map(item => {
-                    let data = item
-                    if (data.id === feedItem.id) {
-                        data = feedItem
-                    }
-                    return data
-                })
+                const value = state.feed.value.map(
+                    item => item.id === feedItem.id ? feedItem : item
+                )
                 return {...state, feed: {...state.feed, value}}
             }
             case AuthenticationAction.AUTHENTICATE_FAILED:

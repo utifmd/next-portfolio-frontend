@@ -1,10 +1,11 @@
-import Image from "next/image";
 import Link from "next/link";
+import {Image} from "@/components";
 import {Box} from "@/components/sections";
 import {Authenticated} from "@/app/authentication";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faExternalLink, faCrosshairs} from '@fortawesome/free-solid-svg-icons'
 import {SlideshowLightbox} from "lightbox.js-react";
+import {capitalize} from "@/utils";
 
 type Props = TBoxProps & {
     education: IEducation,
@@ -23,13 +24,10 @@ export default function(
                 <Image
                     className="object-cover rounded-md shadow-md"
                     data-lightboxjs={`educationFigure-${index}`}
-                    fill={true}
                     src={education.imageUrl}
-                    alt={education.title}
-                    quality={80}
-                    loader={() => education.imageUrl}/>
+                    alt={education.title}/>
             </SlideshowLightbox>
-            <p className="text">{education.content}</p>
+            <p className="text">{capitalize(education.content)}</p>
             <div className="flex justify-center space-x-4">
                 <Link href={education.fileUrl} className="cursor-pointer">
                     <FontAwesomeIcon color={"#059669"} icon={faExternalLink} />

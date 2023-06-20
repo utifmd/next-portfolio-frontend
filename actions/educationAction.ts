@@ -66,6 +66,12 @@ export const addRemovableFileIds = (id: string) =>
     }
     return dispatch(action)
 }
+export const onExcludeImageUrl = (url: string) => (dispatch: AppDispatch): IAppAction => {
+    const action: TAnyAction = {
+        type: EducationAction.EXCLUDE_IMAGE_URL, payload: url
+    }
+    return dispatch(action)
+}
 export const onResetSubmission = () =>
     (dispatch: AppDispatch): IAppAction => dispatch(
     <TAnyAction>{type: EducationAction.RESET_SUBMISSION}
@@ -135,5 +141,6 @@ export enum EducationAction {
     DELETE_FAILED = "@@EDUCATION_DELETE_FAILED",
     DELETE_SUCCESS = "@@EDUCATION_DELETE_SUCCESS",
 
-    ADD_REMOVABLE_FILE_IDS = "@@EDUCATION_ADD_REMOVABLE_FILE_IDS"
+    ADD_REMOVABLE_FILE_IDS = "@@EDUCATION_ADD_REMOVABLE_FILE_IDS",
+    EXCLUDE_IMAGE_URL = "@@EDUCATION_EXCLUDE_IMAGE_URL"
 }

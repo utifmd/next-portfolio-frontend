@@ -5,8 +5,8 @@ interface IExperience extends ISchema {
     description: string,
     platform: string, // "android" | "ios" | "web",
     stack: string[],
-    imageUrls: string[],
-    iconUrl: string,
+    imageUrls?: string[],
+    iconUrl?: string,
     releasedUrl: string,
     demoUrl?: string,
     createdAt?: any

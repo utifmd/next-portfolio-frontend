@@ -134,6 +134,12 @@ export const onAddRemovableImageIds = (id: string) => (dispatch: AppDispatch): I
     }
     return dispatch(action)
 }
+export const onExcludeImageUrl = (url: string) => (dispatch: AppDispatch): IAppAction => {
+    const action: TAnyAction = {
+        type: ExperienceAction.EXCLUDE_IMAGE_URL, payload: url
+    }
+    return dispatch(action)
+}
 export const getAllExperience = () => (dispatch: AppDispatch) => {
     const response: IExperience[] = []
     const action: AnyAction = {
@@ -162,7 +168,8 @@ export enum ExperienceAction {
     ICON_APPENDED_FAILED = "@@EXPERIENCE_ICON_APPENDED_FAILED",
     ICON_APPENDED_SUCCESS = "@@EXPERIENCE_ICON_APPENDED_SUCCESS",
 
-    ADD_REMOVABLE_IMAGE_IDS = "@@ADD_REMOVABLE_IMAGE_IDS",
+    ADD_REMOVABLE_IMAGE_IDS = "@@EXPERIENCE_ADD_REMOVABLE_IMAGE_IDS",
+    EXCLUDE_IMAGE_URL = "@@EXPERIENCE_EXCLUDE_IMAGE_URL",
 
     CREATE_REQUEST = "@@EXPERIENCE_CREATE_REQUEST",
     CREATE_FAILED = "@@EXPERIENCE_CREATE_FAILED",
