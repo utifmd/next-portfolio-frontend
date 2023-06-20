@@ -16,7 +16,7 @@ const Profile = ({innerRef, profile}: TBoxProps & {profile: IProfile}) => {
                     <div className="relative w-24 sm:w-[156px] h-24 sm:h-[112px]">
                         <Image className="rounded-full object-cover sm:rounded-xl mx-auto"
                             alt="profile picture"
-                            src={profile.imageUrl} />
+                            source={profile.imageUrl}/>
                     </div>
                     <div className="pt-6 md:p-8 text-center md:text-left space-y-4">
                         <blockquote>

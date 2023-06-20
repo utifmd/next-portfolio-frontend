@@ -201,12 +201,12 @@ export default function () {
                                 icons={[faTrash, faClose]}
                                 disabled={status === "loading"}
                                 onTLClick={handleOnFileClick(-1)(value.iconUrl)}
-                                onTRClick={handleOnFileClose(value.iconUrl)}
+                                onTRClick={value.iconUrl ? handleOnFileClose(value.iconUrl) : undefined}
                                 onBlur={handleOnTextBlur}>
                                 {icon
-                                    ? <Image className="absolute inset-0 object-cover" src={icon} alt={"icon appendable"} fill={true}/>
+                                    ? <Image className="absolute inset-0 object-cover" source={icon} alt={"icon appendable"}/>
                                     : value.iconUrl
-                                        ? <Image className="absolute inset-0 object-cover" src={value.iconUrl} loader={() => value.iconUrl} alt={"icon appendable"} fill={true} priority={false} unoptimized={true} sizes="100vw"/>
+                                        ? <Image className="absolute inset-0 object-cover" source={value.iconUrl} alt={"icon appendable"}/>
                                         : null
                                 } </HoverIconBox>
                             : <ButtonRounded label="select icon" onClick={onInputFileClick(FileUploadField.SINGLE)}/>}
@@ -230,7 +230,7 @@ export default function () {
                                     onTLClick={handleOnFileClick(i)(url)}
                                     onTRClick={handleOnFileClose(url)}
                                     onBlur={handleOnTextBlur}>
-                                    <Image className="object-cover" fill={true} priority={false} unoptimized={true} placeholder="blur" blurDataURL={process.env.NEXT_PUBLIC_BASE_URL+'/placeholder.png'} sizes="100vw" src={url} loader={() => url} alt={"image appendable"}/>
+                                    <Image className="object-cover" source={url} alt="image form"/>
                                 </HoverIconBox>)}
                             {images.length > 0 && images.map((image, i) =>
                                 <HoverIconBox
@@ -238,9 +238,8 @@ export default function () {
                                     disabled={status === "loading"}
                                     icons={[faTrash, faClose]}
                                     onTLClick={handleOnFileClick(i)()}
-                                    onTRClick={handleOnFileClose()}
                                     onBlur={handleOnTextBlur}>
-                                    <Image className="object-cover" fill={true} src={image} placeholder="blur" blurDataURL={process.env.NEXT_PUBLIC_BASE_URL+'/placeholder.png'} alt={"image appendable"}/>
+                                    <Image className="object-cover" source={image} alt="image form"/>
                                 </HoverIconBox>)}
                             <ButtonRounded label="images (optional)" onClick={onInputFileClick(FileUploadField.MULTIPLE)}/>
                         </div>

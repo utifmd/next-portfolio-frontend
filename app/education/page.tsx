@@ -139,7 +139,7 @@ export default function(){
                                 icons={[faTrash, faClose]}
                                 disabled={status === "loading"}
                                 onTLClick={handleOnFileRemove(value.imageUrl)}
-                                onTRClick={handleOnFileClose(value.imageUrl)}
+                                onTRClick={value.imageUrl.length > 0 ? handleOnFileClose(value.imageUrl) : undefined}
                                 onBlur={handleOnTextBlur}>
                                 {image
                                     ? <Image
