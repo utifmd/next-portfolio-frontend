@@ -144,13 +144,13 @@ export default function(){
                                 {image
                                     ? <Image
                                         className="absolute inset-0 object-cover"
-                                        src={image}
+                                        source={image}
                                         alt={"image appendable"}/>
 
                                     : value.imageUrl.length > 0
                                         ? <Image
                                             className="absolute inset-0 object-cover"
-                                            src={value.imageUrl}
+                                            source={value.imageUrl}
                                             alt={"image appendable"}/>
                                         : null
                                 } </HoverIconBox>
