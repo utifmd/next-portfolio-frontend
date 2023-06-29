@@ -8,23 +8,25 @@ import Habit from "./Habit";
 import Introduction from "./Introduction";
 import Profile from "./Profile";
 import Feed from "./Feed";
+import store from "@/store";
+import {useAppSelector} from "@/app/hooks";
 
-type Props = IHomeState & {
-    authenticate: any, signOut: any, pagedFeed: any, onSelectFeedItem: any, onFeedStartedFalse: any
-}
-export default function Home(
-    {feed, intro, habit, profile, authenticate, pagedFeed, signOut, onSelectFeedItem, onFeedStartedFalse}: Props) {
+// type Props = IHomeState & {
+//     authenticate?: any, signOut?: any, pagedFeed?: any, onSelectFeedItem?: any, onFeedStartedFalse?: any
+// }
+export default function Home() {
+    const {feed, intro, habit, profile} = useAppSelector(state => state.home)
     const reference = useRef<any>({})
     const onRendered = () => {
         if(!feed.isStarted) return () => {}
-        authenticate()
-        pagedFeed()
-        onFeedStartedFalse()
+        // authenticate?.()
+        // pagedFeed?.()
+        // onFeedStartedFalse?.()
     }
     useEffect(onRendered, [])
     const onFeedNextClicked = (feedLength: number, i: number) => (e: MouseEvent) => {
         e.preventDefault()
-        if ((i + 1) >= feedLength) pagedFeed()
+        if ((i + 1) >= feedLength) /*pagedFeed()*/
         onJumpToBox(i +1)()
     }
     const onJumpToBox = (key?: string | number) => () => {
@@ -38,7 +40,7 @@ export default function Home(
     }
     const onLogoutClick = (e: any) => {
         e.preventDefault()
-        signOut()
+        /*signOut?.()*/
     }
     return (
         <div className="flex flex-col justify-center items-center">
@@ -69,7 +71,7 @@ export default function Home(
                     isDone={feed.isDone}
                     onJumpToBox={onJumpToBox}
                     onFeedNextClicked={onFeedNextClicked}
-                    onSelectItem={onSelectFeedItem}
+                    onSelectItem={(i) => {}}
                     handleBoxJumper={handleBoxJumper}
                     innerRef={handleBoxJumper("feed")}/>
             </Surface>

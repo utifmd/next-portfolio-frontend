@@ -7,7 +7,7 @@ import {CALL_API} from "@/helpers"
 const httpRequest = ({method, params, header, body, contentType}: IHttpRequestAction) => new Promise<any>(
     async (resolve, reject) => {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || ""
-    const token = localStorage.getItem("NEXT_PUBLIC_TOKEN") ||
+    const token = (typeof localStorage !== "undefined" && localStorage.getItem("NEXT_PUBLIC_TOKEN")) ||
         process.env.NEXT_PUBLIC_TOKEN || ""
 
         try {
@@ -53,6 +53,15 @@ const httpRequest = ({method, params, header, body, contentType}: IHttpRequestAc
             resolve(state)
             return
         } /*educations*/
+        if (typeof body !== "undefined") {
+            const response = body as ISchema[]
+            const isExpTurn = response.length <= 0 || response.length < PAGINATION_SIZE
+            const state = <IFeedState> {
+                isDone: false, status: "idle", isExpTurn, page: isExpTurn ? 0 : header.page +1, value: response
+            }
+            resolve(state)
+            return
+        }
         const url = baseUrl + header.endpoints[0]
         const response: AxiosResponse = await axios({method, url, params: queryParams})
         const isExpTurn = response.data.length <= 0 || response.data.length < PAGINATION_SIZE

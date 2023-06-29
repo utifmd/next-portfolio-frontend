@@ -6,7 +6,7 @@ import restApiMiddleware from "../middlewares/restApi";
 import reducer from "../reducers"
 
 const store: Store<IAppState, any> = configureStore({
-    reducer, middleware: [
+    reducer, /*preloadedState,*/ middleware: [
         thunk,
         restApiMiddleware,
         browserApiMiddleware

@@ -1,8 +1,8 @@
 import {AppDispatch, TAnyAction} from "@/store";
-import {CALL_API} from "../helpers"
+import {CALL_API} from "@/helpers"
 
 const PAGINATION_SIZE: number = 3
-const pagedFeed = () =>
+const pagedFeed = (initialData?: ISchema[]) =>
     (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
     const {feed} = getState().home
     const action: IAppAction = {
@@ -18,7 +18,8 @@ const pagedFeed = () =>
                 HomeAction.PAGED_FEED_REQUEST,
                 HomeAction.PAGED_FEED_FAILED,
                 HomeAction.PAGED_FEED_SUCCESS
-            ]
+            ],
+            body: initialData
         }
     }
     return dispatch(action)
