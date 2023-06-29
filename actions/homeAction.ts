@@ -5,6 +5,7 @@ const PAGINATION_SIZE: number = 3
 const pagedFeed = (initialData?: ISchema[]) =>
     (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
     const {feed} = getState().home
+    console.log(`pagedFeed ${feed.page}`)
     const action: IAppAction = {
         [CALL_API]: {
             method: "GET",

@@ -1,0 +1,11 @@
+import {Hero, SurfaceLoading} from "@/components/sections";
+import React from "react";
+function Loading() {
+    return(
+        <div>
+            <Hero />
+            <SurfaceLoading />
+        </div>
+    )
+}
+export default Loading

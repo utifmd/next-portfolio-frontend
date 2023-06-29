@@ -8,25 +8,16 @@ import Habit from "./Habit";
 import Introduction from "./Introduction";
 import Profile from "./Profile";
 import Feed from "./Feed";
-import store from "@/store";
-import {useAppSelector} from "@/app/hooks";
+import {useAppDispatch} from "@/app/hooks";
+import {onSelectFeedItem, pagedFeed} from "@/actions/homeAction";
+import {signOut} from "@/actions/authenticationAction";
 
-// type Props = IHomeState & {
-//     authenticate?: any, signOut?: any, pagedFeed?: any, onSelectFeedItem?: any, onFeedStartedFalse?: any
-// }
-export default function Home() {
-    const {feed, intro, habit, profile} = useAppSelector(state => state.home)
+export default function Home({feed, intro, habit, profile}: IHomeState) {
     const reference = useRef<any>({})
-    const onRendered = () => {
-        if(!feed.isStarted) return () => {}
-        // authenticate?.()
-        // pagedFeed?.()
-        // onFeedStartedFalse?.()
-    }
-    useEffect(onRendered, [])
+    const dispatch = useAppDispatch()
     const onFeedNextClicked = (feedLength: number, i: number) => (e: MouseEvent) => {
         e.preventDefault()
-        if ((i + 1) >= feedLength) /*pagedFeed()*/
+        if ((i + 1) >= feedLength) dispatch(pagedFeed())
         onJumpToBox(i +1)()
     }
     const onJumpToBox = (key?: string | number) => () => {
@@ -40,7 +31,10 @@ export default function Home() {
     }
     const onLogoutClick = (e: any) => {
         e.preventDefault()
-        /*signOut?.()*/
+        dispatch(signOut())
+    }
+    const handleOnSelectFeedItem = (i: number) => {
+        dispatch(onSelectFeedItem(i))
     }
     return (
         <div className="flex flex-col justify-center items-center">
@@ -71,7 +65,7 @@ export default function Home() {
                     isDone={feed.isDone}
                     onJumpToBox={onJumpToBox}
                     onFeedNextClicked={onFeedNextClicked}
-                    onSelectItem={(i) => {}}
+                    onSelectItem={handleOnSelectFeedItem}
                     handleBoxJumper={handleBoxJumper}
                     innerRef={handleBoxJumper("feed")}/>
             </Surface>
