@@ -8,12 +8,13 @@ import Habit from "./Habit";
 import Introduction from "./Introduction";
 import Profile from "./Profile";
 import Feed from "./Feed";
-import {useAppDispatch} from "@/app/hooks";
+import {useAppDispatch, useAppSelector} from "@/app/hooks";
 import {onSelectFeedItem, pagedFeed} from "@/actions/homeAction";
 import {signOut} from "@/actions/authenticationAction";
 
 export default function Home({feed, intro, habit, profile}: IHomeState) {
     const reference = useRef<any>({})
+    const feedState = useAppSelector(state => state.home.feed)
     const dispatch = useAppDispatch()
     const onFeedNextClicked = (feedLength: number, i: number) => (e: MouseEvent) => {
         e.preventDefault()
@@ -23,7 +24,7 @@ export default function Home({feed, intro, habit, profile}: IHomeState) {
     const onJumpToBox = (key?: string | number) => () => {
         key && reference.current[key]?.scrollIntoView({behavior: "smooth"})
     }
-    useEffect(onJumpToBox(feed.scrollTo), [feed.scrollTo])
+    useEffect(onJumpToBox(feedState.scrollTo), [feedState.scrollTo])
 
     const handleBoxJumper = (key: string | number) => (e: any) => {
         if (typeof key === "undefined") return
@@ -56,13 +57,13 @@ export default function Home({feed, intro, habit, profile}: IHomeState) {
                     title={habit.title}
                     items={habit.data}
                     description={habit.description}
-                    isLoading={feed.status === "loading"}
+                    isLoading={feedState.status === "loading"}
                     innerRef={handleBoxJumper("habit")}
                     onNextClick={onJumpToBox("feed")}/>
                 <Feed
-                    feedValues={feed.value}
-                    isLoading={feed.status === "loading"}
-                    isDone={feed.isDone}
+                    feedValues={feedState.value.length ? feedState.value : feed.value}
+                    isLoading={feedState.status === "loading"}
+                    isDone={feedState.isDone}
                     onJumpToBox={onJumpToBox}
                     onFeedNextClicked={onFeedNextClicked}
                     onSelectItem={handleOnSelectFeedItem}

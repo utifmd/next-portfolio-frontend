@@ -32,10 +32,6 @@ const httpRequest = ({method, params, header, body, contentType}: IHttpRequestAc
             resolve(params.id)
             return
         }
-
-        /*
-        * PAGINATION REQUEST
-        * */
         const queryParams = {
             page: header.page, size: header.size
         }
@@ -43,32 +39,22 @@ const httpRequest = ({method, params, header, body, contentType}: IHttpRequestAc
             reject("request with no pagination.")
             return
         }
-        if (header.isExpTurn) { /*experiences*/
+        /*experiences*/
+        if (header.isExpTurn) {
             const url = baseUrl + header.endpoints[1]
-            const response: AxiosResponse = await axios({method, url, params: queryParams})
-            const isDone = response.data.length <= 0 || response.data.length < PAGINATION_SIZE
-            const state = <IFeedState>{
-                isDone, status: "idle", isExpTurn: true, page: header.page + 1, value: response.data
-            }
-            resolve(state)
+            const {data}: AxiosResponse = await axios({method, url, params: queryParams})
+            resolve(data)
             return
-        } /*educations*/
+        }
+        /*educations*/
         if (typeof body !== "undefined") {
-            const response = body as ISchema[]
-            const isExpTurn = response.length <= 0 || response.length < PAGINATION_SIZE
-            const state = <IFeedState> {
-                isDone: false, status: "idle", isExpTurn, page: isExpTurn ? 0 : header.page +1, value: response
-            }
-            resolve(state)
+            const data = body as ISchema[]
+            resolve(data)
             return
         }
         const url = baseUrl + header.endpoints[0]
-        const response: AxiosResponse = await axios({method, url, params: queryParams})
-        const isExpTurn = response.data.length <= 0 || response.data.length < PAGINATION_SIZE
-        const state = <IFeedState> {
-            isDone: false, status: "idle", isExpTurn, page: isExpTurn ? 0 : header.page +1, value: response.data
-        }
-        resolve(state)
+        const {data}: AxiosResponse = await axios({method, url, params: queryParams})
+        resolve(data)
 
     } catch (error) {
         if (error instanceof AxiosError) {

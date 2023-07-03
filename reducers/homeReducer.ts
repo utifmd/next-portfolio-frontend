@@ -61,12 +61,23 @@ const homeReducer: Reducer<IHomeState> =
                 return {...state, feed: {...state.feed, status: "error", message: action.payload}}
 
             case HomeAction.PAGED_FEED_SUCCESS: {
-                const response = action.payload as IFeedState
-                const value = [...state.feed.value, ...response.value]
-                const scrollTo = value.length >= PAGINATION_SIZE
-                    ? state.feed.value.length : undefined
+                const response = action.payload as ISchema[]
+                const isRestOfResponse = response.length <= 0 || response.length < PAGINATION_SIZE
+                const value: ISchema[] = [...state.feed.value, ...response]
+                const isExpTurn = state.feed.value.every(sch => "content" in sch) && isRestOfResponse
+                const scrollTo = value.length >= PAGINATION_SIZE ? state.feed.value.length : undefined
+                const page = isExpTurn ? state.feed.page > 0 ? 0 : state.feed.page +1 : state.feed.page +1
 
-                return {...state, feed: {...response, value, scrollTo, status: "idle"}}
+                return {...state,
+                    feed: {...state.feed,
+                        scrollTo,
+                        value,
+                        page,
+                        isExpTurn,
+                        isDone: isRestOfResponse,
+                        status: "idle"
+                    }
+                }
             }
             case HomeAction.CREATE_FEED_SUCCESS:
             case EducationAction.CREATE_SUCCESS:

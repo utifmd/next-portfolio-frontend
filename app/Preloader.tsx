@@ -1,16 +1,18 @@
 "use client"
-import {useEffect} from "react";
-import {onFeedStartedFalse, pagedFeed} from "@/actions/homeAction";
-import {useAppDispatch, useAppSelector} from "@/app/hooks";
 
-export default function ({initialData}: {initialData: ISchema[]}): JSX.Element {
+import {onFeedStartedFalse, pagedFeed} from "@/actions/homeAction";
+import {authenticate} from "@/actions/authenticationAction";
+import {useAppDispatch, useAppSelector} from "@/app/hooks";
+import {useEffect} from "react";
+export default function ({initialFeed}:{initialFeed: ISchema[]}) {
     const {isStarted} = useAppSelector(state => state.home.feed)
     const dispatch = useAppDispatch()
     useEffect(() => {
         if (isStarted) {
-            dispatch(pagedFeed(initialData))
+            dispatch(authenticate())
+            dispatch(pagedFeed(initialFeed))
             dispatch(onFeedStartedFalse())
         }
     }, [])
-    return <></>
+    return null
 }
