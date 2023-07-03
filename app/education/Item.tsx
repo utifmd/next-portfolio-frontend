@@ -24,7 +24,7 @@ export default function(
                 <Image
                     className="object-cover rounded-md shadow-md"
                     data-lightboxjs={`educationFigure-${index}`}
-                    src={education.imageUrl}
+                    source={education.imageUrl}
                     alt={education.title}/>
             </SlideshowLightbox>
             <p className="text">{capitalize(education.content)}</p>

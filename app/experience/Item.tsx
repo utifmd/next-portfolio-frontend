@@ -27,7 +27,7 @@ export default function (
                 <div className="relative w-48 h-48">
                     <Image
                         className="object-cover w-full shadow-lg rounded-full align-middle border-none"
-                        src={experience.iconUrl}
+                        source={experience.iconUrl}
                         alt={experience.title}/>
                 </div>
             </div>
