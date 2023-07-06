@@ -2,6 +2,7 @@ import {Reducer} from "redux";
 import {ExperienceAction} from "@/actions/experienceAction";
 import {HomeAction} from "@/actions/homeAction";
 import {FileAction} from "@/actions/fileAction";
+import {ImageAction} from "@/actions/imageAction";
 
 const initialState: IExperienceState = {
     removableImageIds: [],
@@ -23,7 +24,7 @@ const reducer: Reducer<IExperienceState> =
 
     const isTextsValid = Object
         .entries(state.value)
-        .filter(([mKey, mValue]) => typeof mValue === "string" || mKey === "stack")
+        .filter(([mKey, mValue]) => typeof mValue === "string" && mKey !== "stack" && mKey !== "demoUrl")
         .every(([_, mValue]) => mValue.length > 0)
 
     const isValid: boolean = state.isSelected
@@ -37,6 +38,7 @@ const reducer: Reducer<IExperienceState> =
         case ExperienceAction.DELETE_REQUEST:
         case ExperienceAction.UPDATE_REQUEST:
         case FileAction.DELETE_REQUEST:
+        case ImageAction.DELETE_REQUEST:
             return {...state, status: "loading"}
 
         case ExperienceAction.IMAGES_APPENDED_FAILED:
@@ -45,6 +47,7 @@ const reducer: Reducer<IExperienceState> =
         case ExperienceAction.DELETE_FAILED:
         case ExperienceAction.UPDATE_FAILED:
         case FileAction.DELETE_FAILED:
+        case ImageAction.DELETE_FAILED:
             return {...state, status: "error", message: action.payload}
 
         case HomeAction.SELECT_FEED_EXPERIENCE:
@@ -107,6 +110,7 @@ const reducer: Reducer<IExperienceState> =
             return {...initialState, isSubmitted: true}
 
         case FileAction.DELETE_SUCCESS:
+        case ImageAction.DELETE_SUCCESS:
             return {...state, status: "idle"}
 
         default:

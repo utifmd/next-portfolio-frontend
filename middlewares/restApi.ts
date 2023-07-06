@@ -7,8 +7,8 @@ import {CALL_API} from "@/helpers"
 const httpRequest = ({method, params, header, body, contentType}: IHttpRequestAction) => new Promise<any>(
     async (resolve, reject) => {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || ""
-    const token = (typeof localStorage !== "undefined" && localStorage.getItem("NEXT_PUBLIC_TOKEN")) ||
-        process.env.NEXT_PUBLIC_TOKEN || ""
+    const token = (typeof localStorage !== "undefined" &&
+            localStorage.getItem("NEXT_PUBLIC_TOKEN")) || process.env.NEXT_PUBLIC_TOKEN || ""
 
         try {
         /*

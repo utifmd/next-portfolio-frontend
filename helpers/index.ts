@@ -10,6 +10,9 @@ export const placeholder: string = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUg
 export enum FileUploadField {
     SINGLE = "image-upload", MULTIPLE = "images-upload"
 }
+export enum FileDeleteField {
+    SINGLE = "image-delete", MULTIPLE = "images-delete"
+}
 /*
 * TOOLS
 * */

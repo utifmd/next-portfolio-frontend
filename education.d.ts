@@ -14,7 +14,7 @@ interface IEducationState {
     isSubmitted: boolean,
     isSelected?: boolean,
     image?: any,
-    removableImageIds: string[],
+    removableImageUrls: string[],
     value: IEducation
 }
 // type TDispatchEducation = (state: IEducationState) => IEducationState

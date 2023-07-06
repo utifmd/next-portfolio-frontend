@@ -23,17 +23,18 @@ export const addEducation = () =>
 }
 export const removeEducation = () =>
     (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
-    const id = getState().education.value.id || randomUUID()
+    const {id, imageUrl} = getState().education.value
     const action: IAppAction = {
         [CALL_API]: {
             method: "DELETE",
             header: "/educations",
-            params: {id},
+            params: {id: id || randomUUID()},
             types: [
                 EducationAction.DELETE_REQUEST,
                 EducationAction.DELETE_FAILED,
                 EducationAction.DELETE_SUCCESS
-            ]
+            ],
+            body: <TImageRequest>{imageUrl}
         }
     }
     return dispatch(action)
@@ -59,10 +60,10 @@ export const onResetImageAppended = () =>
     }
     return dispatch(action)
 }
-export const addRemovableFileIds = (id: string) =>
+export const addRemovableImageUrls = (url: string) =>
     (dispatch: AppDispatch) => {
     const action: TAnyAction = {
-        type: EducationAction.ADD_REMOVABLE_FILE_IDS, payload: id
+        type: EducationAction.ADD_REMOVABLE_IMAGE_URLS, payload: url
     }
     return dispatch(action)
 }
@@ -91,11 +92,6 @@ export const onImageAppended = (file: any) =>
     }
     return dispatch(action)
 }
-/*
-* TODO
-*  1. delete the experience
-*  2. update the experience
-* */
 export const updateEducation = () => (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
     const education = getState().education.value
     const id = education.id || randomUUID()
@@ -141,6 +137,6 @@ export enum EducationAction {
     DELETE_FAILED = "@@EDUCATION_DELETE_FAILED",
     DELETE_SUCCESS = "@@EDUCATION_DELETE_SUCCESS",
 
-    ADD_REMOVABLE_FILE_IDS = "@@EDUCATION_ADD_REMOVABLE_FILE_IDS",
+    ADD_REMOVABLE_IMAGE_URLS = "@@EDUCATION_ADD_REMOVABLE_IMAGE_URLS",
     EXCLUDE_IMAGE_URL = "@@EDUCATION_EXCLUDE_IMAGE_URL"
 }

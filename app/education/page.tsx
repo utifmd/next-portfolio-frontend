@@ -14,7 +14,7 @@ import {
     onImageAppended,
     onResetImageAppended,
     onResetSubmission,
-    addRemovableFileIds,
+    addRemovableImageUrls,
     updateEducation, onExcludeImageUrl
 } from "@/actions/educationAction"
 import {useAppDispatch, useAppSelector} from "@/app/hooks"
@@ -22,6 +22,7 @@ import {faClose, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {FileUploadField, mapUrlToId} from "@/helpers";
 import {removeFile} from "@/actions/fileAction";
+import {removeImages} from "@/actions/imageAction";
 
 export default function(){
     const {
@@ -30,7 +31,7 @@ export default function(){
         isValid,
         isSubmitted,
         isSelected,
-        removableImageIds,
+        removableImageUrls,
         image, message} = useAppSelector(
             state=> state.education
     )
@@ -51,20 +52,18 @@ export default function(){
             dispatch(addEducation())
             return
         }
-        dispatch(updateEducation())
-        if (removableImageIds.length <= 0) return
+        if (removableImageUrls.length > 0)
+            dispatch(removeImages({removableImageUrls}))
 
-        for (const i in removableImageIds)
-            dispatch(removeFile(removableImageIds[i]))
+        dispatch(updateEducation())
     }
     const onRemoveEducation = (e: any) => {
         e.preventDefault()
 
-        dispatch(removeEducation())
-        if (removableImageIds.length <= 0) return
+        if (removableImageUrls.length > 0)
+            dispatch(removeImages({removableImageUrls}))
 
-        for (const i in removableImageIds)
-            dispatch(removeFile(removableImageIds[i]))
+        dispatch(removeEducation())
     }
     const handleOnFileClose = (url?: string) => (e: any) => {
         e.preventDefault()
@@ -76,8 +75,7 @@ export default function(){
         reference.current[FileUploadField.SINGLE].value = null
 
         if (url.length > 0) {
-            const fileId = mapUrlToId(url)
-            dispatch(addRemovableFileIds(fileId))
+            dispatch(addRemovableImageUrls(url))
             return
         }
         dispatch(onResetImageAppended())

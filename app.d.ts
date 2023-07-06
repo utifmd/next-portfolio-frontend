@@ -6,7 +6,7 @@ interface IHttpRequestAction {
     params?: {[key: string]: string},
     types: [string, string, string],
     header: string | {page: number, size: number, isExpTurn: boolean, endpoints: string[]},
-    body?: ISchema | ISchema[] | FormData
+    body?: ISchema | ISchema[] | FormData | TImageRequest | undefined
 }
 interface IAPIAction {
     api: Promise<any>,
@@ -62,4 +62,7 @@ type TImageLightBox = {
 }
 type TMessageResponse = {
     message: string
+}
+type TImageRequest = {
+    [key: string]: string | string[]
 }

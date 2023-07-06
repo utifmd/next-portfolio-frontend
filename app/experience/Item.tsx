@@ -62,7 +62,7 @@ export default function (
                                                 <Image
                                                     className="object-cover rounded-md shadow-md"
                                                     data-lightboxjs={`experienceFigure-${index}`}
-                                                    src={shot.src}
+                                                    source={shot.src}
                                                     alt={shot.alt}/>
                                             </div>)}
                                     </SlideshowLightbox>

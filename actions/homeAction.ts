@@ -34,7 +34,7 @@ const onSelectFeedItem = (index: number) =>
             isSubmitted: false,
             isValid: false,
             isSelected: true,
-            removableImageIds: [],
+            removableImageUrls: [],
             status: "idle"
         }
         const action: TAnyAction = {
