@@ -1,4 +1,5 @@
 interface IProfileLinks {
+    id?: string,
     linkedin: string,
     github: string,
     twitter: string,
@@ -19,20 +20,21 @@ interface IProfile extends ISchema {
     fullName: string,
     imageUrl: string,
     bio: string,
-    role: string,
+    role: "OWNER" | "GUEST",
     jobTitle: string,
-    links?: any,
-    data?: any,
+    links?: IProfileLinks,
+    data?: IProfileData[],
     createdAt?: string,
     updatedAt?: string
 }
 interface IProfileState {
     status: "idle" | "loading" | "error",
     message?: string,
+    useCaseDataId?: string,
+    useCase: "main" | "data" | "link",
     isValid: boolean,
     isSubmitted: boolean,
-    isSelected?: boolean,
     image?: any,
     removableImageUrls: string[],
-    value?: IProfile
+    value: IProfile
 }

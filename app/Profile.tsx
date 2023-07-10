@@ -34,7 +34,7 @@ const Profile = ({innerRef, profileState}: Props) => {
             </div>
         </div>
         {homeState.status === "loading" &&
-            <FontAwesomeIcon color={"#059669"} icon={faSpinner} spin={true} size={"2x"} />}
+            <FontAwesomeIcon color={"#059669"} icon={faSpinner} spin={true} size="2x" />}
 
         {homeState.message &&
             <p className="text-center pt-6 px-6 text-red-500 text-sm italic">{homeState.message}</p>}

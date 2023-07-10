@@ -3,6 +3,7 @@ import {EducationAction} from "@/actions/educationAction";
 import {TAnyAction} from "@/store";
 import {HomeAction} from "@/actions/homeAction";
 import {FileAction} from "@/actions/fileAction";
+import {ImageAction} from "@/actions/imageAction";
 
 const initialState: IEducationState = {
     removableImageUrls: [],
@@ -33,6 +34,7 @@ const reducer: Reducer<IEducationState> =
 
         switch (action.type) {
             case FileAction.DELETE_REQUEST:
+            case ImageAction.DELETE_REQUEST:
             case EducationAction.IMAGE_APPENDED_REQUEST:
             case EducationAction.CREATE_REQUEST:
             case EducationAction.DELETE_REQUEST:
@@ -40,6 +42,7 @@ const reducer: Reducer<IEducationState> =
                 return {...state, status: "loading"}
 
             case FileAction.DELETE_FAILED:
+            case ImageAction.DELETE_FAILED:
             case EducationAction.IMAGE_APPENDED_FAILED:
             case EducationAction.CREATE_FAILED:
             case EducationAction.DELETE_FAILED:
@@ -80,6 +83,7 @@ const reducer: Reducer<IEducationState> =
                 return {...state, isSubmitted: false}
 
             case FileAction.DELETE_SUCCESS:
+            case ImageAction.DELETE_SUCCESS:
                 return {...state, status: "idle"}
 
             case EducationAction.CREATE_SUCCESS:
