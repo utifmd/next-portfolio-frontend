@@ -19,7 +19,7 @@ const pagedFeed = (initialData?: ISchema[]) =>
                 HomeAction.PAGED_FEED_FAILED,
                 HomeAction.PAGED_FEED_SUCCESS
             ],
-            body: initialData
+            initialResponse: initialData
         }
     }
     return dispatch(action)

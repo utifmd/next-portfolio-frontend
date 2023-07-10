@@ -6,6 +6,7 @@ interface IHttpRequestAction {
     params?: {[key: string]: string},
     types: [string, string, string],
     header: string | {page: number, size: number, isExpTurn: boolean, endpoints: string[]},
+    initialResponse?: any,
     body?: ISchema | ISchema[] | FormData | TImageRequest | undefined
 }
 interface IAPIAction {
@@ -20,16 +21,12 @@ interface IAppState {
     education: IEducationState,
     experience: IExperienceState,
     home: IHomeState
+    profile: IProfileState
 }
 interface IHomeState {
-    feed: IFeedState,
-    intro: {title: string, description: string},
-    profile: IProfile,
-    habit: {
-        title: string,
-        description: string,
-        data: {icon: any, label: string}[]
-    }
+    status: "idle" | "loading" | "error",
+    message?: string,
+    feed: IFeedState //, profile: IProfileState
 }
 interface IFeedState {
     status: "idle" | "loading" | "error",

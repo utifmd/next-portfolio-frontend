@@ -22,7 +22,9 @@ const reducer: Reducer<IEducationState> =
 
         const isTextsValid = Object
             .entries(state.value)
-            .filter(([mKey, mValue]) => typeof mValue === "string" && mKey !== "imageUrl")
+            .filter(([mKey, mValue]) =>
+                typeof mValue === "string" &&
+                mKey !== "imageUrl")
             .every(([_, mValue]) => mValue.length > 0)
 
         const isValid: boolean = state.isSelected

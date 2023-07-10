@@ -5,8 +5,8 @@ import Home from "../app/Home";
 import {onSelectFeedItem, onFeedStartedFalse, pagedFeed} from "@/actions/homeAction"
 import {authenticate, signOut} from "@/actions/authenticationAction";
 
-const mapStateToProps = ({home}: IAppState) => ({
-    feed: home.feed, intro: home.intro, habit: home.habit, profile: home.profile
+const mapStateToProps = ({home, profile}: IAppState) => ({
+    feed: home.feed, profile
 })
 const mapDispatchToProps = ({
     authenticate, pagedFeed, signOut, onSelectFeedItem, onFeedStartedFalse

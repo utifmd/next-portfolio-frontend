@@ -55,7 +55,8 @@ export function camelize(str: string) {
         return index === 0 ? word.toLowerCase() : word.toUpperCase();
     }).replace(/\s+/g, '');
 }
-export function capitalize(str: string) {
+export function capitalize(str?: string) {
+    if (!str) return ""
    return str.replace(str[0], str[0].toUpperCase())
 }
 export function censorEmail(email: string){

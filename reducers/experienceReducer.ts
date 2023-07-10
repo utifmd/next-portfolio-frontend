@@ -24,7 +24,10 @@ const reducer: Reducer<IExperienceState> =
 
     const isTextsValid = Object
         .entries(state.value)
-        .filter(([mKey, mValue]) => typeof mValue === "string" && mKey !== "stack" && mKey !== "demoUrl")
+        .filter(([mKey, mValue]) =>
+            typeof mValue === "string" &&
+            mKey !== "stack" &&
+            mKey !== "demoUrl")
         .every(([_, mValue]) => mValue.length > 0)
 
     const isValid: boolean = state.isSelected
@@ -118,9 +121,3 @@ const reducer: Reducer<IExperienceState> =
     }
 }
 export default reducer
-
-/*
-* TODO: bugs
-*  1. image onError does not work
-*  2. 
-* */

@@ -4,12 +4,18 @@ import {onFeedStartedFalse, pagedFeed} from "@/actions/homeAction";
 import {authenticate} from "@/actions/authenticationAction";
 import {useAppDispatch, useAppSelector} from "@/app/hooks";
 import {useEffect} from "react";
-export default function ({initialFeed}:{initialFeed: ISchema[]}) {
+import {getProfile} from "@/actions/profileAction";
+type Props = {
+    initialFeed: ISchema[],
+    initialProfile: ISchema,
+}
+export default function ({initialFeed, initialProfile}: Props) {
     const {isStarted} = useAppSelector(state => state.home.feed)
     const dispatch = useAppDispatch()
     useEffect(() => {
         if (isStarted) {
             dispatch(authenticate())
+            dispatch(getProfile(initialProfile))
             dispatch(pagedFeed(initialFeed))
             dispatch(onFeedStartedFalse())
         }

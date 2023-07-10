@@ -3,20 +3,14 @@ import Home from "@/app/Home";
 import {Hero} from "@/components/sections";
 import store from "@/store";
 export default function () {
-    const {
-        habit,
-        profile,
-        intro,
-        feed
-    } = store.getState().home
+    const state = store.getState()
     return (
         <div>
             <Hero />
             <Home
-                habit={habit}
-                profile={profile}
-                intro={intro}
-                feed={feed} />
+                status={state.home.status}
+                profile={state.profile}
+                feed={state.home.feed} />
         </div>
     )
 }

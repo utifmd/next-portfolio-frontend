@@ -4,7 +4,7 @@ import {TAnyAction} from "@/store";
 import {PAGINATION_SIZE} from "@/actions/homeAction";
 import {CALL_API} from "@/helpers"
 
-const httpRequest = ({method, params, header, body, contentType}: IHttpRequestAction) => new Promise<any>(
+const httpRequest = ({method, params, header, body, contentType, initialResponse}: IHttpRequestAction) => new Promise<any>(
     async (resolve, reject) => {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || ""
     const token = (typeof localStorage !== "undefined" &&
@@ -12,11 +12,17 @@ const httpRequest = ({method, params, header, body, contentType}: IHttpRequestAc
 
         try {
         /*
+        * BYPASS REQUEST
+        * */
+        if (typeof initialResponse !== "undefined") {
+            resolve(initialResponse)
+            return
+        }
+        /*
         * REGULAR REQUEST
         * */
         if (typeof header === "string") {
             const url = baseUrl + header
-
             const headers: Record<string, any> = {
                 'content-type': contentType,
                 'token': token // 'cache': 'no-store'
@@ -47,11 +53,6 @@ const httpRequest = ({method, params, header, body, contentType}: IHttpRequestAc
             return
         }
         /*educations*/
-        if (typeof body !== "undefined") {
-            const data = body as ISchema[]
-            resolve(data)
-            return
-        }
         const url = baseUrl + header.endpoints[0]
         const {data}: AxiosResponse = await axios({method, url, params: queryParams})
         resolve(data)

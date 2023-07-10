@@ -6,22 +6,9 @@ import {ExperienceAction} from "@/actions/experienceAction";
 import {groupingListByPropKey} from "@/utils";
 import {faLayerGroup, faMobilePhone, faServer, faLaptop} from "@fortawesome/free-solid-svg-icons";
 import {AuthenticationAction} from "@/actions/authenticationAction";
-
+import {ProfileAction} from "@/actions/profileAction";
 const initialState: IHomeState = {
-    intro: {
-        title: "Who I am",
-        description: "I am a self-taught generalist software engineer with strong passion to learn new things. I am familiar with a few Java, Kotlin android using android studio & Node JS frameworks as a cross mobile platform, and I also have developed backend API for a production system using native & framework. Currently I am interested and learning about Machine learning development using python. I also enjoy to play music on my spare time."
-    },
-    habit: {
-        title: "Stuff I do",
-        description: "Some of the projects we are building include android mobile application, web application, multi platform development such as react by facebook and so on, but for now we are focusing on developing android applications.",
-        data: [
-            {icon: faLayerGroup, label: "Frontend"},
-            {icon: faServer, label: "Backend"},
-            {icon: faMobilePhone, label: "Android"},
-            {icon: faLaptop, label: "X-Platform"}
-        ]
-    },
+    status: "idle",
     feed: {
         status: "idle",
         isExpTurn: false,
@@ -29,28 +16,21 @@ const initialState: IHomeState = {
         isDone: false,
         page: 0,
         value: []
-    },
-    profile: {
-        bio: "seorang pemuda tua ophiucus",
-        fullName: "utif milkedori",
-        imageUrl: "https://avatars.githubusercontent.com/u/16291551?v=4",
-        jobTitle: "software engineer",
-        links: {
-            email: "mailto:utifmd@gmail.com",
-            github: "https://github.com/utifmd/",
-            instagram: "https://instagram/@utifmd",
-            linkedin: "https://linkedin.com/in/utifmd",
-            medium: "https://medium.com/@utifmd",
-            resume: "https://www.canva.com/design/DAEwDqEOVBQ/E4W4OrSCSwUxUQLkhApu7Q/view?utm_content=DAEwDqEOVBQ&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink",
-            stackOverflow: "https://stackoverflow.com/users/6235678/utif-milkedori",
-            twitter: "https://twitter.com/utifmd/"
-        },
-        role: "owner"
     }
 }
 const homeReducer: Reducer<IHomeState> =
     (state: IHomeState = initialState, action: TAnyAction): IHomeState => {
         switch (action.type) {
+            case AuthenticationAction.AUTHENTICATE_REQUEST:
+            case HomeAction.READ_FEED_REQUEST:
+            case ProfileAction.READ_REQUEST: {
+                return {...state, status: "loading"}
+            }
+            case AuthenticationAction.AUTHENTICATE_SUCCESS:
+            case HomeAction.READ_FEED_SUCCESS:
+            case ProfileAction.READ_SUCCESS: {
+                return {...state,  status: "idle", message: undefined}
+            }
             case HomeAction.SET_IS_FEED_STARTED_FALSE:
                 return {...state, feed:{...state.feed, isStarted: false}}
 
@@ -105,8 +85,14 @@ const homeReducer: Reducer<IHomeState> =
                 return {...state, feed: {...state.feed, value}}
             }
             case AuthenticationAction.AUTHENTICATE_FAILED:
+            case HomeAction.READ_FEED_FAILED:
+            case ProfileAction.READ_FAILED:
             case AuthenticationAction.SIGN_OUT:
-                return {...state, feed: {...state.feed, scrollTo: "profile"}}
+                return {...state,
+                    status: "error",
+                    message: action.payload,
+                    feed: {...state.feed, scrollTo: "profile"}
+                }
 
             default:
                 return state

@@ -11,8 +11,9 @@ import Feed from "./Feed";
 import {useAppDispatch, useAppSelector} from "@/app/hooks";
 import {onSelectFeedItem, pagedFeed} from "@/actions/homeAction";
 import {signOut} from "@/actions/authenticationAction";
-
-export default function Home({feed, intro, habit, profile}: IHomeState) {
+import {faLaptop, faLayerGroup, faMobilePhone, faServer} from "@fortawesome/free-solid-svg-icons";
+type Props = IHomeState & {profile: IProfileState}
+export default function Home({feed, profile}: Props) {
     const reference = useRef<any>({})
     const feedState = useAppSelector(state => state.home.feed)
     const dispatch = useAppDispatch()
@@ -47,19 +48,20 @@ export default function Home({feed, intro, habit, profile}: IHomeState) {
             <Authenticated>
                 <StickyNavbar onLogoutClick={onLogoutClick}/>
             </Authenticated>
-            <Surface>
-                <Introduction
-                    title={intro.title}
-                    description={intro.description}
-                    innerRef={handleBoxJumper("intro")}
-                    onNextClick={onJumpToBox("habit")}/>
+            <Surface>{profile.value?.data?.map((profileData: IProfileData, i: number) => profileData.type === "habit" ?
                 <Habit
-                    title={habit.title}
-                    items={habit.data}
-                    description={habit.description}
+                    key={i}
+                    title={profileData.title}
+                    description={profileData.description}
                     isLoading={feedState.status === "loading"}
                     innerRef={handleBoxJumper("habit")}
-                    onNextClick={onJumpToBox("feed")}/>
+                    onNextClick={onJumpToBox("feed")}/> :
+                <Introduction
+                    key={i}
+                    title={profileData.title}
+                    description={profileData.description}
+                    innerRef={handleBoxJumper("intro")}
+                    onNextClick={onJumpToBox("habit")}/>)}
                 <Feed
                     feedValues={feedState.value.length ? feedState.value : feed.value}
                     isLoading={feedState.status === "loading"}
@@ -69,8 +71,8 @@ export default function Home({feed, intro, habit, profile}: IHomeState) {
                     onSelectItem={handleOnSelectFeedItem}
                     handleBoxJumper={handleBoxJumper}
                     innerRef={handleBoxJumper("feed")}/>
-            </Surface>
-            <Profile innerRef={handleBoxJumper("profile")} profile={profile} />
+            </Surface>{profile.value &&
+            <Profile innerRef={handleBoxJumper("profile")} profileState={profile}/>}
         </div>
     )
 }
