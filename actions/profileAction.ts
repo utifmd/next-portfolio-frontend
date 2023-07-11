@@ -75,10 +75,13 @@ export const updateMainProfile = () =>
     (dispatch: AppDispatch, getState: () => IAppState) => {
     const profile = getState().profile.value
     const id = profile.id || randomUUID()
-    /*const action: IAppAction = {
+    // delete profile.links
+    // delete profile.data
+    const action: IAppAction = {
         [CALL_API]: {
             method: "PUT",
-            header: `/profile/${id}`,
+            header: `/profile`,
+            params: {id},
             body: profile,
             types: [
                 ProfileAction.UPDATE_MAIN_REQUEST,
@@ -87,11 +90,6 @@ export const updateMainProfile = () =>
             ],
             contentType: "multipart/form-data"
         }
-    }*/
-    console.log("profile")
-    console.log(profile)
-    const action: TAnyAction = {
-        payload: "", type: ""
     }
     return dispatch(action)
 }
@@ -102,7 +100,8 @@ export const updateLinkProfile = () =>
     const action: IAppAction = {
         [CALL_API]: {
             method: "PUT",
-            header: `/profile/link/${id}`,
+            header: `/profile/link`,
+            params: {id},
             body: profileLinks,
             types: [
                 ProfileAction.UPDATE_LINK_REQUEST,
@@ -115,11 +114,15 @@ export const updateLinkProfile = () =>
 }
 export const updateDataProfile = (id: string) =>
     (dispatch: AppDispatch, getState: () => IAppState) => {
-    const profileData = getState().profile.value.data
-    /*const action: IAppAction = {
+    const profileState = getState().profile
+    const profileData = profileState.value.data?.find(
+        ({id}) => id === profileState.useCaseDataId
+    )
+    const action: IAppAction = {
         [CALL_API]: {
             method: "PUT",
-            header: `/profile/data/${id}`,
+            header: `/profile/data`,
+            params: {id},
             body: profileData,
             types: [
                 ProfileAction.UPDATE_DATA_REQUEST,
@@ -127,11 +130,6 @@ export const updateDataProfile = (id: string) =>
                 ProfileAction.UPDATE_DATA_SUCCESS
             ]
         }
-    }*/
-    console.log("profileData")
-    console.log(profileData)
-    const action: TAnyAction = {
-        payload: "", type: ""
     }
     return dispatch(action)
 }

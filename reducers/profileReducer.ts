@@ -62,7 +62,7 @@ const reducer: Reducer<IProfileState> = (
 
         case ProfileAction.READ_SUCCESS: {
             const value = action.payload as IProfile
-            return {...state, status: "idle",/*useCaseDataId: value.data?.[0].id,*/ value}
+            return {...state, status: "idle", value}
         }
         case ImageAction.DELETE_REQUEST:
         case ProfileAction.IMAGE_APPENDED_REQUEST:
@@ -120,21 +120,26 @@ const reducer: Reducer<IProfileState> = (
             return {...state, value: {...state.value, imageUrl}}
         }
         case ProfileAction.RESET_SUBMISSION:
-            return {...state, isSubmitted: false}
+            return {...state, status: "idle", isSubmitted: false}
 
         case ImageAction.DELETE_SUCCESS:
             return {...state, status: "idle"}
 
-        case ProfileAction.UPDATE_MAIN_SUCCESS:
-            return {...state, value: action.payload, isSubmitted: true}
-
+        case ProfileAction.UPDATE_MAIN_SUCCESS: {
+            const response: IProfile = action.payload
+            const value: IProfile = {...response,
+                links: state.value.links,
+                data: state.value.data
+            }
+            return {...state, value, isSubmitted: true}
+        }
         case ProfileAction.UPDATE_LINK_SUCCESS:
             return {...state, value: {...state.value, links: action.payload}, isSubmitted: true}
 
         case ProfileAction.UPDATE_DATA_SUCCESS: {
             const response = action.payload as IProfileData
-            const data = state.value.data?.map(
-                mProfileData => mProfileData.id === response.id ? response : mProfileData
+            const data = state.value.data?.map(mProfileData =>
+                mProfileData.id === response.id ? response : mProfileData
             )
             return {...state, value: {...state.value, data}, isSubmitted: true}
         }

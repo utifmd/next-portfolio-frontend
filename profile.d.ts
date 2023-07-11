@@ -7,13 +7,15 @@ interface IProfileLinks {
     instagram: string,
     medium: string,
     resume: string,
-    email: string
+    email: string,
+    profileId: string
 }
 interface IProfileData {
     id?: string,
     title: string,
     description: string,
-    type: "habit" | "intro",
+    profileId: string,
+    type: "HABIT" | "INTRO",
 }
 interface IProfile extends ISchema {
     id?: string,

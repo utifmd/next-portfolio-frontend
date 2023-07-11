@@ -18,7 +18,7 @@ const Profile = ({innerRef, profileState}: Props) => {
                             alt="profile picture"
                             source={profileState.value?.imageUrl}/>
                     </div>
-                    <div className="pt-6 md:p-8 text-center md:text-left space-y-4">
+                    <div className="p-6 md:p-8 text-center md:text-left space-y-4">
                         <blockquote>
                             <p className="text-lg font-medium">“{capitalize(profileState.value?.bio)}.”</p>
                         </blockquote>

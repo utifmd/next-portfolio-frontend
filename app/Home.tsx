@@ -49,7 +49,9 @@ export default function Home({feed, profile}: Props) {
             <Authenticated>
                 <StickyNavbar onLogoutClick={onLogoutClick}/>
             </Authenticated>
-            <Surface>{profile.value?.data?.map((profileData: IProfileData, i: number) => profileData.type === "habit" ?
+            <Surface>{(profileState.value.id ? profileState.value : profile.value)
+                ?.data
+                ?.map((profileData: IProfileData, i: number) => profileData.type == "HABIT" ?
                 <Habit
                     key={i}
                     title={profileData.title}

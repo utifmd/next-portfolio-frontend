@@ -27,10 +27,10 @@ export default function (){
     const router = useRouter()
     const reference = useRef<any>({})
     const onFormSubmitted = () => {
-        if (!isSubmitted || status !== "idle") return () => {}
-        console.log("onFormSubmitted")
-        dispatch(onResetSubmission())
-        router.back()
+        if (isSubmitted && status === "loading") {
+            dispatch(onResetSubmission())
+            router.back()
+        }
     }
     useEffect(onFormSubmitted, [isSubmitted])
     const onSubmitProfile = (e: any) => {
@@ -129,7 +129,7 @@ export default function (){
                     <Input id="title" type="text" placeholder={`Enter ${valueData.type} title`} value={valueData.title} onChange={handleOnTextChange} onBlur={handleOnTextBlur} />
                 </div>
                 <div className="md:col-span-2">
-                    <Input id="description" type="text" placeholder={`Enter ${valueData.type} description`} value={valueData.description} onChange={handleOnTextChange} onBlur={handleOnTextBlur}/>
+                    <TextArea id="description" placeholder={`Enter ${valueData.type} description`} value={valueData.description} onChange={handleOnTextChange} onBlur={handleOnTextBlur} />
                 </div>
             </>))
         }
