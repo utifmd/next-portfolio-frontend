@@ -1,7 +1,7 @@
 "use client"
 
-import React, {useEffect, useRef, useState} from "react";
-import {Image, Input, TextArea} from "@/components";
+import React, {useEffect, useRef} from "react";
+import {Image, Input, Select, TextArea} from "@/components";
 import {FileUploadField} from "@/helpers";
 import {HoverIconBox} from "@/components/sections";
 import {faClose, faTrash} from "@fortawesome/free-solid-svg-icons";
@@ -9,12 +9,14 @@ import {ButtonPrimary, ButtonRounded} from "@/components/buttons";
 import {Authenticated} from "@/app/authentication";
 import {useAppDispatch, useAppSelector} from "@/app/hooks";
 import {useRouter} from "next/navigation";
-import {addRemovableImageUrls, onExcludeImageUrl,
+import {
+    addRemovableImageUrls, getProfile, onExcludeImageUrl,
     onImageAppended, onInputChange, onInputUnfocused,
     onResetImageAppended, onResetSubmission, updateDataProfile, updateLinkProfile
 } from "@/actions/profileAction";
 import {removeImages} from "@/actions/imageAction";
 import {updateMainProfile, setUseCase, setUseCaseDataId} from "@/actions/profileAction";
+import {ExperiencePlatform} from "@/actions/experienceAction";
 export default function (){
     const {
         value, useCase, isSubmitted, removableImageUrls, image,
@@ -26,7 +28,7 @@ export default function (){
     const reference = useRef<any>({})
     const onFormSubmitted = () => {
         if (!isSubmitted || status !== "idle") return () => {}
-
+        console.log("onFormSubmitted")
         dispatch(onResetSubmission())
         router.back()
     }
@@ -96,6 +98,16 @@ export default function (){
     const handleInputFileRef = (e: any) => {
         reference.current[FileUploadField.SINGLE] = e
     }
+    const onUseCaseChange = (e: any) => {
+        const value = e.currentTarget.value
+        if (!value) return
+        dispatch(setUseCase(value))
+    }
+    const onUseCaseDataIdChange = (e: any) => {
+        const value = e.currentTarget.value
+        if (!value) return
+        dispatch(setUseCaseDataId(value))
+    }
 
     const linkComponent= (<div className="grid gap-4 md:grid-cols-2 mb-4">
         {value.links && Object
@@ -158,6 +170,20 @@ export default function (){
                     <div className="h-0.5 w-24 bg-gray-900 dark:bg-gray-100"/>
                 </div>
                 {useCase === "data" ? dataComponent : useCase === "link" ? linkComponent : mainComponent}
+                <div className="flex justify-center space-x-1.5">
+                    <Select value={useCase} onChange={onUseCaseChange} onBlur={handleOnTextBlur} label="use cases">
+                        <option value="main" defaultValue={useCase}>MAIN</option>
+                        <option value="link" defaultValue={useCase}>LINK</option>
+                        <option value="data" defaultValue={useCase}>DATA</option>
+                    </Select>
+                    { useCase === "data" &&
+                        <Select value={useCaseDataId} onChange={onUseCaseDataIdChange} onBlur={handleOnTextBlur} label="profile data">
+                            {value.data && value.data.map(({type, id}) =>
+                                <option value={id} defaultValue={useCaseDataId}>{type}</option>
+                            )}
+                        </Select>
+                    }
+                </div>
                 {message && <p className="text-center text-red-500 text-sm italic">{message}</p>}
                 <Authenticated fallback={
                     <ButtonPrimary label="Unauthenticated" isDisable={true}/>}>

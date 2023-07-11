@@ -30,7 +30,7 @@ const reducer: Reducer<IEducationState> =
 
         const isValid: boolean = state.isSelected
             ? isTextsValid && state.value.imageUrl.length > 0
-            : isTextsValid && state.image
+            : isTextsValid && typeof state.image !== "undefined"
 
         switch (action.type) {
             case FileAction.DELETE_REQUEST:
@@ -63,7 +63,7 @@ const reducer: Reducer<IEducationState> =
                 return {...state, status: "idle", image: action.payload}
 
             case EducationAction.IMAGE_APPENDED_RESET:
-                return {...state, image: null}
+                return {...state, image: undefined}
 
             case EducationAction.ADD_REMOVABLE_IMAGE_URLS: {
                 const url = action.payload as string

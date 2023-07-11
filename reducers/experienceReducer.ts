@@ -32,7 +32,7 @@ const reducer: Reducer<IExperienceState> =
 
     const isValid: boolean = state.isSelected
         ? isTextsValid && (state.value.iconUrl || state.icon)
-        : isTextsValid && state.icon
+        : isTextsValid && typeof state.icon !== "undefined"
 
     switch (action.type) {
         case ExperienceAction.IMAGES_APPENDED_REQUEST:
@@ -82,7 +82,7 @@ const reducer: Reducer<IExperienceState> =
 
         case ExperienceAction.IMAGES_APPENDED_RESET: {
             const index = action.payload as number
-            if (index === -1) return {...state, icon: null}
+            if (index === -1) return {...state, icon: undefined}
 
             const images = state.images.filter(
                 (_, i) => i !== index

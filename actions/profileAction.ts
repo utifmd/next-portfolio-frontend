@@ -71,10 +71,6 @@ export const onImageAppended = (file: any) =>
         }
         return dispatch(action)
     }
-/*
-* TODO:
-*  1. test update
-* */
 export const updateMainProfile = () =>
     (dispatch: AppDispatch, getState: () => IAppState) => {
     const profile = getState().profile.value
@@ -103,7 +99,7 @@ export const updateLinkProfile = () =>
     (dispatch: AppDispatch, getState: () => IAppState) => {
     const profileLinks = getState().profile.value.links as IProfileLinks
     const id = profileLinks.id || randomUUID()
-    /*const action: IAppAction = {
+    const action: IAppAction = {
         [CALL_API]: {
             method: "PUT",
             header: `/profile/link/${id}`,
@@ -114,11 +110,6 @@ export const updateLinkProfile = () =>
                 ProfileAction.UPDATE_LINK_SUCCESS
             ]
         }
-    }*/
-    console.log("profileLinks")
-    console.log(profileLinks)
-    const action: TAnyAction = {
-        payload: "", type: ""
     }
     return dispatch(action)
 }

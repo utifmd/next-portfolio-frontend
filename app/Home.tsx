@@ -16,6 +16,7 @@ type Props = IHomeState & {profile: IProfileState}
 export default function Home({feed, profile}: Props) {
     const reference = useRef<any>({})
     const feedState = useAppSelector(state => state.home.feed)
+    const profileState = useAppSelector(state => state.profile)
     const dispatch = useAppDispatch()
     const onFeedNextClicked = (feedLength: number, i: number) => (e: MouseEvent) => {
         e.preventDefault()
@@ -71,8 +72,10 @@ export default function Home({feed, profile}: Props) {
                     onSelectItem={handleOnSelectFeedItem}
                     handleBoxJumper={handleBoxJumper}
                     innerRef={handleBoxJumper("feed")}/>
-            </Surface>{profile.value &&
-            <Profile innerRef={handleBoxJumper("profile")} profileState={profile}/>}
+            </Surface>
+            <Profile
+                innerRef={handleBoxJumper("profile")}
+                profileState={profileState.value.id ? profileState : profile}/>
         </div>
     )
 }

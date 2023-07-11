@@ -2,6 +2,7 @@ import {Reducer} from "redux";
 import {TAnyAction} from "@/store";
 import {ProfileAction} from "@/actions/profileAction";
 import {ImageAction} from "@/actions/imageAction";
+import {FileUploadField} from "@/helpers";
 
 const initialState: IProfileState = {
     useCase: "main",
@@ -42,12 +43,15 @@ const reducer: Reducer<IProfileState> = (
                 .every((mValue) => mValue.length > 0)
             break
         }
-        default:
-            isValid = Object
+        default: {
+            const isImageValid = state.value.imageUrl.length > 0 || typeof state.image !== "undefined"
+
+            isValid = isImageValid && Object
                 .entries(state.value)
                 .filter(([mKey, mValue]) => typeof mValue === "string" && mKey !== "imageUrl")
-                .every(([_, mValue]) => mValue.length > 0) && state.value.imageUrl.length > 0
+                .every(([_, mValue]) => mValue.length > 0)
             break
+        }
     }
     switch (action.type) {
         case ProfileAction.READ_REQUEST:
@@ -58,7 +62,7 @@ const reducer: Reducer<IProfileState> = (
 
         case ProfileAction.READ_SUCCESS: {
             const value = action.payload as IProfile
-            return <IProfileState>{...state, status: "idle", useCaseDataId: value.data?.[0].id, value}
+            return {...state, status: "idle",/*useCaseDataId: value.data?.[0].id,*/ value}
         }
         case ImageAction.DELETE_REQUEST:
         case ProfileAction.IMAGE_APPENDED_REQUEST:
@@ -94,9 +98,13 @@ const reducer: Reducer<IProfileState> = (
         case ProfileAction.IMAGE_APPENDED_SUCCESS:
             return {...state, status: "idle", image: action.payload}
 
-        case ProfileAction.IMAGE_APPENDED_RESET:
-            return {...state, image: null}
-
+        case ProfileAction.IMAGE_APPENDED_RESET: {
+            const mState: IProfileState & any = {
+                ...state, image: undefined
+            }
+            delete mState.value[FileUploadField.SINGLE]
+            return mState
+        }
         case ProfileAction.ADD_REMOVABLE_IMAGE_URLS: {
             const url = action.payload as string
             return {...state,
@@ -118,10 +126,18 @@ const reducer: Reducer<IProfileState> = (
             return {...state, status: "idle"}
 
         case ProfileAction.UPDATE_MAIN_SUCCESS:
-        case ProfileAction.UPDATE_LINK_SUCCESS:
-        case ProfileAction.UPDATE_DATA_SUCCESS:
-            return {...state, isSubmitted: true}
+            return {...state, value: action.payload, isSubmitted: true}
 
+        case ProfileAction.UPDATE_LINK_SUCCESS:
+            return {...state, value: {...state.value, links: action.payload}, isSubmitted: true}
+
+        case ProfileAction.UPDATE_DATA_SUCCESS: {
+            const response = action.payload as IProfileData
+            const data = state.value.data?.map(
+                mProfileData => mProfileData.id === response.id ? response : mProfileData
+            )
+            return {...state, value: {...state.value, data}, isSubmitted: true}
+        }
         case ProfileAction.SET_USE_CASE:
             return {...state, useCase: action.payload}
 
