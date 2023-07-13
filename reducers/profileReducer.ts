@@ -3,6 +3,7 @@ import {TAnyAction} from "@/store";
 import {ProfileAction} from "@/actions/profileAction";
 import {ImageAction} from "@/actions/imageAction";
 import {FileUploadField} from "@/helpers";
+import {FileAction} from "@/actions/fileAction";
 
 const initialState: IProfileState = {
     useCase: "main",
@@ -64,6 +65,7 @@ const reducer: Reducer<IProfileState> = (
             const value = action.payload as IProfile
             return {...state, status: "idle", value}
         }
+        case FileAction.DELETE_REQUEST:
         case ImageAction.DELETE_REQUEST:
         case ProfileAction.IMAGE_APPENDED_REQUEST:
         case ProfileAction.UPDATE_MAIN_REQUEST:
@@ -71,6 +73,7 @@ const reducer: Reducer<IProfileState> = (
         case ProfileAction.UPDATE_DATA_REQUEST:
             return {...state, status: "loading"}
 
+        case FileAction.DELETE_FAILED:
         case ImageAction.DELETE_FAILED:
         case ProfileAction.IMAGE_APPENDED_FAILED:
         case ProfileAction.UPDATE_MAIN_FAILED:
@@ -122,6 +125,7 @@ const reducer: Reducer<IProfileState> = (
         case ProfileAction.RESET_SUBMISSION:
             return {...state, status: "idle", isSubmitted: false}
 
+        case FileAction.DELETE_SUCCESS:
         case ImageAction.DELETE_SUCCESS:
             return {...state, status: "idle"}
 

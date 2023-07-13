@@ -17,6 +17,22 @@ export const removeFile = (id: string) =>
     }
     return dispatch(action)
 }
+export const removeFiles = (request: TImageRequest) =>
+    (dispatch: AppDispatch): IAppAction => {
+    const action: IAppAction = {
+        [CALL_API]: {
+            method: "DELETE",
+            header: `/files/all`,
+            types: [
+                FileAction.DELETE_REQUEST,
+                FileAction.DELETE_FAILED,
+                FileAction.DELETE_SUCCESS,
+            ],
+            body: request
+        }
+    }
+    return dispatch(action)
+}
 export enum FileAction {
     DELETE_REQUEST = "@@FILE_DELETE_REQUEST",
     DELETE_FAILED = "@@FILE_DELETE_FAILED",

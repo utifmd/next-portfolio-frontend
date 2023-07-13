@@ -20,9 +20,8 @@ import {
 import {useAppDispatch, useAppSelector} from "@/app/hooks"
 import {faClose, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {FileUploadField, mapUrlToId} from "@/helpers";
-import {removeFile} from "@/actions/fileAction";
-import {removeImages} from "@/actions/imageAction";
+import {FileUploadField} from "@/helpers";
+import {removeFiles} from "@/actions/fileAction";
 
 export default function(){
     const {
@@ -53,7 +52,7 @@ export default function(){
             return
         }
         if (removableImageUrls.length > 0)
-            dispatch(removeImages({removableImageUrls}))
+            dispatch(removeFiles({removableImageUrls}))
 
         dispatch(updateEducation())
     }
@@ -61,7 +60,7 @@ export default function(){
         e.preventDefault()
 
         if (removableImageUrls.length > 0)
-            dispatch(removeImages({removableImageUrls}))
+            dispatch(removeFiles({removableImageUrls}))
 
         dispatch(removeEducation())
     }

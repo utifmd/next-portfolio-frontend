@@ -10,13 +10,12 @@ import {Authenticated} from "@/app/authentication";
 import {useAppDispatch, useAppSelector} from "@/app/hooks";
 import {useRouter} from "next/navigation";
 import {
-    addRemovableImageUrls, getProfile, onExcludeImageUrl,
+    addRemovableImageUrls, onExcludeImageUrl,
     onImageAppended, onInputChange, onInputUnfocused,
     onResetImageAppended, onResetSubmission, updateDataProfile, updateLinkProfile
 } from "@/actions/profileAction";
-import {removeImages} from "@/actions/imageAction";
+import {removeFiles} from "@/actions/fileAction";
 import {updateMainProfile, setUseCase, setUseCaseDataId} from "@/actions/profileAction";
-import {ExperiencePlatform} from "@/actions/experienceAction";
 export default function (){
     const {
         value, useCase, isSubmitted, removableImageUrls, image,
@@ -48,7 +47,7 @@ export default function (){
 
             default: {
                 if (removableImageUrls.length > 0)
-                    dispatch(removeImages({removableImageUrls}))
+                    dispatch(removeFiles({removableImageUrls}))
 
                 dispatch(updateMainProfile())
                 break

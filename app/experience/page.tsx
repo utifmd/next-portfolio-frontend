@@ -24,7 +24,7 @@ import {
     onAddRemovableImageIds,
     updateExperience, onExcludeImageUrl
 } from "@/actions/experienceAction";
-import {removeFile} from "@/actions/fileAction";
+import {removeFiles} from "@/actions/fileAction";
 import {camelize} from "@/utils";
 import {faTrash, faClose} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -53,12 +53,10 @@ export default function () {
             dispatch(addExperience())
             return
         }
-        dispatch(updateExperience())
-        if (typeof removableImageIds === "undefined" ||
-            removableImageIds.length <= 0) return
+        if (removableImageIds.length)
+            dispatch(removeFiles({removableImageIds}))
 
-        for (const i in removableImageIds)
-            dispatch(removeFile(removableImageIds[i]))
+        dispatch(updateExperience())
     }
     const onFormSubmitted = () => {
         if (!isSubmitted || status !== "idle") return () => {}
@@ -70,13 +68,10 @@ export default function () {
 
     const onRemoveExperience = (e: any) => {
         e.preventDefault()
+        if (removableImageIds.length)
+            dispatch(removeFiles({removableImageIds}))
+
         dispatch(removeExperience())
-
-        if (typeof removableImageIds === "undefined" ||
-            removableImageIds.length <= 0) return
-
-        for (const i in removableImageIds)
-            dispatch(removeFile(removableImageIds[i]))
     }
     const handleOnFileClick = (index: number) => (url?: string) => (e: any) => {
         e.preventDefault()
