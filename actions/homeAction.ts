@@ -56,6 +56,7 @@ const onSelectFeedItem = (index: number) =>
         isValid: false,
         isSelected: true,
         images: [],
+        icon: null,
         removableImageIds: [],
         status: "idle"
     }
