@@ -33,10 +33,8 @@ export const mapExperienceToFormData = (experience: any): FormData => {
         if (Array.isArray(value) && value.length > 0)
             formData.append(key, JSON.stringify(value))
     }
-    if(typeof singleFiles !== "undefined")
-        formData.append(FileUploadField.SINGLE, singleFiles, singleFiles.name)
-
-    if (typeof multipleFiles !== "undefined") {
+    if(singleFiles) formData.append(FileUploadField.SINGLE, singleFiles, singleFiles.name)
+    if (multipleFiles) {
         for (const file of multipleFiles)
             formData.append(FileUploadField.MULTIPLE, file, file.name)
     }

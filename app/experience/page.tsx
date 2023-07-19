@@ -79,7 +79,7 @@ export default function () {
         let key = index < 0 ? FileUploadField.SINGLE : FileUploadField.MULTIPLE
         reference.current[key].value = null
 
-        if (typeof url !== "undefined") {
+        if (url) {
             const fileId = mapUrlToId(url)
             dispatch(onAddRemovableImageIds(fileId))
             return
@@ -88,7 +88,7 @@ export default function () {
     }
     const handleOnFileClose = (url?: string) => (e: any) => {
         e.preventDefault()
-        if (typeof url === "undefined") return
+        if (typeof url !== "string") return
         dispatch(onExcludeImageUrl(url))
     }
     const handleOnTextBlur = (e: any) => {
@@ -170,12 +170,6 @@ export default function () {
                         <TextArea
                             id="description" placeholder="Enter description" value={value.description} onChange={handleOnTextChange} onBlur={handleOnTextBlur}/>
                     </div>
-                    <div className="md:col-span-2">
-                        <Input id="demoUrl" type="text" placeholder="Enter demo url (optional)" value={value.demoUrl} onChange={handleOnTextChange} onBlur={handleOnTextBlur}/>
-                    </div>
-                    <div className="md:col-span-2">
-                        <Input id="releasedUrl" type="text" placeholder="Enter released url" value={value.releasedUrl} onChange={handleOnTextChange} onBlur={handleOnTextBlur}/>
-                    </div>
                     <div className="flex flex-wrap">{value.stack.map((mStack, i) =>
                         <span key={i} onClick={handleOnItemStackClick(i)} className="text-base px-1 cursor-pointer hover:text-red-600 hover:dark:text-red-400 hover:line-through">#{mStack}</span>)}</div>
                     <div>
@@ -191,11 +185,11 @@ export default function () {
                             ref={handleInputFileRef(FileUploadField.SINGLE)}
                             onChange={handleOnFileChange(onIconAppended)}
                             onBlur={handleOnTextBlur}/>
-                        {icon || typeof value.iconUrl !== "undefined"
+                        {icon || value.iconUrl
                             ? <HoverIconBox
                                 icons={[faTrash, faClose]}
                                 disabled={status === "loading"}
-                                onTLClick={handleOnFileClick(-1)(value.iconUrl)}
+                                onTLClick={value.iconUrl ? handleOnFileClick(-1)(value.iconUrl) : undefined}
                                 onTRClick={value.iconUrl ? handleOnFileClose(value.iconUrl) : undefined}
                                 onBlur={handleOnTextBlur}>
                                 {icon
@@ -238,6 +232,12 @@ export default function () {
                                 </HoverIconBox>)}
                             <ButtonRounded label="images (optional)" onClick={onInputFileClick(FileUploadField.MULTIPLE)}/>
                         </div>
+                    </div>
+                    <div className="md:col-span-2">
+                        <Input id="demoUrl" type="text" placeholder="Enter demo url (optional)" value={value.demoUrl} onChange={handleOnTextChange} onBlur={handleOnTextBlur}/>
+                    </div>
+                    <div className="md:col-span-2">
+                        <Input id="releasedUrl" type="text" placeholder="Enter released url" value={value.releasedUrl} onChange={handleOnTextChange} onBlur={handleOnTextBlur}/>
                     </div>
                 </div>
                 {message && <p className="text-center text-red-500 text-sm italic">{message}</p>}

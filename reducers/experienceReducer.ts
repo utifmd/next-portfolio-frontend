@@ -10,12 +10,16 @@ const initialState: IExperienceState = {
     isValid: false,
     isSubmitted: false,
     images: [],
+    icon: null,
     value: {
         title: "",
         description: "",
         platform: "",
         type: "",
         releasedUrl: "",
+        demoUrl: null,
+        iconUrl: null,
+        imageUrls: null,
         stack: []
     }
 }
@@ -32,7 +36,7 @@ const reducer: Reducer<IExperienceState> =
 
     const isValid: boolean = state.isSelected
         ? isTextsValid && (state.value.iconUrl || state.icon)
-        : isTextsValid && typeof state.icon !== "undefined"
+        : isTextsValid && state.icon
 
     switch (action.type) {
         case ExperienceAction.IMAGES_APPENDED_REQUEST:
@@ -82,7 +86,7 @@ const reducer: Reducer<IExperienceState> =
 
         case ExperienceAction.IMAGES_APPENDED_RESET: {
             const index = action.payload as number
-            if (index === -1) return {...state, icon: undefined}
+            if (index === -1) return {...state, icon: null}
 
             const images = state.images.filter(
                 (_, i) => i !== index
@@ -91,8 +95,8 @@ const reducer: Reducer<IExperienceState> =
         }
         case ExperienceAction.ADD_REMOVABLE_IMAGE_IDS: {
             const id = action.payload as string
-            const iconUrl = !state.value.iconUrl?.includes(id) ? state.value.iconUrl : undefined
-            const imageUrls = state.value.imageUrls?.filter(url=> !url.includes(id))
+            const iconUrl = !state.value.iconUrl?.includes(id) ? state.value.iconUrl : null
+            const imageUrls = state.value.imageUrls?.filter(url=> !url.includes(id)) || null
             return {...state,
                 removableImageIds: state.removableImageIds?.concat(id) || [id],
                 value: {...state.value, imageUrls, iconUrl}
@@ -100,8 +104,8 @@ const reducer: Reducer<IExperienceState> =
         }
         case ExperienceAction.EXCLUDE_IMAGE_URL: {
             const url = action.payload as string
-            const iconUrl = state.value.iconUrl !== url ? state.value.iconUrl : undefined
-            const imageUrls = state.value.imageUrls?.filter(mUrl=> mUrl !== url)
+            const iconUrl = state.value.iconUrl !== url ? state.value.iconUrl : null
+            const imageUrls = state.value.imageUrls?.filter(mUrl=> mUrl !== url) || null
             return {...state, value: {...state.value, imageUrls, iconUrl}}
         }
         case ExperienceAction.RESET_SUBMISSION:

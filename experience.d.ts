@@ -5,16 +5,16 @@ interface IExperience extends ISchema {
     description: string,
     platform: string, // "android" | "ios" | "web",
     stack: string[],
-    imageUrls?: string[],
-    iconUrl?: string,
+    imageUrls: string[] | null,
+    iconUrl: string | null,
     releasedUrl: string,
-    demoUrl?: string,
+    demoUrl: string | null,
     createdAt?: any
 }
 interface IExperienceState {
     status: "idle" | "loading" | "error",
     message?: string,
-    icon?: any,
+    icon: any | null,
     images: any[],
     removableImageIds: string[],
     value: IExperience,
