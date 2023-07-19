@@ -1,5 +1,5 @@
 import {AppDispatch, TAnyAction} from "@/store";
-import {BROWSER_API, CALL_API} from "@/helpers";
+import {BROWSER_API, CALL_API, REVALIDATE_IN_SECONDS} from "@/helpers";
 import {randomUUID} from "crypto";
 import {readFileAsImgSrcAsync} from "@/utils";
 
@@ -17,6 +17,14 @@ export const getProfile = (initial?: ISchema) => (dispatch: AppDispatch) => {
         }
     }
     return dispatch(action)
+}
+export async function getInitialProfileJson() {
+    const {NEXT_PUBLIC_BASE_URL} = (process.env as any) as IEnvLocal
+    const data = await fetch(
+        `${NEXT_PUBLIC_BASE_URL}/profile/utifmd@gmail.com`,
+        {next: {revalidate: REVALIDATE_IN_SECONDS}}
+    )
+    return data.json()
 }
 export const onInputChange = (idValue: [string, any]) =>
     (dispatch: AppDispatch): IAppAction => {

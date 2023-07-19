@@ -1,5 +1,5 @@
 import {AppDispatch, TAnyAction} from "@/store";
-import {CALL_API} from "@/helpers"
+import {CALL_API, NEXT_PUBLIC_BASE_URL, REVALIDATE_IN_SECONDS} from "@/helpers"
 
 const PAGINATION_SIZE: number = 3
 const pagedFeed = (initialData?: ISchema[]) =>
@@ -23,6 +23,14 @@ const pagedFeed = (initialData?: ISchema[]) =>
         }
     }
     return dispatch(action)
+}
+export async function getInitialFeedJson() {
+    const {NEXT_PUBLIC_BASE_URL} = (process.env as any) as IEnvLocal
+    const data = await fetch(
+        `${NEXT_PUBLIC_BASE_URL}/educations?page=0&size=${PAGINATION_SIZE}`,
+        {next: {revalidate: REVALIDATE_IN_SECONDS}}
+    )
+    return data.json()
 }
 const onSelectFeedItem = (index: number) =>
     (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
