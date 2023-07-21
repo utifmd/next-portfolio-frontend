@@ -3,8 +3,7 @@ import {TAnyAction} from "@/store";
 import {HomeAction, PAGINATION_SIZE} from "@/actions/homeAction";
 import {EducationAction} from "@/actions/educationAction";
 import {ExperienceAction} from "@/actions/experienceAction";
-import {groupingListByPropKey} from "@/utils";
-import {faLayerGroup, faMobilePhone, faServer, faLaptop} from "@fortawesome/free-solid-svg-icons";
+import {groupingListByPropKey} from "@/helpers";
 import {AuthenticationAction} from "@/actions/authenticationAction";
 import {ProfileAction} from "@/actions/profileAction";
 const initialState: IHomeState = {

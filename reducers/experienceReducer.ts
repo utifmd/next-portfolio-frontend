@@ -3,9 +3,10 @@ import {ExperienceAction} from "@/actions/experienceAction";
 import {HomeAction} from "@/actions/homeAction";
 import {FileAction} from "@/actions/fileAction";
 import {ImageAction} from "@/actions/imageAction";
+import {isBase64, isUrl} from "@/helpers";
 
 const initialState: IExperienceState = {
-    removableImageIds: [],
+    removableImageUrls: [],
     status: "idle",
     isValid: false,
     isSubmitted: false,
@@ -18,7 +19,7 @@ const initialState: IExperienceState = {
         type: "",
         releasedUrl: "",
         demoUrl: null,
-        iconUrl: null,
+        iconUrl: "",
         imageUrls: null,
         stack: []
     }
@@ -26,17 +27,13 @@ const initialState: IExperienceState = {
 const reducer: Reducer<IExperienceState> =
     (state: IExperienceState = initialState, action): IExperienceState => {
 
-    const isTextsValid = Object
+    const isValid: boolean = state.icon && Object
         .entries(state.value)
         .filter(([mKey, mValue]) =>
             typeof mValue === "string" &&
             mKey !== "stack" &&
             mKey !== "demoUrl")
         .every(([_, mValue]) => mValue.length > 0)
-
-    const isValid: boolean = state.isSelected
-        ? isTextsValid && (state.value.iconUrl || state.icon)
-        : isTextsValid && state.icon
 
     switch (action.type) {
         case ExperienceAction.IMAGES_APPENDED_REQUEST:
@@ -81,32 +78,37 @@ const reducer: Reducer<IExperienceState> =
         case ExperienceAction.ICON_APPENDED_SUCCESS:
             return {...state, status: "idle", icon: action.payload}
 
-        case ExperienceAction.IMAGES_APPENDED_SUCCESS:
-            return {...state, status: "idle", images: [...state.images, action.payload]}
+        case ExperienceAction.IMAGES_APPENDED_SUCCESS: {
+            const key = state.images.reduce(
+                (prev, cur, i) => Math.max(cur.key), 0) +1
 
-        case ExperienceAction.IMAGES_APPENDED_RESET: {
-            const index = action.payload as number
-            if (index === -1) return {...state, icon: null}
-
-            const images = state.images.filter(
-                (_, i) => i !== index
-            )
-            return {...state, images}
-        }
-        case ExperienceAction.ADD_REMOVABLE_IMAGE_IDS: {
-            const id = action.payload as string
-            const iconUrl = !state.value.iconUrl?.includes(id) ? state.value.iconUrl : null
-            const imageUrls = state.value.imageUrls?.filter(url=> !url.includes(id)) || null
-            return {...state,
-                removableImageIds: state.removableImageIds?.concat(id) || [id],
-                value: {...state.value, imageUrls, iconUrl}
+            const image = <TKeyValueProps>{
+                key, value: action.payload as string
             }
+            return {...state, status: "idle", images: [...state.images, image]}
         }
-        case ExperienceAction.EXCLUDE_IMAGE_URL: {
-            const url = action.payload as string
-            const iconUrl = state.value.iconUrl !== url ? state.value.iconUrl : null
-            const imageUrls = state.value.imageUrls?.filter(mUrl=> mUrl !== url) || null
-            return {...state, value: {...state.value, imageUrls, iconUrl}}
+        case ExperienceAction.IMAGES_APPENDED_DELETE: {
+            const key = action.payload as number
+            if (key < 0)
+                return {...state, icon: null, value: {...state.value, iconUrl: ""}}
+
+            let imageUrls = state.value.imageUrls
+            const selectedImageValue = state.images.find(img => img.key === key)?.value || null
+            const removableImageUrls = state.removableImageUrls
+            if (selectedImageValue && isUrl(selectedImageValue)) {
+                imageUrls = imageUrls?.filter(mUrl => mUrl !== selectedImageValue) || null
+                removableImageUrls.push(selectedImageValue)
+            }
+            const images = state.images.filter(
+                props => props.key !== key
+            )
+            return {...state,
+                images,
+                removableImageUrls,
+                value: {...state.value,
+                    imageUrls
+                }
+            }
         }
         case ExperienceAction.RESET_SUBMISSION:
             return {...state, isSubmitted: false}

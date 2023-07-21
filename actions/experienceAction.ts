@@ -1,7 +1,6 @@
 import {AnyAction} from "redux";
 import {AppDispatch, TAnyAction} from "@/store";
-import {readFileAsImgSrcAsync} from "@/utils";
-import {CALL_API, BROWSER_API, mapExperienceToFormData} from "@/helpers"
+import {CALL_API, BROWSER_API, mapExperienceToFormData, readFileAsImgSrcAsync} from "@/helpers"
 import {randomUUID} from "crypto";
 export const addExperience = () =>
     (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
@@ -74,10 +73,10 @@ export const onImageAppended = (file: any) =>
     }
     return dispatch(action)
 }
-export const onRemoveImageAppended = (index: number) =>
+export const onRemoveImageAppended = (key: number) =>
     (dispatch: AppDispatch): IAppAction => {
         const action: TAnyAction = {
-            type: ExperienceAction.IMAGES_APPENDED_RESET, payload: index
+            type: ExperienceAction.IMAGES_APPENDED_DELETE, payload: key
         }
         return dispatch(action)
     }
@@ -128,18 +127,6 @@ export const onInputUnfocused = () =>
     }
     return dispatch(action)
 }
-export const onAddRemovableImageIds = (id: string) => (dispatch: AppDispatch): IAppAction => {
-    const action: TAnyAction = {
-        type: ExperienceAction.ADD_REMOVABLE_IMAGE_IDS, payload: id
-    }
-    return dispatch(action)
-}
-export const onExcludeImageUrl = (url: string) => (dispatch: AppDispatch): IAppAction => {
-    const action: TAnyAction = {
-        type: ExperienceAction.EXCLUDE_IMAGE_URL, payload: url
-    }
-    return dispatch(action)
-}
 export const getAllExperience = () => (dispatch: AppDispatch) => {
     const response: IExperience[] = []
     const action: AnyAction = {
@@ -162,14 +149,11 @@ export enum ExperienceAction {
     IMAGES_APPENDED_REQUEST = "@@EXPERIENCE_IMAGES_APPENDED_REQUEST",
     IMAGES_APPENDED_FAILED = "@@EXPERIENCE_IMAGES_APPENDED_FAILED",
     IMAGES_APPENDED_SUCCESS = "@@EXPERIENCE_IMAGES_APPENDED_SUCCESS",
-    IMAGES_APPENDED_RESET = "@@EXPERIENCE_IMAGES_APPENDED_RESET",
+    IMAGES_APPENDED_DELETE = "@@EXPERIENCE_IMAGES_APPENDED_DELETE",
 
     ICON_APPENDED_REQUEST = "@@EXPERIENCE_ICON_APPENDED_REQUEST",
     ICON_APPENDED_FAILED = "@@EXPERIENCE_ICON_APPENDED_FAILED",
     ICON_APPENDED_SUCCESS = "@@EXPERIENCE_ICON_APPENDED_SUCCESS",
-
-    ADD_REMOVABLE_IMAGE_IDS = "@@EXPERIENCE_ADD_REMOVABLE_IMAGE_IDS",
-    EXCLUDE_IMAGE_URL = "@@EXPERIENCE_EXCLUDE_IMAGE_URL",
 
     CREATE_REQUEST = "@@EXPERIENCE_CREATE_REQUEST",
     CREATE_FAILED = "@@EXPERIENCE_CREATE_FAILED",

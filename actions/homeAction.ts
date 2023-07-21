@@ -1,5 +1,5 @@
 import {AppDispatch, TAnyAction} from "@/store";
-import {CALL_API, NEXT_PUBLIC_BASE_URL, REVALIDATE_IN_SECONDS} from "@/helpers"
+import {CALL_API, REVALIDATE_IN_SECONDS} from "@/helpers"
 
 const PAGINATION_SIZE: number = 3
 const pagedFeed = (initialData?: ISchema[]) =>
@@ -50,14 +50,20 @@ const onSelectFeedItem = (index: number) =>
         }
         return dispatch(action)
     }
+    const value = selectedFeedItem as IExperience
+    const images: TKeyValueProps[] = []
+
+    if (value.imageUrls) for (let i = 0; i < value.imageUrls.length; i++) {
+        images.push({key: i, value: value.imageUrls[i]})
+    }
     const payload = <IExperienceState>{
-        value: selectedFeedItem as IExperience,
+        value,
         isSubmitted: false,
         isValid: false,
         isSelected: true,
-        images: [],
-        icon: null,
-        removableImageIds: [],
+        images,
+        icon: value.iconUrl,
+        removableImageUrls: [],
         status: "idle"
     }
     const action: TAnyAction = {

@@ -21,14 +21,12 @@ import {
     onRemoveImageAppended,
     onRemoveStack,
     onResetSubmission,
-    onAddRemovableImageIds,
-    updateExperience, onExcludeImageUrl
+    updateExperience
 } from "@/actions/experienceAction";
 import {removeFiles} from "@/actions/fileAction";
-import {camelize} from "@/utils";
+import {FileUploadField, camelize} from "@/helpers";
 import {faTrash, faClose} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {FileUploadField, mapUrlToId} from "@/helpers";
 
 export default function () {
     const {
@@ -38,11 +36,9 @@ export default function () {
         status,
         isSubmitted, icon,
         isSelected,
-        removableImageIds,
-        message
-
-    } = useAppSelector<IExperienceState>(
-        state => state.experience
+        removableImageUrls,
+        message} = useAppSelector<IExperienceState>(
+            state => state.experience
     )
     const dispatch: AppDispatch = useAppDispatch()
     const router = useRouter()
@@ -53,8 +49,8 @@ export default function () {
             dispatch(addExperience())
             return
         }
-        if (removableImageIds.length)
-            dispatch(removeFiles({removableImageIds}))
+        if (removableImageUrls.length)
+            dispatch(removeFiles({removableImageUrls}))
 
         dispatch(updateExperience())
     }
@@ -68,29 +64,28 @@ export default function () {
 
     const onRemoveExperience = (e: any) => {
         e.preventDefault()
-        if (removableImageIds.length)
-            dispatch(removeFiles({removableImageIds}))
+        if (removableImageUrls.length)
+            dispatch(removeFiles({removableImageUrls}))
 
         dispatch(removeExperience())
     }
-    const handleOnFileClick = (index: number) => (url?: string) => (e: any) => {
+    const handleOnFileTrash = (key: number) /*=> (url?: string)*/ => (e: any) => {
         e.preventDefault()
 
-        let key = index < 0 ? FileUploadField.SINGLE : FileUploadField.MULTIPLE
-        reference.current[key].value = null
+        let mKey = key < 0 ? FileUploadField.SINGLE : FileUploadField.MULTIPLE
+        reference.current[mKey].value = null
 
-        if (url) {
-            const fileId = mapUrlToId(url)
-            dispatch(onAddRemovableImageIds(fileId))
+        /*if (url) {
+            dispatch(onAddRemovableImageUrls(url))
             return
-        }
-        dispatch(onRemoveImageAppended(index))
+        }*/
+        dispatch(onRemoveImageAppended(key))
     }
-    const handleOnFileClose = (url?: string) => (e: any) => {
+    /*const handleOnFileClose = (url?: string) => (e: any) => {
         e.preventDefault()
         if (typeof url !== "string") return
         dispatch(onExcludeImageUrl(url))
-    }
+    }*/
     const handleOnTextBlur = (e: any) => {
         e.preventDefault()
         dispatch(onInputUnfocused())
@@ -185,19 +180,13 @@ export default function () {
                             ref={handleInputFileRef(FileUploadField.SINGLE)}
                             onChange={handleOnFileChange(onIconAppended)}
                             onBlur={handleOnTextBlur}/>
-                        {icon || value.iconUrl
+                        {icon
                             ? <HoverIconBox
                                 icons={[faTrash, faClose]}
                                 disabled={status === "loading"}
-                                onTLClick={value.iconUrl ? handleOnFileClick(-1)(value.iconUrl) : undefined}
-                                onTRClick={value.iconUrl ? handleOnFileClose(value.iconUrl) : undefined}
+                                onTLClick={handleOnFileTrash(-1)}
                                 onBlur={handleOnTextBlur}>
-                                {icon
-                                    ? <Image className="absolute inset-0 object-cover" source={icon} alt={"icon appendable"}/>
-                                    : value.iconUrl
-                                        ? <Image className="absolute inset-0 object-cover" source={value.iconUrl} alt={"icon appendable"}/>
-                                        : null
-                                } </HoverIconBox>
+                                <Image className="absolute inset-0 object-cover" source={icon} alt={"icon appendable"}/></HoverIconBox>
                             : <ButtonRounded label="select icon" onClick={onInputFileClick(FileUploadField.SINGLE)}/>}
                     </div>
                     <div>
@@ -211,24 +200,14 @@ export default function () {
                             onChange={handleOnFileChange(onImageAppended)}
                             onBlur={handleOnTextBlur}/>
                         <div className="flex flex-wrap justify-center items-center">
-                            {value.imageUrls && value.imageUrls?.map((url, i) =>
+                            {images.map(image =>
                                 <HoverIconBox
-                                    key={i}
+                                    key={image.key}
                                     disabled={status === "loading"}
                                     icons={[faTrash, faClose]}
-                                    onTLClick={handleOnFileClick(i)(url)}
-                                    onTRClick={handleOnFileClose(url)}
+                                    onTLClick={handleOnFileTrash(image.key)}
                                     onBlur={handleOnTextBlur}>
-                                    <Image className="object-cover" source={url} alt="image form"/>
-                                </HoverIconBox>)}
-                            {images.length > 0 && images.map((image, i) =>
-                                <HoverIconBox
-                                    key={i}
-                                    disabled={status === "loading"}
-                                    icons={[faTrash, faClose]}
-                                    onTLClick={handleOnFileClick(i)()}
-                                    onBlur={handleOnTextBlur}>
-                                    <Image className="object-cover" source={image} alt="image form"/>
+                                    <Image className="object-cover" source={image.value} alt="image form"/>
                                 </HoverIconBox>)}
                             <ButtonRounded label="images (optional)" onClick={onInputFileClick(FileUploadField.MULTIPLE)}/>
                         </div>

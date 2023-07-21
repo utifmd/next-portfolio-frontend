@@ -1,6 +1,5 @@
 import {AppDispatch, TAnyAction} from "@/store";
-import {readFileAsImgSrcAsync} from "@/utils";
-import {CALL_API, BROWSER_API} from "@/helpers"
+import {CALL_API, BROWSER_API, readFileAsImgSrcAsync} from "@/helpers"
 import {randomUUID} from "crypto";
 
 export const addEducation = () =>

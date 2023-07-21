@@ -17,6 +17,83 @@ export enum FileDeleteField {
 /*
 * TOOLS
 * */
+export function censorEmail(email: string){
+    let out = ""
+    for (let i = 0; i < email.length; i++){
+        out += i >= email.indexOf("@") ? email[i] : "*"
+    }
+    return out
+}
+export function camelize(str: string) {
+    return str.replace(/^\w|[A-Z]|\b\w/g, function(word, index) {
+        return index === 0 ? word.toLowerCase() : word.toUpperCase();
+    }).replace(/\s+/g, '');
+}
+export function capitalize(str: string) {
+    return str.replace(str[0], str[0].toUpperCase())
+}
+
+export const attachmentKeys = (platform: string): [string, string] =>
+    platform === 'ANDROID' || platform === 'IOS'
+        ? ['Released apps', 'Download'] : ['Link address', 'Visit']
+export const isUrl = (value: string): boolean => {
+    try {
+        const {protocol} = new URL(value)
+        return protocol === 'http:' || protocol === 'https:'
+    } catch(e){
+        return false;
+    }
+}
+export const isBase64 = (value: string) => /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$/.test(value);
+export function readFileAsImgSrcAsync(file: any): Promise<string> {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        const base64 = reader.readAsDataURL(file)
+        reader.onload = () => typeof reader.result === "string"
+            ? resolve(reader.result) : reject("File type does not supported")
+        reader.onerror = e => {
+            console.log(e)
+            reject(e)
+        }
+    })
+}
+export function readFileAsImgSrc(file: any) {
+    let output: any
+    const reader = new FileReader()
+    const base64 = reader.readAsDataURL(file)
+    reader.onload = () => {
+        output = reader.result
+    }
+    reader.onerror = e => {
+        console.log(e)
+        output = null
+    }
+    return output
+}
+export function paginateListOf<T>(list: T[], page: number, size: number): T[] {
+    const output: any[] = []
+    let paged: T[] = []
+    for (let i = 0; i < list.length; i+= size){
+        const paginated: T[] = list.slice(i, i +size)
+        output.push(paginated)
+    }
+    for (let i = 0; i < output.length; i++){
+        if (i === (page -1)) paged = output[i] as T[]
+    }
+    return paged
+}
+export function groupingListByPropKey<T>(list: T, propKey: string): T {
+    if (!Array.isArray(list)) return list
+
+    for (let i = 0; i < list.length; i++){
+        for (let j = 0; j < list.length; j++){
+            if (propKey in list[i]){
+                [list[i], list[j]] = [list[j], list[i]]
+            }
+        }
+    }
+    return list
+}
 export const mapUrlToId = (url: string) => {
     const urlItems = url.split("/")
     return urlItems[urlItems.length -1]

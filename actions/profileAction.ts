@@ -1,7 +1,6 @@
 import {AppDispatch, TAnyAction} from "@/store";
-import {BROWSER_API, CALL_API, REVALIDATE_IN_SECONDS} from "@/helpers";
+import {BROWSER_API, CALL_API, REVALIDATE_IN_SECONDS, readFileAsImgSrcAsync} from "@/helpers";
 import {randomUUID} from "crypto";
-import {readFileAsImgSrcAsync} from "@/utils";
 
 export const getProfile = (initial?: ISchema) => (dispatch: AppDispatch) => {
     const action: IAppAction = {

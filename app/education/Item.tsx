@@ -5,7 +5,7 @@ import {Authenticated} from "@/app/authentication";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faExternalLink, faCrosshairs} from '@fortawesome/free-solid-svg-icons'
 import {SlideshowLightbox} from "lightbox.js-react";
-import {capitalize} from "@/utils";
+import {capitalize} from "@/helpers";
 
 type Props = TBoxProps & {
     education: IEducation,

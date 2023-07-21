@@ -1,7 +1,6 @@
 import axios, {AxiosError, AxiosResponse} from "axios"
 import {Middleware} from "redux";
 import {TAnyAction} from "@/store";
-import {PAGINATION_SIZE} from "@/actions/homeAction";
 import {CALL_API} from "@/helpers"
 
 const httpRequest = ({method, params, header, body, contentType, initialResponse}: IHttpRequestAction) => new Promise<any>(

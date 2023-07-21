@@ -11,7 +11,7 @@ interface IHttpRequestAction {
 }
 interface IAPIAction {
     api: Promise<any>,
-    types: [string, string, string]
+    types: [request: string, failed: string, success: string]
 }
 interface IAppAction {
     [key: string]: ISchema | ISchema[] | IHttpRequestAction | IAPIAction
@@ -53,6 +53,10 @@ type TBoxProps = {
 type TTileProps = {
     title: string,
     description?: string
+}
+type TKeyValueProps = {
+    key: number,
+    value: string
 }
 type TImageLightBox = {
     src: string, alt: string

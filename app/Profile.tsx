@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import Footer from "./Footer";
-import {capitalize} from "@/utils";
+import {capitalize} from "@/helpers";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSignIn, faSpinner} from "@fortawesome/free-solid-svg-icons";
 import {useAppSelector} from "@/app/hooks";

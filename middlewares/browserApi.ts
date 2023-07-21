@@ -1,11 +1,11 @@
 import {Middleware} from "redux";
 import {TAnyAction} from "@/store";
-import {BROWSER_API} from "../helpers"
+import {BROWSER_API} from "@/helpers"
 
 const browserApiMiddleware: Middleware<IAppState> = () => (next: any) => (action: IAppAction) => {
     const callApi = action[BROWSER_API]
     if (typeof callApi === "undefined") return next(action)
-    if (!("api" in callApi)) throw Error("Invalid browser api.")
+    if (!("api" in callApi)) throw Error("Invalid api props.")
 
     const requestAction: IAPIAction = callApi
     const [requestType, failedType, successType] = requestAction.types

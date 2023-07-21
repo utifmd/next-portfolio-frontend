@@ -8,7 +8,7 @@ import {UnAuthenticated} from "@/app/authentication";
 import {
     onInputChange, onInputUnfocused, onResetSubmission, signIn
 } from "@/actions/authenticationAction";
-import {censorEmail} from "@/utils";
+import {censorEmail} from "@/helpers";
 import {useAppDispatch, useAppSelector} from "@/app/hooks";
 
 export default function() {

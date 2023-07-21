@@ -3,7 +3,7 @@ import {Authenticated} from "@/app/authentication";
 import {Image} from "@/components";
 import {Box} from "@/components/sections";
 import {SlideshowLightbox} from "lightbox.js-react";
-import {attachmentKeys, capitalize} from "@/utils";
+import {attachmentKeys, capitalize} from "@/helpers";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCrosshairs, faExternalLink, faVideo} from "@fortawesome/free-solid-svg-icons";
 
@@ -33,6 +33,11 @@ export default function (
             </div>
             <div
                 className="appearance-none mx-0 sm:mx-6 bg-gray-200 dark:bg-gray-700 overflow-hidden sm:rounded-lg text-left">
+                <div
+                    className="w-full h-auto px-4 py-4 flex flex-wrap">{experience.stack.map((v, i) =>
+                    <span key={i}
+                          className="py-1 px-4 mr-4 mt-2 text-xs rounded-full bg-gray-300 dark:bg-green-600">#{v}</span>)}
+                </div>
                 <div className="px-4 py-5 sm:px-6">
                     <h3 className="text-lg leading-6 font-medium truncatetruncatetruncate">Application Information</h3>
                     <p className="mt-1 max-w-2xl text-sm">{capitalize(experience.description)}</p>
@@ -69,13 +74,8 @@ export default function (
                                 </dd>
                             </div>}
                         <div
-                            className="w-full h-auto px-4 py-4 flex flex-wrap border-t dark:border-gray-600 border-gray-300">{experience.stack.map((v, i) =>
-                            <span key={i}
-                                  className="py-1 px-4 mr-4 mt-2 text-xs rounded-full bg-gray-300 dark:bg-green-600">#{v}</span>)}
-                        </div>
-                        <div
                             className="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 border-t dark:border-gray-600 border-gray-300">
-                            <dt className="text-sm font-medium">Attachment</dt>
+                            <dt className="text-sm font-medium">Attachments</dt>
                             <dd className="mt-1 text-sm sm:mt-0 sm:col-span-2">
                                 <ul role="listitem"
                                     className="border border-gray-300 dark:border-gray-600 rounded-md divide-y divide-gray-300 dark:divide-gray-600">
