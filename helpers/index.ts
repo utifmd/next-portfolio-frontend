@@ -35,7 +35,7 @@ export function capitalize(str: string) {
 
 export const attachmentKeys = (platform: string): [string, string] =>
     platform === 'ANDROID' || platform === 'IOS'
-        ? ['Released apps', 'Download'] : ['Link address', 'Visit']
+        ? ['Released app', 'Download'] : ['Link address', 'Visit']
 export const isUrl = (value: string): boolean => {
     try {
         const {protocol} = new URL(value)
