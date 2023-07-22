@@ -26,6 +26,7 @@ const homeReducer: Reducer<IHomeState> =
                 return {...state, status: "loading"}
             }
             case AuthenticationAction.AUTHENTICATE_SUCCESS:
+            case AuthenticationAction.SIGN_IN_SUCCESS:
             case HomeAction.READ_FEED_SUCCESS:
             case ProfileAction.READ_SUCCESS: {
                 return {...state,  status: "idle", message: undefined}

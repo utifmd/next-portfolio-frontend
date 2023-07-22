@@ -29,10 +29,8 @@ const reducer: Reducer<IExperienceState> =
 
     const isValid: boolean = state.icon && Object
         .entries(state.value)
-        .filter(([mKey, mValue]) =>
-            typeof mValue === "string" &&
-            mKey !== "stack" &&
-            mKey !== "demoUrl")
+        .filter(([_, mValue]) => typeof mValue === "string")
+        .filter(([mKey]) => mKey !== "demoUrl" && mKey !== "iconUrl")
         .every(([_, mValue]) => mValue.length > 0)
 
     switch (action.type) {
@@ -59,7 +57,7 @@ const reducer: Reducer<IExperienceState> =
 
         case ExperienceAction.INPUT_CHANGED: {
             const [id, value] = action.payload as [string, any]
-            return {...state, isValid, value: {...state.value, [id]: value}}
+            return {...state, value: {...state.value, [id]: value}, isValid}
         }
         case ExperienceAction.INPUT_STACK_CREATE: {
             const stack = [...state.value.stack, action.payload as string]

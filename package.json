@@ -1,6 +1,6 @@
 {
   "name": "portfolio",
-  "version": "1.0.0-beta02",
+  "version": "1.0.0-beta03",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -15,23 +15,23 @@
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@reduxjs/toolkit": "^1.9.5",
-    "@types/node": "18.16.3",
-    "@types/react": "18.2.0",
-    "@types/react-dom": "18.2.1",
+    "@types/node": "20.4.2",
+    "@types/react": "18.2.15",
+    "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.14",
     "axios": "^1.4.0",
     "lightbox.js-react": "^0.6.4",
-    "next": "13.3.2",
-    "postcss": "8.4.23",
+    "next": "13.4.11",
+    "postcss": "8.4.26",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-redux": "^8.0.5",
+    "react-redux": "^8.1.1",
     "redux": "^4.2.1",
     "redux-thunk": "^2.4.2",
-    "tailwindcss": "3.3.2",
-    "typescript": "5.0.4"
+    "tailwindcss": "3.3.3",
+    "typescript": "5.1.6"
   },
   "devDependencies": {
-    "eslint-config-next": "13.4.7"
+    "eslint-config-next": "13.4.11"
   }
 }
