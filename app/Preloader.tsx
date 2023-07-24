@@ -6,7 +6,7 @@ import {useAppDispatch, useAppSelector} from "@/app/hooks";
 import {useEffect} from "react";
 import {getProfile} from "@/actions/profileAction";
 type Props = {
-    initialFeed: ISchema[],
+    initialFeed: IFeedState,
     initialProfile: ISchema,
 }
 export default function ({initialFeed, initialProfile}: Props) {

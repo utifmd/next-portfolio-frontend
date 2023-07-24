@@ -46,26 +46,6 @@ const homeReducer: Reducer<IHomeState> =
                 const scrollTo = value.length >= PAGINATION_SIZE ? state.feed.value.length : undefined
                 return {...state, feed: {...response, value, scrollTo, status: "idle"}}
             }
-            /*case HomeAction.PAGED_FEED_SUCCESS: {
-                if (!("response" in action.payload)) return state
-
-                const {response, isExpTurn} = action.payload as TFeedResponse
-                const value: ISchema[] = [...state.feed.value, ...response]
-                const scrollTo = value.length >= PAGINATION_SIZE ? state.feed.value.length : undefined
-                const page = isExpTurn ? state.feed.page > 0 ? 0 : state.feed.page +1 : state.feed.page +1
-                const isRestOfJson = response.length <= 0 || response.length < PAGINATION_SIZE
-
-                return {...state,
-                    feed: {...state.feed,
-                        scrollTo,
-                        value,
-                        page,
-                        isExpTurn: isExpTurn,
-                        isDone: isExpTurn && isRestOfJson,
-                        status: "idle"
-                    }
-                }
-            }*/
             case HomeAction.CREATE_FEED_SUCCESS:
             case EducationAction.CREATE_SUCCESS:
             case ExperienceAction.CREATE_SUCCESS: {

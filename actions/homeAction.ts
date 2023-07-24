@@ -2,7 +2,7 @@ import {AppDispatch, TAnyAction} from "@/store";
 import {CALL_API, REVALIDATE_IN_SECONDS} from "@/helpers"
 
 const PAGINATION_SIZE: number = 3
-const pagedFeed = (initialData?: ISchema[]) =>
+const pagedFeed = (initialData?: IFeedState) =>
     (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
     const {feed} = getState().home
     const action: IAppAction = {
@@ -36,7 +36,8 @@ export async function getInitialFeedJson() {
         isStarted: true,
         isDone: false,
         page: 0,
-        value: await data.json()}
+        value: await data.json()
+    }
 }
 const onSelectFeedItem = (index: number) =>
     (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {
