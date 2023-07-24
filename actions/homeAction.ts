@@ -30,7 +30,13 @@ export async function getInitialFeedJson() {
         `${NEXT_PUBLIC_BASE_URL}/educations?page=0&size=${PAGINATION_SIZE}`,
         {next: {revalidate: REVALIDATE_IN_SECONDS}}
     )
-    return data.json()
+    return <IFeedState>{
+        status: "idle",
+        isExpTurn: false,
+        isStarted: true,
+        isDone: false,
+        page: 0,
+        value: await data.json()}
 }
 const onSelectFeedItem = (index: number) =>
     (dispatch: AppDispatch, getState: () => IAppState): IAppAction => {

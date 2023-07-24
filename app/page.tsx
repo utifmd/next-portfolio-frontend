@@ -5,8 +5,8 @@ import store from "@/store";
 import {pagedFeed, getInitialFeedJson} from "@/actions/homeAction";
 import {getProfile, getInitialProfileJson} from "@/actions/profileAction";
 export default async function () {
-    const feedResponse: ISchema[] = await getInitialFeedJson()
-    const profileResponse: IProfile = await getInitialProfileJson()
+    const feedResponse = await getInitialFeedJson()
+    const profileResponse = await getInitialProfileJson()
 
     store.dispatch(getProfile(profileResponse))
     store.dispatch(pagedFeed(feedResponse))

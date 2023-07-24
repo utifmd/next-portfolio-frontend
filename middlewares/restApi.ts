@@ -2,6 +2,7 @@ import axios, {AxiosError, AxiosResponse} from "axios"
 import {Middleware} from "redux";
 import {TAnyAction} from "@/store";
 import {CALL_API} from "@/helpers"
+import {PAGINATION_SIZE} from "@/actions/homeAction";
 
 const httpRequest = ({method, params, header, body, contentType, initialResponse}: IHttpRequestAction) => new Promise<any>(
     async (resolve, reject) => {
@@ -44,17 +45,23 @@ const httpRequest = ({method, params, header, body, contentType, initialResponse
             reject("request with no pagination.")
             return
         }
-        /*experiences*/
-        if (header.isExpTurn) {
+        if (header.isExpTurn) { /*experiences*/
             const url = baseUrl + header.endpoints[1]
-            const {data}: AxiosResponse = await axios({method, url, params: queryParams})
-            resolve(data)
+            const response: AxiosResponse = await axios({method, url, params: queryParams})
+            const isDone = response.data.length <= 0 || response.data.length < PAGINATION_SIZE
+            const state = <IFeedState>{
+                isDone, status: "idle", isExpTurn: true, page: header.page + 1, value: response.data
+            }
+            resolve(state)
             return
         }
-        /*educations*/
         const url = baseUrl + header.endpoints[0]
-        const {data}: AxiosResponse = await axios({method, url, params: queryParams})
-        resolve(data)
+        const response: AxiosResponse = await axios({method, url, params: queryParams})
+        const isExpTurn = response.data.length <= 0 || response.data.length < PAGINATION_SIZE
+        const state = <IFeedState> {
+            isDone: false, status: "idle", isExpTurn, page: isExpTurn ? header.page > 0 ? 0 : header.page +1 : header.page +1, value: response.data
+        }
+        resolve(state)
 
     } catch (error) {
         if (error instanceof AxiosError) {

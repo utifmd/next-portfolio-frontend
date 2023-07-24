@@ -41,24 +41,24 @@ export default function (
                     <dl>
                         <div className="px-4 py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6">
                             <dt className="text-sm font-medium truncatetruncatetruncate">Name</dt>
-                            <dd className="mt-1 text-sm sm:mt-0 sm:col-span-2">{capitalize(experience.title)}</dd>
+                            <dd className="mt-1 text-sm sm:mt-0 sm:col-span-3">{capitalize(experience.title)}</dd>
                         </div>
                         <div
                             className="px-4 py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6 border-t dark:border-gray-600 border-gray-300">
                             <dt className="text-sm font-medium truncate">Platform</dt>
-                            <dd className="mt-1 text-sm sm:mt-0 sm:col-span-2 uppercase font-bold">{experience.platform} {experience.type}</dd>
+                            <dd className="mt-1 text-sm sm:mt-0 sm:col-span-3 uppercase font-bold">{experience.platform} {experience.type}</dd>
                         </div>
                         <div
                             className="px-4 py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6 border-t dark:border-gray-600 border-gray-300">
                             <dt className="text-sm font-medium truncate">Tech stack</dt>
-                            <dd className="mt-1 text-sm sm:mt-0 sm:col-span-2">{experience.stack.map((v, i) =>
+                            <dd className="flex flex-wrap mt-1 text-sm sm:mt-0 sm:col-span-3">{experience.stack.map((v, i) =>
                                 <span key={i}
-                                      className="py-1 px-4 mr-4 mt-2 text-xs rounded-full bg-gray-300 dark:bg-green-600">#{v}</span>)}</dd>
+                                      className="py-1 px-2 my-0.5 mx-0.5 text-xs rounded-full bg-gray-300 dark:bg-green-600">#{v}</span>)}</dd>
                         </div>
                         {experience.imageUrls &&
                             <div className="px-4 py-5 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6 border-t dark:border-gray-600 border-gray-300">
                                 <dt className="text-sm font-medium truncate">Screenshots</dt>
-                                <dd className="flex overflow-x-scroll mt-1 text-sm sm:mt-0 sm:col-span-2">
+                                <dd className="flex overflow-x-scroll mt-1 text-sm sm:mt-0 sm:col-span-3">
                                     <SlideshowLightbox
                                         className="flex space-x-1.5"
                                         lightboxIdentifier={`experienceFigure-${index}`}
