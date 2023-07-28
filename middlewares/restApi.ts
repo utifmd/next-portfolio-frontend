@@ -15,6 +15,12 @@ const httpRequest = ({method, params, header, body, contentType, initialResponse
         * BYPASS REQUEST
         * */
         if (typeof initialResponse !== "undefined") {
+            if ("page" in initialResponse){
+                resolve(<IFeedState>{
+                    ...initialResponse, page: initialResponse.page +1
+                })
+                return
+            }
             resolve(initialResponse)
             return
         }
