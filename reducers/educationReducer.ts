@@ -29,7 +29,7 @@ const reducer: Reducer<IEducationState> =
             .every(([_, mValue]) => mValue.length > 0)
 
         const isValid: boolean = state.isSelected
-            ? isTextsValid && state.value.imageUrl.length > 0
+            ? isTextsValid && (typeof state.image !== "undefined" || state.value.imageUrl.length > 0)
             : isTextsValid && typeof state.image !== "undefined"
 
         switch (action.type) {

@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 export const runtime = 'edge'
 export default function sitemap(): MetadataRoute.Sitemap {
-    const url = process.env.BASE_HOST || "https://utif.pages.dev"
+    const url = process.env.NEXT_PUBLIC_BASE_URL || "https://utif.pages.dev"
     return [
         {
             url,

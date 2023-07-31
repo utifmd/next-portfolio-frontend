@@ -6,6 +6,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faExternalLink, faCrosshairs} from '@fortawesome/free-solid-svg-icons'
 import {SlideshowLightbox} from "lightbox.js-react";
 import {capitalize} from "@/helpers";
+import {useState} from "react";
 
 type Props = TBoxProps & {
     education: IEducation,
@@ -14,6 +15,11 @@ type Props = TBoxProps & {
 export default function(
     {education, index, isLoading, onNextClick, onTargetIconClick, innerRef}: Props) {
     const images: TImageLightBox[] = [{alt: education.title, src: education.imageUrl}]
+    const [
+        isToggleContent,
+        setIsToggleContent
+
+    ] = useState<boolean>(true)
     return(
         <Box innerRef={innerRef}
             title={education.title}
@@ -27,7 +33,7 @@ export default function(
                     source={education.imageUrl}
                     alt={education.title}/>
             </SlideshowLightbox>
-            <p className="text">{capitalize(education.content)}</p>
+            <p className="text" onClick={() => setIsToggleContent(!isToggleContent)}>{capitalize(isToggleContent ? education.content : education.desc)}</p>
             <div className="flex justify-center space-x-4">
                 <Link href={education.fileUrl} className="cursor-pointer">
                     <FontAwesomeIcon color={"#059669"} icon={faExternalLink} />
